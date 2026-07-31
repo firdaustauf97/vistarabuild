@@ -1,0 +1,8 @@
+title: Vistara Build
+url: "https://firdaustauf97.github.io"
+baseurl: "/vistarabuild"
+timezone: Asia/Jakarta
+
+exclude:
+  - worker
+  - README.md

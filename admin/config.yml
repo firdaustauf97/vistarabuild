@@ -1,0 +1,173 @@
+backend:
+  name: github
+  repo: firdaustauf97/vistarabuild
+  branch: main
+  base_url: https://NAMA-WORKER-ANDA.workers.dev
+  auth_endpoint: auth
+  auth_scope: public_repo
+
+publish_mode: editorial_workflow
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+site_url: "https://firdaustauf97.github.io/vistarabuild/"
+display_url: "https://firdaustauf97.github.io/vistarabuild/"
+
+collections:
+  - name: "website"
+    label: "Konten Website"
+    files:
+      - name: "general"
+        label: "Informasi Utama"
+        file: "_data/site.yml"
+
+        fields:
+          - label: "Nama Bisnis"
+            name: "brand"
+            widget: "string"
+
+          - label: "Tagline"
+            name: "tagline"
+            widget: "string"
+
+          - label: "Judul Utama"
+            name: "hero_title"
+            widget: "string"
+
+          - label: "Deskripsi Utama"
+            name: "hero_description"
+            widget: "text"
+
+          - label: "Teks Tombol WhatsApp"
+            name: "hero_button"
+            widget: "string"
+
+          - label: "Judul Penjelasan Tembok Lembap"
+            name: "about_title"
+            widget: "string"
+
+          - label: "Penjelasan Tembok Lembap"
+            name: "about_description"
+            widget: "text"
+
+          - label: "Nomor WhatsApp"
+            name: "whatsapp"
+            widget: "string"
+            required: false
+            hint: "Gunakan format 6281234567890 tanpa tanda tambah atau spasi."
+
+          - label: "Nomor Telepon yang Ditampilkan"
+            name: "phone_display"
+            widget: "string"
+
+          - label: "Nomor untuk Link Telepon"
+            name: "phone_link"
+            widget: "string"
+            required: false
+            hint: "Contoh: +6281234567890"
+
+          - label: "Alamat atau Area Layanan"
+            name: "address"
+            widget: "text"
+
+          - label: "Judul SEO"
+            name: "seo_title"
+            widget: "string"
+
+          - label: "Deskripsi SEO"
+            name: "seo_description"
+            widget: "text"
+
+      - name: "services"
+        label: "Layanan"
+        file: "_data/services.yml"
+
+        fields:
+          - label: "Daftar Layanan"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.title}}"
+
+            fields:
+              - label: "Ikon"
+                name: "icon"
+                widget: "string"
+
+              - label: "Nama Layanan"
+                name: "title"
+                widget: "string"
+
+              - label: "Deskripsi"
+                name: "description"
+                widget: "text"
+
+      - name: "projects"
+        label: "Proyek dan Foto"
+        file: "_data/projects.yml"
+
+        fields:
+          - label: "Daftar Proyek"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.title}}"
+
+            fields:
+              - label: "Judul Proyek"
+                name: "title"
+                widget: "string"
+
+              - label: "Lokasi"
+                name: "location"
+                widget: "string"
+
+              - label: "Deskripsi"
+                name: "description"
+                widget: "text"
+
+              - label: "Foto"
+                name: "image"
+                widget: "image"
+                required: false
+
+      - name: "testimonials"
+        label: "Testimoni"
+        file: "_data/testimonials.yml"
+
+        fields:
+          - label: "Daftar Testimoni"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.name}}"
+
+            fields:
+              - label: "Nama Pelanggan"
+                name: "name"
+                widget: "string"
+
+              - label: "Jenis Pekerjaan"
+                name: "project"
+                widget: "string"
+
+              - label: "Testimoni"
+                name: "quote"
+                widget: "text"
+
+      - name: "faq"
+        label: "Pertanyaan Umum"
+        file: "_data/faq.yml"
+
+        fields:
+          - label: "Daftar Pertanyaan"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.question}}"
+
+            fields:
+              - label: "Pertanyaan"
+                name: "question"
+                widget: "string"
+
+              - label: "Jawaban"
+                name: "answer"
+                widget: "text"
