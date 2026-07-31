@@ -2,7 +2,7 @@ backend:
   name: github
   repo: firdaustauf97/vistarabuild
   branch: main
-  base_url: https://NAMA-WORKER-ANDA.workers.dev
+  base_url: https://vistara-build-oauth.firdauscdps.workers.dev
   auth_endpoint: auth
   auth_scope: public_repo
 
