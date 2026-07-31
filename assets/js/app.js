@@ -19,7 +19,7 @@
 
     const dark = theme === "dark";
     themeText.textContent = dark ? "Light mode" : "Dark mode";
-    themeIcon.textContent = dark ? "â˜€ï¸" : "ðŸŒ™";
+    themeIcon.innerHTML = dark ? "&#9728;" : "&#9790;";
 
     localStorage.setItem("vistara-theme", theme);
   }
