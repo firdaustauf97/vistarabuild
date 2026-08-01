@@ -2,32 +2,205 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
 
   <title>Admin Vistara Build</title>
+
+  <meta
+    name="description"
+    content="Panel pengelolaan konten website Vistara Build."
+  >
+
   <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#13283a">
+
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="32x32"
+    href="../assets/uploads/favicon-32.png"
+  >
+
+  <link
+    rel="apple-touch-icon"
+    href="../assets/uploads/favicon-192.png"
+  >
 
   <style>
-    body {
-      margin: 0;
-      background: #0d1915;
+    :root {
+      --navy: #13283a;
+      --navy-dark: #0b1823;
+      --gold: #c9aa75;
+      --gold-light: #e3d1aa;
+      --white: #ffffff;
+      --muted: #a9b6bf;
     }
 
-    .loading {
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      margin: 0;
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(201, 170, 117, 0.18),
+          transparent 32%
+        ),
+        linear-gradient(
+          145deg,
+          var(--navy-dark),
+          var(--navy)
+        );
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+    }
+
+    .admin-loading {
       display: grid;
       min-height: 100vh;
       place-items: center;
-      color: #ffffff;
-      font-family: system-ui, sans-serif;
+      padding: 24px;
+    }
+
+    .admin-loading-card {
+      width: min(100%, 420px);
+      padding: 42px 34px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 28px;
+      background: rgba(11, 24, 35, 0.78);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+      backdrop-filter: blur(18px);
+      text-align: center;
+    }
+
+    .admin-loading-logo {
+      display: block;
+      width: 190px;
+      max-width: 80%;
+      height: auto;
+      margin: 0 auto 24px;
+    }
+
+    .admin-loading h1 {
+      margin: 0;
+      color: var(--white);
+      font-size: 1.55rem;
+      letter-spacing: -0.03em;
+    }
+
+    .admin-loading p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .loading-line {
+      position: relative;
+      width: 150px;
+      height: 4px;
+      margin: 26px auto 0;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .loading-line::after {
+      position: absolute;
+      inset: 0;
+      width: 50%;
+      border-radius: inherit;
+      background: var(--gold);
+      content: "";
+      animation: loading 1.2s ease-in-out infinite;
+    }
+
+    @keyframes loading {
+      from {
+        transform: translateX(-110%);
+      }
+
+      to {
+        transform: translateX(220%);
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="loading">
-    Memuat panel admin Vistara Buildâ€¦
+  <div
+    class="admin-loading"
+    id="adminLoading"
+  >
+    <div class="admin-loading-card">
+      <img
+        class="admin-loading-logo"
+        src="../assets/uploads/logo-vistara-full.png"
+        alt="Vistara Build"
+      >
+
+      <h1>Panel Admin Vistara Build</h1>
+
+      <p>
+        Menyiapkan area pengelolaan konten, proyek, layanan,
+        testimoni, dan informasi bisnis.
+      </p>
+
+      <div
+        class="loading-line"
+        aria-hidden="true"
+      ></div>
+    </div>
   </div>
 
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    window.CMS_MANUAL_INIT = true;
+  </script>
+
+  <script
+    src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"
+  ></script>
+
+  <script>
+    CMS.init();
+
+    const loadingScreen =
+      document.getElementById("adminLoading");
+
+    const observer = new MutationObserver(function () {
+      const cmsInterface =
+        document.querySelector("[class*='App']") ||
+        document.querySelector("[class*='Login']") ||
+        document.querySelector("#nc-root");
+
+      if (cmsInterface && loadingScreen) {
+        loadingScreen.style.display = "none";
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    setTimeout(function () {
+      if (loadingScreen) {
+        loadingScreen.style.display = "none";
+      }
+    }, 5000);
+  </script>
 </body>
 </html>
