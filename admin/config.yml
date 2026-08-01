@@ -1,3 +1,24 @@
+locale: "id"
+
+logo_url: "https://firdaustauf97.github.io/vistarabuild/assets/uploads/logo-vistara-full.png"
+
+site_url: "https://firdaustauf97.github.io/vistarabuild/"
+display_url: "https://firdaustauf97.github.io/vistarabuild/"
+
+show_preview_links: true
+
+backend:
+  name: github
+  repo: firdaustauf97/vistarabuild
+  branch: main
+  base_url: https://vistara-build-oauth.firdauscdps.workers.dev
+  auth_endpoint: auth
+  auth_scope: public_repo
+
+publish_mode: editorial_workflow
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
 backend:
   name: github
   repo: firdaustauf97/vistarabuild
