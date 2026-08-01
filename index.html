@@ -16,6 +16,36 @@ layout: null
 
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#143f37">
+  {% if site.data.site.favicon_32 %}
+<link
+  rel="icon"
+  type="image/png"
+  sizes="32x32"
+  href="{{ site.data.site.favicon_32 | relative_url }}"
+>
+{% endif %}
+
+{% if site.data.site.favicon_192 %}
+<link
+  rel="icon"
+  type="image/png"
+  sizes="192x192"
+  href="{{ site.data.site.favicon_192 | relative_url }}"
+>
+<link
+  rel="apple-touch-icon"
+  href="{{ site.data.site.favicon_192 | relative_url }}"
+>
+{% endif %}
+
+{% if site.data.site.favicon_512 %}
+<link
+  rel="icon"
+  type="image/png"
+  sizes="512x512"
+  href="{{ site.data.site.favicon_512 | relative_url }}"
+>
+{% endif %}
 
   <link rel="canonical" href="{{ '/' | absolute_url }}">
 
@@ -81,10 +111,25 @@ layout: null
     <div class="site-shell">
       <header class="site-header">
         <div class="container navigation">
-          <a class="brand" href="#beranda">
-            <span class="brand-mark">VB</span>
-            <span>{{ site.data.site.brand }}</span>
-          </a>
+          <a
+  class="footer-brand"
+  href="#beranda"
+  aria-label="{{ site.data.site.brand }}"
+>
+  {% if site.data.site.logo_full %}
+  <img
+    src="{{ site.data.site.logo_full | relative_url }}"
+    alt="Logo lengkap {{ site.data.site.brand }}"
+    class="footer-logo"
+    loading="lazy"
+  >
+  {% else %}
+  <span class="brand">
+    <span class="brand-mark">VB</span>
+    <span>{{ site.data.site.brand }}</span>
+  </span>
+  {% endif %}
+</a>
 
           <nav class="nav-links">
             <a href="#layanan">Layanan</a>
@@ -432,10 +477,21 @@ layout: null
       <footer class="site-footer">
         <div class="container footer-grid">
           <div class="footer-copy">
-            <a class="brand" href="#beranda">
-              <span class="brand-mark">VB</span>
-              <span>{{ site.data.site.brand }}</span>
-            </a>
+           <a class="brand" href="#beranda" aria-label="{{ site.data.site.brand }}">
+  {% if site.data.site.logo_mark %}
+  <img
+    src="{{ site.data.site.logo_mark | relative_url }}"
+    alt="Logo {{ site.data.site.brand }}"
+    class="brand-logo"
+    width="48"
+    height="48"
+  >
+  {% else %}
+  <span class="brand-mark">VB</span>
+  {% endif %}
+
+  <span>{{ site.data.site.brand }}</span>
+</a>
 
             <p>{{ site.data.site.seo_description }}</p>
           </div>
