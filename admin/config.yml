@@ -32,9 +32,6 @@ publish_mode: editorial_workflow
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
-site_url: "https://firdaustauf97.github.io/vistarabuild/"
-display_url: "https://firdaustauf97.github.io/vistarabuild/"
-
 collections:
   - name: "website"
     label: "Konten Website"
