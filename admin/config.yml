@@ -27,6 +27,31 @@ collections:
             name: "brand"
             widget: "string"
 
+          - label: "Logo Header / Monogram"
+            name: "logo_mark"
+            widget: "image"
+            required: false
+
+          - label: "Logo Lengkap"
+            name: "logo_full"
+            widget: "image"
+            required: false
+
+          - label: "Favicon 32 px"
+            name: "favicon_32"
+            widget: "image"
+            required: false
+
+          - label: "Favicon 192 px"
+            name: "favicon_192"
+            widget: "image"
+            required: false
+
+          - label: "Favicon 512 px"
+            name: "favicon_512"
+            widget: "image"
+            required: false
+
           - label: "Tagline"
             name: "tagline"
             widget: "string"
