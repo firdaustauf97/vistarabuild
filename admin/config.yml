@@ -23,10 +23,12 @@ public_folder: "/assets/uploads"
 collections:
   - name: "website"
     label: "Kelola Website"
+
     files:
       - name: "general"
-        label: "Identitas & Konten Utama"
+        label: "Identitas dan Konten Utama"
         file: "_data/site.yml"
+
         editor:
           preview: false
 
@@ -35,15 +37,17 @@ collections:
             name: "brand"
             widget: "string"
 
-          - label: "Logo Header / Monogram"
+          - label: "Logo Header atau Monogram"
             name: "logo_mark"
             widget: "image"
             required: false
+            hint: "Gunakan logo berbentuk simbol dengan latar transparan."
 
           - label: "Logo Lengkap"
             name: "logo_full"
             widget: "image"
             required: false
+            hint: "Gunakan logo lengkap Vistara Build untuk footer dan identitas website."
 
           - label: "Favicon 32 px"
             name: "favicon_32"
@@ -63,14 +67,17 @@ collections:
           - label: "Tagline"
             name: "tagline"
             widget: "string"
+            hint: "Contoh: Kontraktor Renovasi Yogyakarta"
 
           - label: "Judul Utama"
             name: "hero_title"
             widget: "string"
+            hint: "Judul utama yang pertama kali dilihat pengunjung."
 
           - label: "Deskripsi Utama"
             name: "hero_description"
             widget: "text"
+            hint: "Jelaskan fokus layanan Vistara Build secara singkat."
 
           - label: "Teks Tombol WhatsApp"
             name: "hero_button"
@@ -88,11 +95,12 @@ collections:
             name: "whatsapp"
             widget: "string"
             required: false
-            hint: "Gunakan format 6281234567890 tanpa tanda tambah atau spasi."
+            hint: "Gunakan format 6281234567890 tanpa tanda tambah, spasi, atau angka 0 di depan."
 
           - label: "Nomor Telepon yang Ditampilkan"
             name: "phone_display"
             widget: "string"
+            hint: "Contoh: 0812-3456-7890"
 
           - label: "Nomor untuk Link Telepon"
             name: "phone_link"
@@ -107,14 +115,17 @@ collections:
           - label: "Judul SEO"
             name: "seo_title"
             widget: "string"
+            hint: "Judul yang muncul pada hasil pencarian Google."
 
           - label: "Deskripsi SEO"
             name: "seo_description"
             widget: "text"
+            hint: "Ringkasan singkat website untuk hasil pencarian Google."
 
       - name: "services"
         label: "Daftar Layanan"
         file: "_data/services.yml"
+
         editor:
           preview: false
 
@@ -122,24 +133,48 @@ collections:
           - label: "Daftar Layanan"
             name: "items"
             widget: "list"
+            label_singular: "Layanan"
             summary: "{{fields.title}}"
+            collapsed: true
 
             fields:
-              - label: "Ikon"
+              - label: "Jenis Ikon"
                 name: "icon"
-                widget: "string"
+                widget: "select"
+                default: "tools"
+
+                options:
+                  - label: "Tetes Air"
+                    value: "water"
+
+                  - label: "Pengecatan"
+                    value: "paint"
+
+                  - label: "Waterproofing"
+                    value: "waterproof"
+
+                  - label: "Atap"
+                    value: "roof"
+
+                  - label: "Kamar Mandi"
+                    value: "bathroom"
+
+                  - label: "Renovasi"
+                    value: "tools"
 
               - label: "Nama Layanan"
                 name: "title"
                 widget: "string"
 
-              - label: "Deskripsi"
+              - label: "Deskripsi Layanan"
                 name: "description"
                 widget: "text"
+                hint: "Jelaskan layanan secara singkat dan mudah dipahami calon pelanggan."
 
-      -       - name: "projects"
+      - name: "projects"
         label: "Portofolio Proyek"
         file: "_data/projects.yml"
+
         editor:
           preview: false
 
@@ -148,7 +183,7 @@ collections:
             name: "items"
             widget: "list"
             label_singular: "Proyek"
-            summary: "{{fields.title}} — {{fields.location}}"
+            summary: "{{fields.title}} - {{fields.location}}"
             collapsed: true
 
             fields:
@@ -165,39 +200,46 @@ collections:
               - label: "Deskripsi Singkat"
                 name: "description"
                 widget: "text"
-                hint: "Ringkas, jelas, dan fokus pada hasil pekerjaan."
+                hint: "Jelaskan masalah, pekerjaan yang dilakukan, dan hasil akhirnya."
 
               - label: "Jenis Media"
                 name: "media_type"
                 widget: "select"
+                default: "image"
+
                 options:
                   - label: "Foto"
                     value: "image"
+
                   - label: "Video YouTube"
                     value: "youtube"
-                default: "image"
 
               - label: "Foto Proyek"
                 name: "image"
                 widget: "image"
                 required: false
-                hint: "Upload foto bila memilih media Foto."
+                hint: "Unggah foto bila memilih jenis media Foto."
 
               - label: "URL Video YouTube"
                 name: "video_url"
                 widget: "string"
                 required: false
-                hint: "Isi bila memilih Video YouTube."
+                hint: "Isi bila memilih Video YouTube. Video Unlisted disarankan."
 
       - name: "testimonials"
         label: "Testimoni Pelanggan"
         file: "_data/testimonials.yml"
 
+        editor:
+          preview: false
+
         fields:
           - label: "Daftar Testimoni"
             name: "items"
             widget: "list"
-            summary: "{{fields.name}}"
+            label_singular: "Testimoni"
+            summary: "{{fields.name}} - {{fields.project}}"
+            collapsed: true
 
             fields:
               - label: "Nama Pelanggan"
@@ -208,13 +250,15 @@ collections:
                 name: "project"
                 widget: "string"
 
-              - label: "Testimoni"
+              - label: "Isi Testimoni"
                 name: "quote"
                 widget: "text"
+                hint: "Gunakan testimoni asli dari pelanggan."
 
       - name: "faq"
-        label: "FAQ"
+        label: "Pertanyaan Umum"
         file: "_data/faq.yml"
+
         editor:
           preview: false
 
@@ -222,7 +266,9 @@ collections:
           - label: "Daftar Pertanyaan"
             name: "items"
             widget: "list"
+            label_singular: "Pertanyaan"
             summary: "{{fields.question}}"
+            collapsed: true
 
             fields:
               - label: "Pertanyaan"
