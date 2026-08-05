@@ -2,19 +2,8 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin Vistara Build</title>
-
-  <meta
-    name="description"
-    content="Panel pengelolaan konten website Vistara Build."
-  >
-
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#13283a">
 
@@ -25,19 +14,17 @@
     href="../assets/uploads/favicon-32.png"
   >
 
-  <link
-    rel="apple-touch-icon"
-    href="../assets/uploads/favicon-192.png"
-  >
-
   <style>
     :root {
-      --navy: #13283a;
-      --navy-dark: #0b1823;
-      --gold: #c9aa75;
-      --gold-light: #e3d1aa;
-      --white: #ffffff;
-      --muted: #a9b6bf;
+      --vb-navy: #13283a;
+      --vb-navy-dark: #0c1a26;
+      --vb-gold: #c9aa75;
+      --vb-bg: #f5f7fa;
+      --vb-card: #ffffff;
+      --vb-border: #e5e9ef;
+      --vb-text: #1f2937;
+      --vb-muted: #6b7280;
+      --vb-radius: 18px;
     }
 
     * {
@@ -46,19 +33,11 @@
 
     html,
     body {
-      min-height: 100%;
       margin: 0;
+      min-height: 100%;
       background:
-        radial-gradient(
-          circle at top right,
-          rgba(201, 170, 117, 0.18),
-          transparent 32%
-        ),
-        linear-gradient(
-          145deg,
-          var(--navy-dark),
-          var(--navy)
-        );
+        radial-gradient(circle at top right, rgba(201, 170, 117, 0.14), transparent 28%),
+        linear-gradient(145deg, var(--vb-navy-dark), var(--vb-navy));
       font-family:
         Inter,
         system-ui,
@@ -69,81 +48,73 @@
     }
 
     .admin-loading {
-      display: grid;
       min-height: 100vh;
+      display: grid;
       place-items: center;
       padding: 24px;
     }
 
     .admin-loading-card {
       width: min(100%, 420px);
-      padding: 42px 34px;
+      background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 28px;
-      background: rgba(11, 24, 35, 0.78);
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
-      backdrop-filter: blur(18px);
+      padding: 40px 30px;
       text-align: center;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
     }
 
     .admin-loading-logo {
       display: block;
-      width: 190px;
-      max-width: 80%;
+      width: 200px;
+      max-width: 82%;
+      margin: 0 auto 22px;
       height: auto;
-      margin: 0 auto 24px;
     }
 
     .admin-loading h1 {
       margin: 0;
-      color: var(--white);
-      font-size: 1.55rem;
+      color: #ffffff;
+      font-size: 1.5rem;
       letter-spacing: -0.03em;
     }
 
     .admin-loading p {
       margin: 10px 0 0;
-      color: var(--muted);
+      color: rgba(255, 255, 255, 0.78);
       line-height: 1.6;
     }
 
     .loading-line {
-      position: relative;
       width: 150px;
       height: 4px;
-      margin: 26px auto 0;
-      overflow: hidden;
+      background: rgba(255, 255, 255, 0.14);
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.12);
+      overflow: hidden;
+      margin: 24px auto 0;
+      position: relative;
     }
 
     .loading-line::after {
+      content: "";
       position: absolute;
       inset: 0;
       width: 50%;
+      background: var(--vb-gold);
       border-radius: inherit;
-      background: var(--gold);
-      content: "";
       animation: loading 1.2s ease-in-out infinite;
     }
 
     @keyframes loading {
-      from {
-        transform: translateX(-110%);
-      }
-
-      to {
-        transform: translateX(220%);
-      }
+      from { transform: translateX(-110%); }
+      to { transform: translateX(220%); }
     }
   </style>
 </head>
 
 <body>
-  <div
-    class="admin-loading"
-    id="adminLoading"
-  >
+  <div class="admin-loading" id="adminLoading">
     <div class="admin-loading-card">
       <img
         class="admin-loading-logo"
@@ -154,14 +125,11 @@
       <h1>Panel Admin Vistara Build</h1>
 
       <p>
-        Menyiapkan area pengelolaan konten, proyek, layanan,
-        testimoni, dan informasi bisnis.
+        Kelola konten website, layanan, proyek, testimoni,
+        dan FAQ dengan lebih rapi.
       </p>
 
-      <div
-        class="loading-line"
-        aria-hidden="true"
-      ></div>
+      <div class="loading-line" aria-hidden="true"></div>
     </div>
   </div>
 
@@ -169,23 +137,57 @@
     window.CMS_MANUAL_INIT = true;
   </script>
 
-  <script
-    src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"
-  ></script>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
   <script>
     CMS.init();
 
-    const loadingScreen =
-      document.getElementById("adminLoading");
+    const customStyle = document.createElement("style");
+    customStyle.innerHTML = `
+      body {
+        background: #f5f7fa !important;
+      }
+
+      [class*="AppHeader"],
+      [class*="ToolbarContainer"],
+      [class*="CollectionTopContainer"] {
+        background: #ffffff !important;
+        border-bottom: 1px solid #e5e9ef !important;
+        box-shadow: none !important;
+      }
+
+      [class*="SidebarContainer"] {
+        background: #ffffff !important;
+        border-right: 1px solid #e5e9ef !important;
+      }
+
+      [class*="EditorContainer"],
+      [class*="PaneContainer"],
+      [class*="CollectionContainer"] {
+        background: #f5f7fa !important;
+      }
+
+      [class*="Card"],
+      [class*="ListCard"],
+      [class*="ControlPaneContainer"] {
+        border-radius: 16px !important;
+      }
+
+      button {
+        border-radius: 12px !important;
+      }
+    `;
+    document.head.appendChild(customStyle);
+
+    const loadingScreen = document.getElementById("adminLoading");
 
     const observer = new MutationObserver(function () {
-      const cmsInterface =
+      const appReady =
+        document.querySelector("#nc-root") ||
         document.querySelector("[class*='App']") ||
-        document.querySelector("[class*='Login']") ||
-        document.querySelector("#nc-root");
+        document.querySelector("[class*='Login']");
 
-      if (cmsInterface && loadingScreen) {
+      if (appReady && loadingScreen) {
         loadingScreen.style.display = "none";
         observer.disconnect();
       }
