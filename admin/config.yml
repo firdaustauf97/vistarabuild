@@ -22,10 +22,10 @@ public_folder: "/assets/uploads"
 
 collections:
   - name: "website"
-    label: "Konten Website"
+    label: "Kelola Website"
     files:
       - name: "general"
-        label: "Informasi Utama"
+        label: "Identitas & Konten Utama"
         file: "_data/site.yml"
 
         fields:
@@ -111,7 +111,7 @@ collections:
             widget: "text"
 
       - name: "services"
-        label: "Layanan"
+        label: "Daftar Layanan"
         file: "_data/services.yml"
 
         fields:
@@ -133,36 +133,60 @@ collections:
                 name: "description"
                 widget: "text"
 
-      - name: "projects"
-        label: "Proyek dan Foto"
+      -       - name: "projects"
+        label: "Portofolio Proyek"
         file: "_data/projects.yml"
+        editor:
+          preview: false
 
         fields:
           - label: "Daftar Proyek"
             name: "items"
             widget: "list"
-            summary: "{{fields.title}}"
+            label_singular: "Proyek"
+            summary: "{{fields.title}} — {{fields.location}}"
+            collapsed: true
 
             fields:
               - label: "Judul Proyek"
                 name: "title"
                 widget: "string"
+                hint: "Contoh: Treatment Tembok Lembap"
 
               - label: "Lokasi"
                 name: "location"
                 widget: "string"
+                hint: "Contoh: Sleman, Yogyakarta"
 
-              - label: "Deskripsi"
+              - label: "Deskripsi Singkat"
                 name: "description"
                 widget: "text"
+                hint: "Ringkas, jelas, dan fokus pada hasil pekerjaan."
 
-              - label: "Foto"
+              - label: "Jenis Media"
+                name: "media_type"
+                widget: "select"
+                options:
+                  - label: "Foto"
+                    value: "image"
+                  - label: "Video YouTube"
+                    value: "youtube"
+                default: "image"
+
+              - label: "Foto Proyek"
                 name: "image"
                 widget: "image"
                 required: false
+                hint: "Upload foto bila memilih media Foto."
+
+              - label: "URL Video YouTube"
+                name: "video_url"
+                widget: "string"
+                required: false
+                hint: "Isi bila memilih Video YouTube."
 
       - name: "testimonials"
-        label: "Testimoni"
+        label: "Testimoni Pelanggan"
         file: "_data/testimonials.yml"
 
         fields:
@@ -185,7 +209,7 @@ collections:
                 widget: "text"
 
       - name: "faq"
-        label: "Pertanyaan Umum"
+        label: "FAQ"
         file: "_data/faq.yml"
 
         fields:
