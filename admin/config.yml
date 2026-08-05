@@ -27,6 +27,8 @@ collections:
       - name: "general"
         label: "Identitas & Konten Utama"
         file: "_data/site.yml"
+        editor:
+          preview: false
 
         fields:
           - label: "Nama Bisnis"
@@ -113,6 +115,8 @@ collections:
       - name: "services"
         label: "Daftar Layanan"
         file: "_data/services.yml"
+        editor:
+          preview: false
 
         fields:
           - label: "Daftar Layanan"
@@ -211,6 +215,8 @@ collections:
       - name: "faq"
         label: "FAQ"
         file: "_data/faq.yml"
+        editor:
+          preview: false
 
         fields:
           - label: "Daftar Pertanyaan"
