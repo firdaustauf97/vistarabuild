@@ -1,4 +1,11 @@
 items:
-  - name: Ibu Daryanti
+  - name: Daryanti
+    text: Pekerjaan sangat sesuai dengan keinginan saya. Disampin itu proses
+      pengajuan biaya dan estimasi waktu sangat baik.
+    visible: true
+    location: Sleman, Yogyakarta
+    role: Pemilik Rumah, Ibu Rumah Tangga
+    avatar: /assets/uploads/after.jpeg
     project: Treatment tembok lembap
     quote: Pengerjaan sesuai dengan keinginan dan rencana saya. Terima kasih Vistara
+    rating: 5
