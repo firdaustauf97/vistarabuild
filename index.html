@@ -440,11 +440,11 @@ layout: null
         </div>
         <div class="fc r">
           <div class="fc-ic"><svg viewBox="0 0 24 24" fill="#e8aa3e"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
-          <div><div class="fc-l">Rating Klien</div><div class="fc-v">{% if d.stats %}{{ d.stats[0].value | default: "4.9 / 5.0" }}{% else %}4.9 / 5.0{% endif %} ⭐</div></div>
+          <div><div class="fc-l">Kepuasan Klien</div><div class="fc-v">{% if d.stats %}{{ d.stats[2].value | default: "98%" }}{% else %}98%{% endif %} ⭐</div></div>
         </div>
         <div class="fc t">
           <div class="fc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#143f37" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-          <div><div class="fc-l">Proyek Selesai</div><div class="fc-v">{% if d.stats %}{{ d.stats[1].value | default: "150+" }}{% else %}150+{% endif %} Proyek</div></div>
+          <div><div class="fc-l">Proyek Selesai</div><div class="fc-v">{% if d.stats %}{{ d.stats[0].value | default: "150+" }}{% else %}150+{% endif %} Proyek</div></div>
         </div>
       </div>
     </div>
