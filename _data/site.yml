@@ -1,9 +1,9 @@
 brand: Vistara Build
-logo_mark: /assets/uploads/favicon-32.png
-logo_full: /assets/uploads/favicon-192.png
-favicon_32: /assets/uploads/favicon-32.png
-favicon_192: /assets/uploads/favicon-192.png
-favicon_512: /assets/uploads/favicon-512.png
+logo_mark: assets/uploads/favicon-32.png
+logo_full: assets/uploads/favicon-192.png
+favicon_32: assets/uploads/favicon-32.png
+favicon_192: assets/uploads/favicon-192.png
+favicon_512: assets/uploads/favicon-512.png
 tagline: Kontraktor Renovasi Yogyakarta
 hero_title: Solusi Tembok Lembap dan Pengecatan Rumah
 hero_description: >
@@ -24,7 +24,7 @@ whatsapp: "6285747040163"
 whatsapp_message: Halo Vistara Build, saya ingin konsultasi mengenai renovasi rumah.
 address: Yogyakarta, Daerah Istimewa Yogyakarta
 email: ""
-hours: Senin–Sabtu, 08.00–17.00 WIB
+hours: Senin–Jumat, 08.00–16.00 WIB
 instagram: ""
 facebook: ""
 tiktok: ""
