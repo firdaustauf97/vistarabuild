@@ -142,6 +142,10 @@ layout: null
     .site-header.sc .brand { color:var(--p); }
     .brand-icon { width:40px; height:40px; border-radius:11px; background:var(--a); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .brand-icon svg { width:20px; height:20px; fill:var(--pd); }
+    .brand-logo-img { height:48px; width:auto; max-width:220px; object-fit:contain; display:block; transition:var(--tr); }
+    .brand-img-badge { display:inline-flex; align-items:center; padding:6px 14px; border-radius:12px; background:rgba(255,255,255,0.95); box-shadow:0 4px 20px rgba(0,0,0,0.18); transition:var(--tr); }
+    .site-header.sc .brand-img-badge { background:transparent; box-shadow:none; padding:0; }
+    .brand-text { font-size:1.15rem; font-weight:800; letter-spacing:-.01em; }
     .nav-links { display:flex; align-items:center; gap:30px; list-style:none; }
     .nav-links a { font-size:.87rem; font-weight:600; color:rgba(255,255,255,.8); transition:color var(--tr); position:relative; }
     .nav-links a::after { content:''; position:absolute; bottom:-3px; left:0; right:0; height:2px; background:var(--a); transform:scaleX(0); transform-origin:left; transition:transform var(--tr); }
@@ -381,15 +385,20 @@ layout: null
   <div class="container">
     <div class="nav-bar">
       <a href="#beranda" class="brand" aria-label="{{ d.brand | default: 'Vistara Build' }}">
-        {% if d.logo_mark and d.logo_mark != "" %}
-        <img src="{{ d.logo_mark | relative_url }}" alt="Logo {{ d.brand }}" style="height:36px;width:auto;max-width:140px;object-fit:contain;">
-        {% elsif d.logo_full and d.logo_full != "" %}
-        <img src="{{ d.logo_full | relative_url }}" alt="Logo {{ d.brand }}" style="height:36px;width:auto;max-width:160px;object-fit:contain;">
+        {% if d.logo_full and d.logo_full != "" %}
+        <div class="brand-img-badge">
+          <img class="brand-logo-img" src="{{ d.logo_full | relative_url }}" alt="Logo {{ d.brand | default: 'Vistara Build' }}">
+        </div>
+        {% elsif d.logo_mark and d.logo_mark != "" %}
+        <div class="brand-img-badge">
+          <img class="brand-logo-img" style="height:38px;max-width:80px;" src="{{ d.logo_mark | relative_url }}" alt="Logo {{ d.brand | default: 'Vistara Build' }}">
+        </div>
+        <span class="brand-text">{{ d.brand | default: "Vistara Build" }}</span>
         {% else %}
         <div class="brand-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         </div>
-        {{ d.brand | default: "Vistara Build" }}
+        <span class="brand-text">{{ d.brand | default: "Vistara Build" }}</span>
         {% endif %}
       </a>
       <ul class="nav-links" role="list">
@@ -691,9 +700,13 @@ layout: null
       <div>
         <div class="ft-brand">
           {% if d.logo_full and d.logo_full != "" %}
-          <img src="{{ d.logo_full | relative_url }}" alt="Logo {{ d.brand }}" style="height:42px;width:auto;max-width:200px;object-fit:contain;margin-bottom:8px;">
+          <div style="background:rgba(255,255,255,.95);padding:8px 16px;border-radius:12px;display:inline-block;margin-bottom:12px;">
+            <img src="{{ d.logo_full | relative_url }}" alt="Logo {{ d.brand }}" style="height:48px;width:auto;max-width:220px;object-fit:contain;display:block;">
+          </div>
           {% elsif d.logo_mark and d.logo_mark != "" %}
-          <img src="{{ d.logo_mark | relative_url }}" alt="Logo {{ d.brand }}" style="height:36px;width:auto;max-width:140px;object-fit:contain;margin-right:10px;">
+          <div style="background:rgba(255,255,255,.95);padding:6px 12px;border-radius:10px;display:inline-flex;align-items:center;margin-right:10px;">
+            <img src="{{ d.logo_mark | relative_url }}" alt="Logo {{ d.brand }}" style="height:38px;width:auto;max-width:120px;object-fit:contain;">
+          </div>
           <span class="ft-bn">{{ d.brand | default: "Vistara Build" }}</span>
           {% else %}
           <div class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
