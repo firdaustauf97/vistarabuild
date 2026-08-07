@@ -1,26 +1,37 @@
-brand: Vistara Build
-
-logo_mark: "/assets/uploads/logo-vistara-mark.png"
-logo_full: "/assets/uploads/logo-vistara-full.png"
-
-favicon_32: "/assets/uploads/favicon-32.png"
-favicon_192: "/assets/uploads/favicon-192.png"
-favicon_512: "/assets/uploads/favicon-512.png"
-
-tagline: Kontraktor Renovasi Yogyakarta
-hero_title: Solusi Tembok Lembap dan Pengecatan Rumah
-hero_description: Vistara Build membantu menangani tembok lembap, cat
-  mengelupas, rembesan, serta kebutuhan renovasi rumah di Yogyakarta dan
-  sekitarnya.
-hero_button: Konsultasi via WhatsApp
+logo_mark: /assets/uploads/logo-vistara-mark.png
+logo_full: /assets/uploads/logo-vistara-full.png
+meta_description: Vistara Build — Jasa treatment tembok lembap, pengecatan, dan
+  waterproofing di Yogyakarta. Berpengalaman, bergaransi, dan siap survei
+  lokasi. Hubungi kami untuk konsultasi gratis!
+meta_keywords: jasa treatment tembok lembap Yogyakarta, kontraktor renovasi
+  Yogyakarta,  waterproofing Yogyakarta, jasa pengecatan rumah
+  Yogyakarta,  atasi rembesan air, cat mengelupas, Vistara Build
 about_title: Cat baru saja belum tentu menyelesaikan masalah
+brand: Vistara Build
+favicon_32: /assets/uploads/favicon-32.png
+copyright: © 2026 Vistara Build. Semua hak cipta dilindungi.
 about_description: Tembok lembap dapat berkaitan dengan rembesan dari luar,
   kebocoran atap, kamar mandi, retakan, atau kelembapan yang naik dari bagian
   bawah dinding.
-whatsapp: "6285747040163"
-phone_display: "085747040163"
+footer_tagline: Mitra Terpercaya Renovasi Rumah Anda.
 phone_link: "085747040163"
+favicon_512: /assets/uploads/favicon-512.png
+tagline: Kontraktor Renovasi Yogyakarta
+hero_cta_primary: Konsultasi Gratis
+hours: Senin-Jumat, 08.00-16.00
+phone_display: "085747040163"
+favicon_192: /assets/uploads/favicon-192.png
+hero_title: Solusi Tembok Lembap dan Pengecatan Rumah
+stats:
+  - value: 70+, 5+, 97%
+    label: Proyek Selesai, Tahun Pengalaman
+whatsapp: "6285747040163"
 address: Yogyakarta dan sekitarnya
 seo_title: Treatment Tembok Lembap dan Pengecatan Yogyakarta | Vistara Build
+hero_button: Konsultasi via WhatsApp
+hero_description: Vistara Build membantu menangani tembok lembap, cat
+  mengelupas, rembesan, serta kebutuhan renovasi rumah di Yogyakarta dan
+  sekitarnya.
 seo_description: Vistara Build melayani treatment tembok lembap, pengecatan,
   waterproofing, perbaikan atap, dan renovasi rumah di Yogyakarta.
+email: firdausaan97@gmail.com
