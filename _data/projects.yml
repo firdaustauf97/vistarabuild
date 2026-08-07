@@ -3,31 +3,41 @@ items:
     location: Sleman, Yogyakarta
     category: lembap
     description: >
-      Treatment menyeluruh pada tembok dapur yang mengalami kelembapan tinggi dan cat mengelupas.
-      Identifikasi sumber air, aplikasi bahan anti lembap, dan pengecatan ulang. Masalah teratasi tuntas.
+      Treatment menyeluruh pada tembok dapur yang mengalami kelembapan tinggi
+      dan cat mengelupas. Identifikasi sumber air, aplikasi bahan anti lembap,
+      dan pengecatan ulang. Masalah teratasi tuntas.
     image: ""
     image_before: ""
     featured: true
     year: 2024
-
   - title: Pengecatan Interior & Eksterior Rumah Tinggal
     location: Bantul, Yogyakarta
     category: cat
     description: >
-      Pengecatan ulang rumah tinggal 2 lantai meliputi persiapan permukaan, perbaikan retak ringan,
-      aplikasi primer, dan finishing dengan cat premium. Hasil rapi dan tahan lama.
+      Pengecatan ulang rumah tinggal 2 lantai meliputi persiapan permukaan,
+      perbaikan retak ringan, aplikasi primer, dan finishing dengan cat premium.
+      Hasil rapi dan tahan lama.
     image: ""
     image_before: ""
     featured: false
     year: 2024
-
   - title: Waterproofing Dak Beton Bocor
     location: Kota Yogyakarta
     category: waterproof
     description: >
-      Aplikasi waterproofing membrane dan coating khusus pada dak beton yang bocor saat hujan.
-      Pekerjaan selesai dalam 2 hari dengan garansi bebas bocor selama 3 tahun.
+      Aplikasi waterproofing membrane dan coating khusus pada dak beton yang
+      bocor saat hujan. Pekerjaan selesai dalam 2 hari dengan garansi bebas
+      bocor selama 3 tahun.
     image: ""
     image_before: ""
     featured: false
     year: 2024
+  - featured: false
+    title: Produksi & Pemasangan Pagar
+    location: Sleman, Yogyakarta
+    category: renovasi
+    description: Pembuatan dan pemasangan pagar berbahan besi hollow untuk memberi
+      kesan estetik dan modern.
+    image: /assets/uploads/after.jpeg
+    image_before: /assets/uploads/befor.jpeg
+    year: 2026
