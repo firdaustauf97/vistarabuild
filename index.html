@@ -1,0 +1,876 @@
+---
+layout: null
+---
+{% assign d = site.data.site %}
+{% assign wa = d.whatsapp | default: "6285747040163" %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{{ d.tagline | default: "Jasa Renovasi Yogyakarta" }} | {{ d.brand | default: "Vistara Build" }}</title>
+
+  {% assign meta_desc = d.meta_description | default: "Vistara Build – jasa treatment tembok lembap, pengecatan profesional, waterproofing, dan renovasi rumah di Yogyakarta." %}
+  <meta name="description" content="{{ meta_desc | escape }}">
+  {% if d.meta_keywords %}<meta name="keywords" content="{{ d.meta_keywords | escape }}">{% endif %}
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#143f37">
+  <meta name="author" content="{{ d.brand | default: 'Vistara Build' }}">
+
+  <meta property="og:type"        content="website">
+  <meta property="og:locale"      content="id_ID">
+  <meta property="og:title"       content="{{ d.tagline }} | {{ d.brand }}">
+  <meta property="og:description" content="{{ meta_desc | escape }}">
+  <meta property="og:url"         content="{{ site.url }}{{ site.baseurl }}/">
+  <meta property="og:site_name"   content="{{ d.brand }}">
+  {% if d.og_image %}
+  <meta property="og:image" content="{{ site.url }}{{ site.baseurl }}{{ d.og_image }}">
+  {% else %}
+  <meta property="og:image" content="{{ site.url }}{{ site.baseurl }}/assets/uploads/logo-vistara-full.png">
+  {% endif %}
+
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="{{ d.tagline }} | {{ d.brand }}">
+  <meta name="twitter:description" content="{{ meta_desc | escape }}">
+
+  <link rel="canonical" href="{{ site.url }}{{ site.baseurl }}/">
+
+  {% if d.favicon_32  %}<link rel="icon" type="image/png" sizes="32x32"   href="{{ d.favicon_32 }}">{% endif %}
+  {% if d.favicon_192 %}<link rel="icon" type="image/png" sizes="192x192" href="{{ d.favicon_192 }}">{% endif %}
+  {% if d.favicon_512 %}<link rel="apple-touch-icon" sizes="512x512"      href="{{ d.favicon_512 }}">{% endif %}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+  <!-- LocalBusiness Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HomeAndConstructionBusiness",
+    "name": {{ d.brand | jsonify }},
+    "description": {{ meta_desc | jsonify }},
+    "telephone": "+{{ wa }}",
+    "url": "{{ site.url }}{{ site.baseurl }}/",
+    "address": {
+      "@type": "PostalAddress",
+      {% if d.address %}"streetAddress": {{ d.address | jsonify }},{% endif %}
+      "addressLocality": "Yogyakarta",
+      "addressRegion": "Daerah Istimewa Yogyakarta",
+      "addressCountry": "ID"
+    },
+    "geo": { "@type": "GeoCoordinates", "latitude": -7.7956, "longitude": 110.3695 },
+    "areaServed": { "@type": "AdministrativeArea", "name": "Daerah Istimewa Yogyakarta" },
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+      "opens": "08:00", "closes": "17:00"
+    }],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Layanan {{ d.brand }}",
+      "itemListElement": [
+        {% for s in site.data.services.items %}
+        {"@type":"Offer","itemOffered":{"@type":"Service","name":{{ s.title | jsonify }}}}{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ]
+    }
+  }
+  </script>
+
+  <!-- FAQPage Schema -->
+  {% assign visible_faq = site.data.faq.items | where_exp: "item", "item.visible != false" %}
+  {% if visible_faq.size > 0 %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {% for item in visible_faq %}
+      {
+        "@type": "Question",
+        "name": {{ item.question | jsonify }},
+        "acceptedAnswer": { "@type": "Answer", "text": {{ item.answer | jsonify }} }
+      }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]
+  }
+  </script>
+  {% endif %}
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --p:#143f37; --pl:#1a5447; --pd:#0c2922;
+      --a:#e8aa3e; --ah:#f2bd5d; --ap:#fdf3dc;
+      --w:#ffffff; --ow:#f6faf8; --s2:#f0f6f3;
+      --t:#0f1f1a; --t2:#3a5049; --mu:#6e8881; --bd:#d3e3de;
+      --sh1:0 2px 10px rgba(20,63,55,.07);
+      --sh2:0 8px 32px rgba(20,63,55,.12);
+      --sh3:0 20px 60px rgba(20,63,55,.18);
+      --sh4:0 32px 80px rgba(20,63,55,.22);
+      --r1:12px; --r2:20px; --r3:28px;
+      --cx:1160px;
+      --fn:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;
+      --ease:cubic-bezier(0.4,0,0.2,1);
+      --tr:0.3s var(--ease);
+    }
+    html { scroll-behavior:smooth; }
+    body { font-family:var(--fn); color:var(--t); background:var(--ow); line-height:1.65; min-width:320px; -webkit-font-smoothing:antialiased; }
+    img { display:block; max-width:100%; }
+    a { color:inherit; text-decoration:none; }
+    button { font:inherit; cursor:pointer; border:none; background:none; color:inherit; }
+    .container { width:min(100% - 40px,var(--cx)); margin-inline:auto; }
+    .section { padding:96px 0; }
+    .sec-alt { background:var(--s2); }
+    .eyebrow { display:inline-flex; align-items:center; gap:8px; padding:6px 14px 6px 10px; border-radius:999px; background:var(--ap); border:1px solid rgba(232,170,62,.3); color:#8a5f00; font-size:.75rem; font-weight:700; letter-spacing:.09em; text-transform:uppercase; }
+    .eyebrow::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--a); flex-shrink:0; }
+    .sec-title { font-size:clamp(1.8rem,4vw,2.6rem); font-weight:800; line-height:1.18; color:var(--t); margin-top:12px; margin-bottom:12px; }
+    .sec-sub   { font-size:1.05rem; color:var(--t2); line-height:1.7; max-width:560px; }
+    .sec-hd    { margin-bottom:56px; }
+    .sec-hd.center { text-align:center; }
+    .sec-hd.center .sec-sub { margin-inline:auto; }
+    .btn { display:inline-flex; align-items:center; gap:8px; padding:13px 26px; border-radius:999px; font-weight:700; font-size:.93rem; transition:var(--tr); white-space:nowrap; }
+    .btn-a { background:var(--a); color:var(--pd); }
+    .btn-a:hover { background:var(--ah); transform:translateY(-2px); box-shadow:0 8px 28px rgba(232,170,62,.45); }
+    .btn-g { background:transparent; color:var(--w); border:2px solid rgba(255,255,255,.45); }
+    .btn-g:hover { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.8); transform:translateY(-2px); }
+    .btn-d { background:var(--p); color:var(--w); }
+    .btn-d:hover { background:var(--pl); transform:translateY(-2px); box-shadow:var(--sh2); }
+    /* HEADER */
+    .site-header { position:fixed; top:0; left:0; right:0; z-index:900; transition:background var(--tr),box-shadow var(--tr); }
+    .site-header.sc { background:rgba(255,255,255,.94); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); box-shadow:var(--sh1); }
+    .nav-bar { display:flex; align-items:center; justify-content:space-between; padding:22px 0; transition:padding var(--tr); }
+    .site-header.sc .nav-bar { padding:14px 0; }
+    .brand { display:flex; align-items:center; gap:11px; font-size:1.1rem; font-weight:800; color:var(--w); transition:color var(--tr); }
+    .site-header.sc .brand { color:var(--p); }
+    .brand-icon { width:40px; height:40px; border-radius:11px; background:var(--a); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .brand-icon svg { width:20px; height:20px; fill:var(--pd); }
+    .nav-links { display:flex; align-items:center; gap:30px; list-style:none; }
+    .nav-links a { font-size:.87rem; font-weight:600; color:rgba(255,255,255,.8); transition:color var(--tr); position:relative; }
+    .nav-links a::after { content:''; position:absolute; bottom:-3px; left:0; right:0; height:2px; background:var(--a); transform:scaleX(0); transform-origin:left; transition:transform var(--tr); }
+    .nav-links a:hover::after { transform:scaleX(1); }
+    .site-header.sc .nav-links a { color:var(--t2); }
+    .nav-links a:hover { color:var(--a)!important; }
+    .nav-right { display:flex; align-items:center; gap:14px; }
+    #navCta { display:none; }
+    .hamburger { display:none; flex-direction:column; gap:5px; padding:9px; border-radius:10px; cursor:pointer; }
+    .hamburger span { display:block; width:24px; height:2.5px; background:var(--w); border-radius:2px; transition:var(--tr); }
+    .site-header.sc .hamburger span { background:var(--p); }
+    .hamburger.on span:nth-child(1) { transform:translateY(7.5px) rotate(45deg); }
+    .hamburger.on span:nth-child(2) { opacity:0; transform:scaleX(0); }
+    .hamburger.on span:nth-child(3) { transform:translateY(-7.5px) rotate(-45deg); }
+    /* DRAWER */
+    .drawer { display:none; position:fixed; inset:0; z-index:800; background:var(--pd); flex-direction:column; padding:100px 32px 48px; gap:2px; transform:translateX(100%); transition:transform .35s var(--ease); }
+    .drawer.open { transform:translateX(0); }
+    .drawer-lnk { display:block; padding:17px 0; font-size:1.45rem; font-weight:700; color:rgba(255,255,255,.75); border-bottom:1px solid rgba(255,255,255,.08); transition:color .2s,padding-left .2s; }
+    .drawer-lnk:hover { color:var(--a); padding-left:8px; }
+    .drawer-x { position:absolute; top:20px; right:24px; font-size:1.8rem; color:rgba(255,255,255,.5); cursor:pointer; padding:8px; line-height:1; }
+    /* HERO */
+    .hero { position:relative; min-height:100svh; display:flex; align-items:center; overflow:hidden; background:linear-gradient(145deg,#0c2922 0%,#143f37 55%,#1a5447 100%); }
+    .orb { position:absolute; border-radius:50%; filter:blur(80px); pointer-events:none; }
+    .orb-1 { width:600px; height:600px; background:radial-gradient(circle,rgba(232,170,62,.18),transparent 70%); top:-100px; right:-80px; }
+    .orb-2 { width:400px; height:400px; background:radial-gradient(circle,rgba(20,63,55,.5),transparent 70%); bottom:-60px; left:-80px; }
+    .grid-pat { position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px); background-size:48px 48px; }
+    .hero-ct { position:relative; z-index:2; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; padding-block:130px 88px; }
+    .hero-chip { display:inline-flex; align-items:center; gap:8px; padding:7px 14px 7px 10px; border-radius:999px; background:rgba(232,170,62,.12); border:1px solid rgba(232,170,62,.35); color:var(--a); font-size:.76rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; margin-bottom:20px; }
+    .chip-dot { width:7px; height:7px; border-radius:50%; background:var(--a); animation:blink 2s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.75)} }
+    .hero-h1 { font-size:clamp(2.2rem,5.5vw,3.5rem); font-weight:800; line-height:1.12; color:var(--w); margin-bottom:18px; letter-spacing:-.01em; }
+    .hero-h1 mark { background:none; color:var(--a); }
+    .hero-desc { font-size:1.08rem; color:rgba(255,255,255,.7); line-height:1.75; max-width:490px; margin-bottom:36px; }
+    .hero-acts { display:flex; flex-wrap:wrap; gap:13px; margin-bottom:42px; }
+    .hero-trust { display:flex; flex-wrap:wrap; gap:18px; }
+    .tb { display:flex; align-items:center; gap:7px; font-size:.84rem; font-weight:600; color:rgba(255,255,255,.58); }
+    .tb svg { color:var(--a); width:17px; height:17px; flex-shrink:0; }
+    .hero-vis { position:relative; }
+    .hero-img { border-radius:var(--r3); overflow:hidden; aspect-ratio:4/3; box-shadow:var(--sh4); background:rgba(255,255,255,.06); display:flex; align-items:center; justify-content:center; }
+    .hero-img img { width:100%; height:100%; object-fit:cover; }
+    .hero-img-ph { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; color:rgba(255,255,255,.25); font-size:.9rem; }
+    .hero-img-ph svg { width:56px; height:56px; opacity:.3; }
+    .hero-img-ov { position:absolute; inset:0; background:linear-gradient(to top,rgba(12,41,34,.5),transparent 55%); border-radius:var(--r3); }
+    .fc { position:absolute; display:flex; align-items:center; gap:12px; padding:13px 17px; background:rgba(255,255,255,.96); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-radius:var(--r2); box-shadow:var(--sh3); border:1px solid rgba(255,255,255,.8); }
+    .fc.r { bottom:-22px; left:-22px; animation:fl 4s ease-in-out infinite; }
+    .fc.t { top:-18px; right:-18px; animation:fl 4s ease-in-out 2s infinite; }
+    @keyframes fl { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    .fc-ic { width:44px; height:44px; border-radius:12px; background:var(--ap); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .fc-ic svg { width:22px; height:22px; }
+    .fc-l { font-size:.7rem; font-weight:700; color:var(--mu); text-transform:uppercase; letter-spacing:.05em; }
+    .fc-v { font-size:1.12rem; font-weight:800; color:var(--t); line-height:1.2; }
+    /* STATS */
+    .stats-bar { background:var(--p); padding:28px 0; }
+    .stats-row { display:flex; flex-wrap:wrap; justify-content:center; gap:0; }
+    .stat-item { flex:1; min-width:140px; text-align:center; padding:18px 24px; position:relative; }
+    .stat-item + .stat-item::before { content:''; position:absolute; left:0; top:25%; height:50%; width:1px; background:rgba(255,255,255,.15); }
+    .stat-val { font-size:2rem; font-weight:800; color:var(--a); line-height:1; margin-bottom:4px; }
+    .stat-lbl { font-size:.8rem; font-weight:600; color:rgba(255,255,255,.6); text-transform:uppercase; letter-spacing:.06em; }
+    /* SERVICES */
+    .svc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:24px; }
+    .svc-card { background:var(--w); border-radius:var(--r2); padding:32px 28px; border:1px solid var(--bd); transition:var(--tr); position:relative; overflow:hidden; }
+    .svc-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--p),var(--a)); transform:scaleX(0); transform-origin:left; transition:transform var(--tr); }
+    .svc-card:hover { transform:translateY(-4px); box-shadow:var(--sh2); border-color:transparent; }
+    .svc-card:hover::before { transform:scaleX(1); }
+    .svc-ico { width:56px; height:56px; border-radius:var(--r1); background:var(--ow); border:1px solid var(--bd); display:flex; align-items:center; justify-content:center; margin-bottom:20px; transition:var(--tr); }
+    .svc-card:hover .svc-ico { background:var(--ap); border-color:rgba(232,170,62,.3); }
+    .svc-ico svg { width:26px; height:26px; stroke:var(--p); fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; transition:stroke var(--tr); }
+    .svc-card:hover .svc-ico svg { stroke:var(--a); }
+    .svc-badge { display:inline-block; padding:4px 10px; border-radius:999px; background:var(--ap); border:1px solid rgba(232,170,62,.35); color:#8a5f00; font-size:.68rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; margin-bottom:14px; }
+    .svc-card h3 { font-size:1.12rem; font-weight:700; color:var(--t); margin-bottom:10px; }
+    .svc-card p  { font-size:.93rem; color:var(--t2); line-height:1.65; }
+    /* HOW IT WORKS */
+    .how-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:32px; counter-reset:step; position:relative; }
+    .how-grid::before { content:''; position:absolute; top:44px; left:calc(12.5% + 22px); right:calc(12.5% + 22px); height:2px; background:linear-gradient(90deg,var(--a),var(--a) 50%,transparent); background-size:16px 2px; z-index:0; }
+    .how-item { text-align:center; position:relative; z-index:1; counter-increment:step; }
+    .how-num { width:88px; height:88px; border-radius:50%; background:var(--w); border:2px solid var(--bd); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:1.6rem; font-weight:800; color:var(--p); position:relative; box-shadow:var(--sh1); transition:var(--tr); }
+    .how-num::after { content:counter(step); }
+    .how-item:hover .how-num { background:var(--a); border-color:var(--a); color:var(--pd); box-shadow:0 8px 28px rgba(232,170,62,.4); transform:scale(1.08); }
+    .how-item h3 { font-size:1rem; font-weight:700; color:var(--t); margin-bottom:8px; }
+    .how-item p  { font-size:.87rem; color:var(--mu); line-height:1.6; }
+    /* PORTFOLIO */
+    .proj-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:28px; }
+    .proj-card { border-radius:var(--r2); overflow:hidden; background:var(--w); border:1px solid var(--bd); transition:var(--tr); }
+    .proj-card:hover { transform:translateY(-6px); box-shadow:var(--sh3); border-color:transparent; }
+    .proj-thumb { position:relative; aspect-ratio:16/10; overflow:hidden; background:linear-gradient(135deg,var(--pd),var(--pl)); }
+    .proj-thumb img { width:100%; height:100%; object-fit:cover; transition:transform .5s var(--ease); }
+    .proj-card:hover .proj-thumb img { transform:scale(1.05); }
+    .proj-ph { width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; color:rgba(255,255,255,.4); font-size:.85rem; font-weight:600; }
+    .proj-ph svg { width:44px; height:44px; opacity:.35; }
+    .proj-ov { position:absolute; inset:0; background:linear-gradient(to top,rgba(12,41,34,.75),transparent 50%); opacity:0; transition:opacity var(--tr); display:flex; align-items:flex-end; padding:20px; }
+    .proj-card:hover .proj-ov { opacity:1; }
+    .proj-cat-badge { display:inline-block; padding:5px 12px; border-radius:999px; background:var(--a); color:var(--pd); font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; }
+    .proj-feat { display:inline-block; padding:4px 10px; border-radius:999px; background:var(--ap); border:1px solid rgba(232,170,62,.4); color:#8a5f00; font-size:.68rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; margin-bottom:8px; }
+    .proj-body { padding:22px 24px; }
+    .proj-body h3 { font-size:1.05rem; font-weight:700; color:var(--t); margin-bottom:6px; }
+    .proj-loc { font-size:.82rem; color:var(--mu); margin-bottom:10px; display:flex; align-items:center; gap:5px; }
+    .proj-body p { font-size:.88rem; color:var(--t2); line-height:1.6; }
+    /* TESTIMONIALS */
+    .testi-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:24px; }
+    .testi-card { background:var(--w); border-radius:var(--r2); padding:30px 28px; border:1px solid var(--bd); transition:var(--tr); display:flex; flex-direction:column; }
+    .testi-card:hover { transform:translateY(-4px); box-shadow:var(--sh2); border-color:var(--a); }
+    .testi-stars { color:var(--a); font-size:1.05rem; letter-spacing:.1em; margin-bottom:14px; }
+    .testi-text { font-size:.95rem; color:var(--t2); line-height:1.75; font-style:italic; flex:1; margin-bottom:20px; }
+    .testi-text::before { content:'\201C'; }
+    .testi-text::after  { content:'\201D'; }
+    .testi-author { display:flex; align-items:center; gap:13px; }
+    .testi-av { width:46px; height:46px; border-radius:50%; object-fit:cover; border:2px solid var(--bd); }
+    .testi-init { width:46px; height:46px; border-radius:50%; background:var(--p); display:flex; align-items:center; justify-content:center; font-size:1.1rem; font-weight:700; color:var(--w); flex-shrink:0; }
+    .testi-name { font-size:.92rem; font-weight:700; color:var(--t); }
+    .testi-role { font-size:.78rem; color:var(--mu); }
+    /* FAQ */
+    .faq-list { display:flex; flex-direction:column; gap:12px; max-width:780px; margin-inline:auto; }
+    .faq-item { background:var(--w); border:1px solid var(--bd); border-radius:var(--r1); overflow:hidden; transition:box-shadow var(--tr); }
+    .faq-item.open { box-shadow:var(--sh1); border-color:rgba(20,63,55,.25); }
+    .faq-q { width:100%; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:20px 24px; font-size:.98rem; font-weight:700; color:var(--t); text-align:left; transition:color var(--tr); }
+    .faq-q:hover { color:var(--p); }
+    .faq-q svg { width:20px; height:20px; flex-shrink:0; stroke:var(--mu); transition:transform var(--tr),stroke var(--tr); }
+    .faq-item.open .faq-q svg { transform:rotate(180deg); stroke:var(--p); }
+    .faq-ans { max-height:0; overflow:hidden; transition:max-height .38s var(--ease); }
+    .faq-ans-inner { padding:0 24px 22px; font-size:.93rem; color:var(--t2); line-height:1.75; border-top:1px solid var(--bd); padding-top:16px; }
+    /* CONTACT */
+    .contact-wrap { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+    .contact-info { display:flex; flex-direction:column; gap:24px; }
+    .ci-item { display:flex; align-items:flex-start; gap:16px; }
+    .ci-icon { width:48px; height:48px; border-radius:var(--r1); background:var(--ap); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .ci-icon svg { width:22px; height:22px; stroke:var(--a); fill:none; stroke-width:1.8; stroke-linecap:round; }
+    .ci-lbl { font-size:.8rem; font-weight:700; color:var(--mu); text-transform:uppercase; letter-spacing:.06em; margin-bottom:3px; }
+    .ci-val { font-size:.97rem; color:var(--t); font-weight:600; }
+    .contact-form { background:var(--w); border-radius:var(--r2); padding:36px 32px; border:1px solid var(--bd); box-shadow:var(--sh1); }
+    .contact-form h3 { font-size:1.2rem; font-weight:800; color:var(--t); margin-bottom:6px; }
+    .contact-form p  { font-size:.88rem; color:var(--mu); margin-bottom:24px; }
+    .form-group { margin-bottom:18px; }
+    .form-group label { display:block; font-size:.82rem; font-weight:700; color:var(--t2); margin-bottom:7px; }
+    .form-group input, .form-group select, .form-group textarea { width:100%; padding:12px 16px; border:1.5px solid var(--bd); border-radius:var(--r1); font:inherit; font-size:.93rem; color:var(--t); background:var(--ow); transition:border-color var(--tr),box-shadow var(--tr); resize:none; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline:none; border-color:var(--p); box-shadow:0 0 0 3px rgba(20,63,55,.12); }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    /* FOOTER */
+    .site-footer { background:var(--pd); color:rgba(255,255,255,.7); padding:64px 0 32px; }
+    .footer-grid { display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:48px; margin-bottom:48px; }
+    .footer-brand { font-size:1.1rem; font-weight:800; color:var(--w); display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+    .footer-brand-icon { width:36px; height:36px; border-radius:10px; background:var(--a); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .footer-brand-icon svg { width:18px; height:18px; fill:var(--pd); }
+    .footer-tagline { font-size:.9rem; color:rgba(255,255,255,.45); margin-bottom:22px; }
+    .footer-socials { display:flex; gap:12px; }
+    .social-btn { width:38px; height:38px; border-radius:10px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); display:flex; align-items:center; justify-content:center; font-size:1rem; transition:var(--tr); }
+    .social-btn:hover { background:var(--a); color:var(--pd); transform:translateY(-2px); }
+    .footer-heading { font-size:.75rem; font-weight:700; color:rgba(255,255,255,.4); text-transform:uppercase; letter-spacing:.1em; margin-bottom:18px; }
+    .footer-links { list-style:none; display:flex; flex-direction:column; gap:11px; }
+    .footer-links a { font-size:.88rem; color:rgba(255,255,255,.55); transition:color var(--tr); }
+    .footer-links a:hover { color:var(--a); }
+    .footer-bottom { border-top:1px solid rgba(255,255,255,.08); padding-top:28px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+    .footer-bottom p { font-size:.8rem; color:rgba(255,255,255,.35); }
+    .footer-badge { display:flex; align-items:center; gap:7px; font-size:.75rem; color:rgba(255,255,255,.25); }
+    .footer-badge::before { content:'🔒'; font-size:.85rem; }
+    /* WA FLOAT */
+    .wa-float { position:fixed; bottom:28px; right:28px; z-index:890; }
+    .wa-float a { display:flex; align-items:center; justify-content:center; width:60px; height:60px; border-radius:50%; background:#25d366; box-shadow:0 6px 24px rgba(37,211,102,.45); color:#fff; font-size:1.6rem; transition:var(--tr); }
+    .wa-float a:hover { transform:scale(1.12) translateY(-3px); box-shadow:0 10px 32px rgba(37,211,102,.6); }
+    .wa-pulse { position:absolute; inset:-8px; border-radius:50%; border:2px solid #25d366; opacity:.4; animation:pulse 2.2s ease-in-out infinite; pointer-events:none; }
+    @keyframes pulse { 0%,100%{transform:scale(1);opacity:.4} 50%{transform:scale(1.3);opacity:0} }
+    /* ANIM */
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity .65s var(--ease),transform .65s var(--ease); }
+    .reveal.vis { opacity:1; transform:none; }
+    /* RESPONSIVE */
+    @media(max-width:1024px) {
+      .hero-ct { grid-template-columns:1fr; gap:48px; padding-top:110px; }
+      .hero-vis { display:none; }
+      .contact-wrap { grid-template-columns:1fr; }
+      .footer-grid { grid-template-columns:1fr 1fr; }
+    }
+    @media(max-width:768px) {
+      .nav-links { display:none; }
+      .hamburger { display:flex; }
+      .drawer { display:flex; }
+      #navCta { display:none!important; }
+      .section { padding:72px 0; }
+      .how-grid::before { display:none; }
+      .footer-grid { grid-template-columns:1fr; }
+      .footer-bottom { justify-content:center; text-align:center; }
+      .form-row { grid-template-columns:1fr; }
+    }
+    @media(max-width:540px) {
+      .svc-grid, .proj-grid, .testi-grid { grid-template-columns:1fr; }
+      .stats-row { gap:4px; }
+      .stat-item + .stat-item::before { display:none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site-header" id="siteHeader">
+  <div class="container">
+    <nav class="nav-bar" role="navigation" aria-label="Navigasi utama">
+      <a href="#beranda" class="brand" id="headerBrand" aria-label="{{ d.brand }} – kembali ke atas">
+        <div class="brand-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="#0c2922" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        {{ d.brand | default: "Vistara Build" }}
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="#layanan">Layanan</a></li>
+        <li><a href="#proyek">Portofolio</a></li>
+        <li><a href="#testimoni">Testimoni</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#kontak">Kontak</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="https://wa.me/{{ wa }}" class="btn btn-a" id="navCta" target="_blank" rel="noopener" aria-label="Hubungi via WhatsApp">💬 Hubungi Kami</a>
+        <button class="hamburger" id="hamburger" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="mobileDrawer">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- MOBILE DRAWER -->
+<nav class="drawer" id="mobileDrawer" aria-label="Menu mobile" aria-hidden="true">
+  <button class="drawer-x" id="drawerClose" aria-label="Tutup menu">✕</button>
+  <a href="#layanan"   class="drawer-lnk">Layanan</a>
+  <a href="#proyek"    class="drawer-lnk">Portofolio</a>
+  <a href="#testimoni" class="drawer-lnk">Testimoni</a>
+  <a href="#faq"       class="drawer-lnk">FAQ</a>
+  <a href="#kontak"    class="drawer-lnk">Kontak</a>
+  <a href="https://wa.me/{{ wa }}" class="btn btn-a" style="margin-top:28px;justify-content:center;" target="_blank" rel="noopener">💬 Konsultasi WhatsApp</a>
+</nav>
+
+<main id="beranda">
+
+<!-- ===================== HERO ===================== -->
+<section class="hero" aria-label="Halaman utama">
+  <div class="orb orb-1" aria-hidden="true"></div>
+  <div class="orb orb-2" aria-hidden="true"></div>
+  <div class="grid-pat" aria-hidden="true"></div>
+  <div class="container">
+    <div class="hero-ct">
+      <div class="hero-txt">
+        <div class="hero-chip" aria-label="Status layanan">
+          <span class="chip-dot" aria-hidden="true"></span>
+          {{ d.tagline | default: "Kontraktor Renovasi Yogyakarta" }}
+        </div>
+        <h1 class="hero-h1">{{ d.hero_title | default: "Solusi Tembok Lembap dan Pengecatan Rumah" }}</h1>
+        <p class="hero-desc">{{ d.hero_description }}</p>
+        <div class="hero-acts">
+          {% assign wa_msg = d.whatsapp_message | default: "Halo Vistara Build, saya ingin konsultasi mengenai renovasi rumah." | url_encode %}
+          <a href="https://wa.me/{{ wa }}?text={{ wa_msg }}" class="btn btn-a" target="_blank" rel="noopener" id="heroCta">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.5 2C6.261 2 2 6.261 2 11.5c0 1.67.437 3.242 1.205 4.614L2 22l6.024-1.573A9.46 9.46 0 0011.5 21c5.239 0 9.5-4.261 9.5-9.5S16.739 2 11.5 2zm0 17.5a7.988 7.988 0 01-4.071-1.116l-.292-.173-3.576.934.956-3.488-.19-.3A7.968 7.968 0 013.5 11.5C3.5 7.089 7.089 3.5 11.5 3.5S19.5 7.089 19.5 11.5 15.911 19.5 11.5 19.5z"/></svg>
+            {{ d.hero_cta_primary | default: "Konsultasi Gratis" }}
+          </a>
+          {% if d.hero_cta_secondary %}
+          <a href="#proyek" class="btn btn-g" id="heroSecCta">
+            {{ d.hero_cta_secondary }}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          {% endif %}
+        </div>
+        <div class="hero-trust" aria-label="Keunggulan layanan">
+          <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Survei Gratis</div>
+          <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Garansi Pekerjaan</div>
+          <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Harga Transparan</div>
+        </div>
+      </div>
+      <div class="hero-vis" aria-hidden="true">
+        <div class="hero-img">
+          <div class="hero-img-ph">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span>Foto Proyek Anda</span>
+          </div>
+          <div class="hero-img-ov"></div>
+        </div>
+        {% if d.stats %}
+        {% assign stat_0 = d.stats[0] %}
+        {% assign stat_1 = d.stats[1] %}
+        <div class="fc r">
+          <div class="fc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <div><div class="fc-l">Proyek Selesai</div><div class="fc-v">{{ stat_0.value | default: "150+" }}</div></div>
+        </div>
+        <div class="fc t">
+          <div class="fc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div><div class="fc-l">Bergaransi</div><div class="fc-v">{{ stat_1.value | default: "100%" }}</div></div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STATS ===================== -->
+{% if d.stats %}
+<div class="stats-bar" role="region" aria-label="Statistik Vistara Build">
+  <div class="container">
+    <div class="stats-row">
+      {% for stat in d.stats %}
+      <div class="stat-item">
+        <div class="stat-val">{{ stat.value }}</div>
+        <div class="stat-lbl">{{ stat.label }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<!-- ===================== LAYANAN ===================== -->
+<section class="section" id="layanan" aria-label="Layanan Vistara Build">
+  <div class="container">
+    <div class="sec-hd center reveal">
+      <span class="eyebrow">Layanan Kami</span>
+      <h2 class="sec-title">Solusi Lengkap Renovasi Rumah Anda</h2>
+      <p class="sec-sub">Dari tembok lembap hingga pengecatan ulang, kami hadir dengan solusi yang tepat, berkualitas, dan bergaransi.</p>
+    </div>
+    <div class="svc-grid">
+      {% for svc in site.data.services.items %}
+      <article class="svc-card reveal">
+        <div class="svc-ico" aria-hidden="true">
+          {% case svc.icon %}
+          {% when 'water' %}
+          <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>
+          {% when 'paint' %}
+          <svg viewBox="0 0 24 24"><path d="M18.37 2.63L14 7l-1.59-1.59a2 2 0 00-2.82 0L8 7l9 9 1.59-1.58a2 2 0 000-2.83L17 10l4.37-4.37a2.12 2.12 0 00-3-3z"/><path d="M4 8l-2 2v4h4l2-2"/></svg>
+          {% when 'waterproof' %}
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          {% when 'home' %}
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          {% when 'build' %}
+          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+          {% when 'inspect' %}
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          {% when 'finish' %}
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          {% when 'design' %}
+          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          {% else %}
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+          {% endcase %}
+        </div>
+        {% if svc.badge and svc.badge != "" %}<div class="svc-badge">{{ svc.badge }}</div>{% endif %}
+        <h3>{{ svc.title }}</h3>
+        <p>{{ svc.description }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CARA KERJA ===================== -->
+<section class="section sec-alt" id="proses" aria-label="Cara kerja Vistara Build">
+  <div class="container">
+    <div class="sec-hd center reveal">
+      <span class="eyebrow">Proses Kerja</span>
+      <h2 class="sec-title">Cara Kami Bekerja</h2>
+      <p class="sec-sub">Proses yang transparan, mulai dari konsultasi hingga pekerjaan selesai dan bergaransi.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-item reveal">
+        <div class="how-num" aria-label="Langkah 1"></div>
+        <h3>Hubungi Kami</h3>
+        <p>Chat via WhatsApp atau isi formulir kontak untuk menyampaikan kebutuhan renovasi Anda.</p>
+      </div>
+      <div class="how-item reveal">
+        <div class="how-num" aria-label="Langkah 2"></div>
+        <h3>Survei Lokasi</h3>
+        <p>Tim kami mendatangi lokasi Anda untuk inspeksi dan konsultasi secara gratis.</p>
+      </div>
+      <div class="how-item reveal">
+        <div class="how-num" aria-label="Langkah 3"></div>
+        <h3>Penawaran & Rencana</h3>
+        <p>Kami berikan estimasi biaya yang transparan dan rencana pengerjaan yang jelas.</p>
+      </div>
+      <div class="how-item reveal">
+        <div class="how-num" aria-label="Langkah 4"></div>
+        <h3>Pelaksanaan & Garansi</h3>
+        <p>Pekerjaan dilaksanakan oleh tim profesional dengan jaminan kualitas dan garansi resmi.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PORTOFOLIO ===================== -->
+<section class="section" id="proyek" aria-label="Portofolio proyek Vistara Build">
+  <div class="container">
+    <div class="sec-hd center reveal">
+      <span class="eyebrow">Portofolio</span>
+      <h2 class="sec-title">Hasil Pekerjaan Kami</h2>
+      <p class="sec-sub">Setiap proyek dikerjakan dengan standar kualitas tinggi. Lihat beberapa hasil pekerjaan Vistara Build.</p>
+    </div>
+    <div class="proj-grid">
+      {% for proj in site.data.projects.items %}
+      <article class="proj-card reveal">
+        <div class="proj-thumb">
+          {% if proj.image and proj.image != "" %}
+          <img src="{{ proj.image }}" alt="{{ proj.title }} — {{ proj.location }}" loading="lazy" width="800" height="500">
+          {% else %}
+          <div class="proj-ph" aria-label="Foto proyek belum tersedia">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span>{{ proj.title }}</span>
+          </div>
+          {% endif %}
+          <div class="proj-ov" aria-hidden="true">
+            <span class="proj-cat-badge">{{ proj.category | upcase }}</span>
+          </div>
+        </div>
+        <div class="proj-body">
+          {% if proj.featured %}<div class="proj-feat">⭐ Unggulan</div>{% endif %}
+          <h3>{{ proj.title }}</h3>
+          <p class="proj-loc">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            {{ proj.location }}
+          </p>
+          <p>{{ proj.description }}</p>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    <div style="text-align:center;margin-top:48px;">
+      {% assign wa_proj = d.whatsapp_message | default: "Halo Vistara Build, saya ingin melihat lebih banyak portofolio." | url_encode %}
+      <a href="https://wa.me/{{ wa }}?text={{ wa_proj }}" class="btn btn-d" target="_blank" rel="noopener">
+        💬 Konsultasikan Proyek Anda
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TESTIMONI ===================== -->
+{% assign visible_testi = site.data.testimonials.items | where_exp: "item", "item.visible != false" %}
+{% if visible_testi.size > 0 %}
+<section class="section sec-alt" id="testimoni" aria-label="Testimoni pelanggan Vistara Build">
+  <div class="container">
+    <div class="sec-hd center reveal">
+      <span class="eyebrow">Testimoni</span>
+      <h2 class="sec-title">Apa Kata Pelanggan Kami</h2>
+      <p class="sec-sub">Kepercayaan pelanggan adalah prioritas utama kami. Ini adalah pengalaman nyata dari mereka.</p>
+    </div>
+    <div class="testi-grid">
+      {% for t in visible_testi %}
+      <article class="testi-card reveal">
+        <div class="testi-stars" aria-label="{{ t.rating | default: 5 }} bintang">
+          {% assign r = t.rating | default: 5 %}
+          {% if r >= 5 %}★★★★★{% elsif r == 4 %}★★★★☆{% elsif r == 3 %}★★★☆☆{% else %}★★★★★{% endif %}
+        </div>
+        <p class="testi-text">{{ t.text }}</p>
+        <div class="testi-author">
+          {% if t.avatar and t.avatar != "" %}
+          <img class="testi-av" src="{{ t.avatar }}" alt="Foto {{ t.name }}" width="46" height="46" loading="lazy">
+          {% else %}
+          <div class="testi-init" aria-hidden="true">{{ t.name | slice: 0 }}</div>
+          {% endif %}
+          <div>
+            <div class="testi-name">{{ t.name }}</div>
+            <div class="testi-role">{{ t.location }}{% if t.role %} · {{ t.role }}{% endif %}</div>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ===================== FAQ ===================== -->
+{% if visible_faq.size > 0 %}
+<section class="section" id="faq" aria-label="Pertanyaan yang sering ditanyakan">
+  <div class="container">
+    <div class="sec-hd center reveal">
+      <span class="eyebrow">FAQ</span>
+      <h2 class="sec-title">Pertanyaan yang Sering Ditanyakan</h2>
+      <p class="sec-sub">Temukan jawaban atas pertanyaan umum seputar layanan Vistara Build.</p>
+    </div>
+    <div class="faq-list" role="list">
+      {% for item in visible_faq %}
+      <div class="faq-item" id="faq-{{ forloop.index }}" role="listitem">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-ans-{{ forloop.index }}" id="faq-btn-{{ forloop.index }}">
+          {{ item.question }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-ans" id="faq-ans-{{ forloop.index }}" role="region" aria-labelledby="faq-btn-{{ forloop.index }}" hidden>
+          <div class="faq-ans-inner">{{ item.answer }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ===================== KONTAK ===================== -->
+<section class="section sec-alt" id="kontak" aria-label="Hubungi Vistara Build">
+  <div class="container">
+    <div class="sec-hd reveal">
+      <span class="eyebrow">Kontak</span>
+      <h2 class="sec-title">Siap Membantu Anda</h2>
+      <p class="sec-sub">Konsultasikan kebutuhan renovasi rumah Anda sekarang. Survei gratis, estimasi transparan.</p>
+    </div>
+    <div class="contact-wrap">
+      <div class="contact-info reveal">
+        <div class="ci-item">
+          <div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.81a19.79 19.79 0 01-3.07-8.62A2 2 0 012 .18h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg></div>
+          <div>
+            <div class="ci-lbl">WhatsApp</div>
+            <div class="ci-val"><a href="https://wa.me/{{ wa }}" target="_blank" rel="noopener">{{ d.whatsapp | default: "085747040163" }}</a></div>
+          </div>
+        </div>
+        {% if d.email and d.email != "" %}
+        <div class="ci-item">
+          <div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div>
+            <div class="ci-lbl">Email</div>
+            <div class="ci-val"><a href="mailto:{{ d.email }}">{{ d.email }}</a></div>
+          </div>
+        </div>
+        {% endif %}
+        {% if d.address and d.address != "" %}
+        <div class="ci-item">
+          <div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div>
+            <div class="ci-lbl">Alamat</div>
+            <div class="ci-val">{{ d.address }}</div>
+          </div>
+        </div>
+        {% endif %}
+        {% if d.hours and d.hours != "" %}
+        <div class="ci-item">
+          <div class="ci-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div>
+            <div class="ci-lbl">Jam Operasional</div>
+            <div class="ci-val">{{ d.hours }}</div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+      <div class="contact-form reveal" id="contactFormWrap">
+        <h3>Kirim Pesan via WhatsApp</h3>
+        <p>Isi formulir di bawah, pesan akan dikirim langsung ke WhatsApp kami.</p>
+        <form id="contactForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cf-name">Nama Anda *</label>
+              <input type="text" id="cf-name" name="name" required placeholder="Budi Santoso">
+            </div>
+            <div class="form-group">
+              <label for="cf-phone">No. HP / WA</label>
+              <input type="tel" id="cf-phone" name="phone" placeholder="08xxxxxxxxxx">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cf-service">Layanan yang Dibutuhkan</label>
+            <select id="cf-service" name="service">
+              <option value="">-- Pilih Layanan --</option>
+              {% for svc in site.data.services.items %}
+              <option value="{{ svc.title }}">{{ svc.title }}</option>
+              {% endfor %}
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cf-msg">Deskripsi Masalah / Kebutuhan *</label>
+            <textarea id="cf-msg" name="message" rows="4" required placeholder="Ceritakan kondisi tembok atau kebutuhan renovasi Anda..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-a" style="width:100%;justify-content:center;padding:15px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.5 2C6.261 2 2 6.261 2 11.5c0 1.67.437 3.242 1.205 4.614L2 22l6.024-1.573A9.46 9.46 0 0011.5 21c5.239 0 9.5-4.261 9.5-9.5S16.739 2 11.5 2zm0 17.5a7.988 7.988 0 01-4.071-1.116l-.292-.173-3.576.934.956-3.488-.19-.3A7.968 7.968 0 013.5 11.5C3.5 7.089 7.089 3.5 11.5 3.5S19.5 7.089 19.5 11.5 15.911 19.5 11.5 19.5z"/></svg>
+            Kirim via WhatsApp
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <div class="footer-brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="#0c2922" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </div>
+          {{ d.brand | default: "Vistara Build" }}
+        </div>
+        <p class="footer-tagline">{{ d.footer_tagline | default: "Mitra Terpercaya Renovasi Rumah Anda." }}</p>
+        <div class="footer-socials" aria-label="Media sosial">
+          {% if d.instagram and d.instagram != "" %}
+          <a href="{{ d.instagram }}" class="social-btn" target="_blank" rel="noopener" aria-label="Instagram Vistara Build">📸</a>
+          {% else %}
+          <span class="social-btn" style="opacity:.3;cursor:default;" aria-hidden="true">📸</span>
+          {% endif %}
+          {% if d.facebook and d.facebook != "" %}
+          <a href="{{ d.facebook }}" class="social-btn" target="_blank" rel="noopener" aria-label="Facebook Vistara Build">👍</a>
+          {% else %}
+          <span class="social-btn" style="opacity:.3;cursor:default;" aria-hidden="true">👍</span>
+          {% endif %}
+          {% if d.tiktok and d.tiktok != "" %}
+          <a href="{{ d.tiktok }}" class="social-btn" target="_blank" rel="noopener" aria-label="TikTok Vistara Build">🎵</a>
+          {% else %}
+          <span class="social-btn" style="opacity:.3;cursor:default;" aria-hidden="true">🎵</span>
+          {% endif %}
+          <a href="https://wa.me/{{ wa }}" class="social-btn" target="_blank" rel="noopener" aria-label="WhatsApp Vistara Build">💬</a>
+        </div>
+      </div>
+      <div>
+        <h3 class="footer-heading">Layanan</h3>
+        <ul class="footer-links" role="list">
+          {% for svc in site.data.services.items limit: 5 %}
+          <li><a href="#layanan">{{ svc.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div>
+        <h3 class="footer-heading">Informasi</h3>
+        <ul class="footer-links" role="list">
+          <li><a href="#beranda">Beranda</a></li>
+          <li><a href="#proyek">Portofolio</a></li>
+          <li><a href="#testimoni">Testimoni</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#kontak">Kontak</a></li>
+        </ul>
+        {% if d.address and d.address != "" %}
+        <div style="margin-top:20px;font-size:.82rem;color:rgba(255,255,255,.4);line-height:1.7;">
+          📍 {{ d.address }}<br>
+          {% if d.hours and d.hours != "" %}⏰ {{ d.hours }}{% endif %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>{{ d.copyright | default: "© 2025 Vistara Build. Semua hak cipta dilindungi." }}</p>
+      <div class="footer-badge">Website aman & terenkripsi</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== WA FLOAT ===================== -->
+<div class="wa-float" aria-label="Hubungi via WhatsApp">
+  <span class="wa-pulse" aria-hidden="true"></span>
+  <a href="https://wa.me/{{ wa }}?text={{ d.whatsapp_message | default: 'Halo Vistara Build' | url_encode }}" target="_blank" rel="noopener" aria-label="Chat WhatsApp sekarang" title="Chat WhatsApp">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.5 2C6.261 2 2 6.261 2 11.5c0 1.67.437 3.242 1.205 4.614L2 22l6.024-1.573A9.46 9.46 0 0011.5 21c5.239 0 9.5-4.261 9.5-9.5S16.739 2 11.5 2zm0 17.5a7.988 7.988 0 01-4.071-1.116l-.292-.173-3.576.934.956-3.488-.19-.3A7.968 7.968 0 013.5 11.5C3.5 7.089 7.089 3.5 11.5 3.5S19.5 7.089 19.5 11.5 15.911 19.5 11.5 19.5z"/></svg>
+  </a>
+</div>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script>
+(function(){
+  var WA = "{{ wa }}";
+
+  // ── Header scroll ──
+  var hdr = document.getElementById('siteHeader');
+  var navCta = document.getElementById('navCta');
+  function onScroll(){
+    if(window.scrollY > 60){
+      hdr.classList.add('sc');
+      if(navCta) navCta.style.display = 'flex';
+    } else {
+      hdr.classList.remove('sc');
+      if(navCta) navCta.style.display = 'none';
+    }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // ── Mobile drawer ──
+  var ham = document.getElementById('hamburger');
+  var drawer = document.getElementById('mobileDrawer');
+  var dClose = document.getElementById('drawerClose');
+  function openDrawer(){ ham.classList.add('on'); ham.setAttribute('aria-expanded','true'); drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
+  function closeDrawer(){ ham.classList.remove('on'); ham.setAttribute('aria-expanded','false'); drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+  if(ham){ ham.addEventListener('click', openDrawer); }
+  if(dClose){ dClose.addEventListener('click', closeDrawer); }
+  drawer.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeDrawer); });
+
+  // ── FAQ accordion ──
+  document.querySelectorAll('.faq-q').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var item = btn.closest('.faq-item');
+      var ans  = item.querySelector('.faq-ans');
+      var open = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-item.open').forEach(function(el){
+        el.classList.remove('open');
+        el.querySelector('.faq-q').setAttribute('aria-expanded','false');
+        el.querySelector('.faq-ans').style.maxHeight = '0';
+        el.querySelector('.faq-ans').removeAttribute('style'); // let CSS handle
+        el.querySelector('.faq-ans').setAttribute('hidden','');
+      });
+      if(!open){
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded','true');
+        ans.removeAttribute('hidden');
+        ans.style.maxHeight = ans.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // ── Contact form → WhatsApp ──
+  var form = document.getElementById('contactForm');
+  if(form){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var name    = (document.getElementById('cf-name').value || '').trim();
+      var phone   = (document.getElementById('cf-phone').value || '').trim();
+      var service = (document.getElementById('cf-service').value || '').trim();
+      var msg     = (document.getElementById('cf-msg').value || '').trim();
+      if(!name || !msg){ alert('Nama dan deskripsi wajib diisi.'); return; }
+      var text = 'Halo Vistara Build!\n\n'
+               + '👤 Nama: ' + name + '\n'
+               + (phone   ? '📱 HP/WA: ' + phone + '\n' : '')
+               + (service ? '🔧 Layanan: ' + service + '\n' : '')
+               + '\n📝 Kebutuhan:\n' + msg;
+      window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(text), '_blank', 'noopener');
+    });
+  }
+
+  // ── Reveal on scroll ──
+  var reveals = document.querySelectorAll('.reveal');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add('vis'); io.unobserve(en.target); }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+</body>
+</html>
