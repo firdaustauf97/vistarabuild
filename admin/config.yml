@@ -15,10 +15,9 @@ backend:
   auth_endpoint: auth
   auth_scope: public_repo
 
-publish_mode: editorial_workflow
-
+# Direct commit mode to main branch for smooth image & media uploads
 media_folder: "assets/uploads"
-public_folder: "/assets/uploads"
+public_folder: "assets/uploads"
 
 # ─────────────────────────────────────────────
 #  COLLECTIONS
