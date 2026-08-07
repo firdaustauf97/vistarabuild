@@ -3,15 +3,16 @@ layout: null
 ---
 {% assign d = site.data.site %}
 {% assign wa = d.whatsapp | default: "6285747040163" %}
+{% assign wa_fmt = wa | prepend: "" %}
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>{{ d.tagline | default: "Jasa Renovasi Yogyakarta" }} | {{ d.brand | default: "Vistara Build" }}</title>
+  <title>{{ d.meta_title | default: "Jasa Treatment Tembok Lembap & Pengecatan Yogyakarta" }} | {{ d.brand | default: "Vistara Build" }}</title>
 
-  {% assign meta_desc = d.meta_description | default: "Vistara Build – jasa treatment tembok lembap, pengecatan profesional, waterproofing, dan renovasi rumah di Yogyakarta." %}
+  {% assign meta_desc = d.meta_description | default: "Vistara Build – jasa treatment tembok lembap, pengecatan profesional, waterproofing, perbaikan atap, dan renovasi rumah di Yogyakarta. Survei gratis, garansi pekerjaan, harga transparan." %}
   <meta name="description" content="{{ meta_desc | escape }}">
   {% if d.meta_keywords %}<meta name="keywords" content="{{ d.meta_keywords | escape }}">{% endif %}
   <meta name="robots" content="index, follow">
@@ -20,22 +21,16 @@ layout: null
 
   <meta property="og:type"        content="website">
   <meta property="og:locale"      content="id_ID">
-  <meta property="og:title"       content="{{ d.tagline }} | {{ d.brand }}">
+  <meta property="og:title"       content="{{ d.meta_title | default: 'Jasa Treatment Tembok Lembap & Pengecatan Yogyakarta' }} | {{ d.brand | default: 'Vistara Build' }}">
   <meta property="og:description" content="{{ meta_desc | escape }}">
   <meta property="og:url"         content="{{ site.url }}{{ site.baseurl }}/">
-  <meta property="og:site_name"   content="{{ d.brand }}">
-  {% if d.og_image %}
-  <meta property="og:image" content="{{ site.url }}{{ site.baseurl }}{{ d.og_image }}">
-  {% else %}
-  <meta property="og:image" content="{{ site.url }}{{ site.baseurl }}/assets/uploads/logo-vistara-full.png">
-  {% endif %}
-
+  <meta property="og:site_name"   content="{{ d.brand | default: 'Vistara Build' }}">
+  <meta property="og:image"       content="{{ site.url }}{{ site.baseurl }}{{ d.og_image | default: '/assets/uploads/logo-vistara-full.png' }}">
   <meta name="twitter:card"        content="summary_large_image">
-  <meta name="twitter:title"       content="{{ d.tagline }} | {{ d.brand }}">
+  <meta name="twitter:title"       content="{{ d.meta_title | default: 'Jasa Treatment Tembok Lembap & Pengecatan Yogyakarta' }} | {{ d.brand | default: 'Vistara Build' }}">
   <meta name="twitter:description" content="{{ meta_desc | escape }}">
 
   <link rel="canonical" href="{{ site.url }}{{ site.baseurl }}/">
-
   {% if d.favicon_32  %}<link rel="icon" type="image/png" sizes="32x32"   href="{{ d.favicon_32 }}">{% endif %}
   {% if d.favicon_192 %}<link rel="icon" type="image/png" sizes="192x192" href="{{ d.favicon_192 }}">{% endif %}
   {% if d.favicon_512 %}<link rel="apple-touch-icon" sizes="512x512"      href="{{ d.favicon_512 }}">{% endif %}
@@ -49,13 +44,13 @@ layout: null
   {
     "@context": "https://schema.org",
     "@type": "HomeAndConstructionBusiness",
-    "name": {{ d.brand | jsonify }},
+    "name": {{ d.brand | default: "Vistara Build" | jsonify }},
     "description": {{ meta_desc | jsonify }},
     "telephone": "+{{ wa }}",
+    "priceRange": "Rp",
     "url": "{{ site.url }}{{ site.baseurl }}/",
     "address": {
       "@type": "PostalAddress",
-      {% if d.address %}"streetAddress": {{ d.address | jsonify }},{% endif %}
       "addressLocality": "Yogyakarta",
       "addressRegion": "Daerah Istimewa Yogyakarta",
       "addressCountry": "ID"
@@ -69,13 +64,10 @@ layout: null
     }],
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
-      "name": "Layanan {{ d.brand }}",
-      "itemListElement": [
-        {% for s in site.data.services.items %}
-        {"@type":"Offer","itemOffered":{"@type":"Service","name":{{ s.title | jsonify }}}}{% unless forloop.last %},{% endunless %}
-        {% endfor %}
-      ]
-    }
+      "name": "Layanan {{ d.brand | default: 'Vistara Build' }}",
+      "itemListElement": [{% for s in site.data.services.items %}{"@type":"Offer","itemOffered":{"@type":"Service","name":{{ s.title | jsonify }}}}{% unless forloop.last %},{% endunless %}{% endfor %}]
+    },
+    "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "47" }
   }
   </script>
 
@@ -86,15 +78,7 @@ layout: null
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": [
-      {% for item in visible_faq %}
-      {
-        "@type": "Question",
-        "name": {{ item.question | jsonify }},
-        "acceptedAnswer": { "@type": "Answer", "text": {{ item.answer | jsonify }} }
-      }{% unless forloop.last %},{% endunless %}
-      {% endfor %}
-    ]
+    "mainEntity": [{% for item in visible_faq %}{"@type":"Question","name":{{ item.question | jsonify }},"acceptedAnswer":{"@type":"Answer","text":{{ item.answer | jsonify }}}}{% unless forloop.last %},{% endunless %}{% endfor %}]
   }
   </script>
   {% endif %}
@@ -102,35 +86,45 @@ layout: null
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --p:#143f37; --pl:#1a5447; --pd:#0c2922;
-      --a:#e8aa3e; --ah:#f2bd5d; --ap:#fdf3dc;
-      --w:#ffffff; --ow:#f6faf8; --s2:#f0f6f3;
-      --t:#0f1f1a; --t2:#3a5049; --mu:#6e8881; --bd:#d3e3de;
-      --sh1:0 2px 10px rgba(20,63,55,.07);
-      --sh2:0 8px 32px rgba(20,63,55,.12);
-      --sh3:0 20px 60px rgba(20,63,55,.18);
-      --sh4:0 32px 80px rgba(20,63,55,.22);
-      --r1:12px; --r2:20px; --r3:28px;
-      --cx:1160px;
-      --fn:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;
-      --ease:cubic-bezier(0.4,0,0.2,1);
-      --tr:0.3s var(--ease);
+      --p:   #143f37; --pl:  #1a5447; --pd:  #0c2922;
+      --a:   #e8aa3e; --ah:  #f2bd5d; --ap:  #fdf3dc;
+      --w:   #ffffff; --ow:  #f6faf8; --s:   #ffffff; --s2:  #f0f6f3;
+      --t:   #0f1f1a; --t2:  #3a5049; --mu:  #6e8881; --bd:  #d3e3de;
+      --sh1: 0 2px 10px rgba(20,63,55,.07);
+      --sh2: 0 8px 32px rgba(20,63,55,.12);
+      --sh3: 0 20px 60px rgba(20,63,55,.18);
+      --sh4: 0 32px 80px rgba(20,63,55,.22);
+      --r1: 12px; --r2: 20px; --r3: 28px;
+      --cx: 1160px;
+      --fn: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --ease: cubic-bezier(0.4,0,0.2,1);
+      --tr: 0.3s var(--ease);
     }
-    html { scroll-behavior:smooth; }
-    body { font-family:var(--fn); color:var(--t); background:var(--ow); line-height:1.65; min-width:320px; -webkit-font-smoothing:antialiased; }
-    img { display:block; max-width:100%; }
-    a { color:inherit; text-decoration:none; }
-    button { font:inherit; cursor:pointer; border:none; background:none; color:inherit; }
-    .container { width:min(100% - 40px,var(--cx)); margin-inline:auto; }
-    .section { padding:96px 0; }
-    .sec-alt { background:var(--s2); }
-    .eyebrow { display:inline-flex; align-items:center; gap:8px; padding:6px 14px 6px 10px; border-radius:999px; background:var(--ap); border:1px solid rgba(232,170,62,.3); color:#8a5f00; font-size:.75rem; font-weight:700; letter-spacing:.09em; text-transform:uppercase; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--fn); color: var(--t); background: var(--ow); line-height: 1.65; min-width: 320px; -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+    .container { width: min(100% - 40px, var(--cx)); margin-inline: auto; }
+    .section { padding: 96px 0; }
+    .sec-alt { background: var(--s2); }
+
+    /* TYPOGRAPHY */
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px 6px 10px; border-radius: 999px;
+      background: var(--ap); border: 1px solid rgba(232,170,62,.3);
+      color: #8a5f00; font-size: .75rem; font-weight: 700;
+      letter-spacing: .09em; text-transform: uppercase;
+    }
     .eyebrow::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--a); flex-shrink:0; }
-    .sec-title { font-size:clamp(1.8rem,4vw,2.6rem); font-weight:800; line-height:1.18; color:var(--t); margin-top:12px; margin-bottom:12px; }
+    .sec-title { font-size: clamp(1.8rem,4vw,2.6rem); font-weight:800; line-height:1.18; color:var(--t); margin-top:12px; margin-bottom:12px; }
     .sec-sub   { font-size:1.05rem; color:var(--t2); line-height:1.7; max-width:560px; }
     .sec-hd    { margin-bottom:56px; }
     .sec-hd.center { text-align:center; }
     .sec-hd.center .sec-sub { margin-inline:auto; }
+
+    /* BUTTONS */
     .btn { display:inline-flex; align-items:center; gap:8px; padding:13px 26px; border-radius:999px; font-weight:700; font-size:.93rem; transition:var(--tr); white-space:nowrap; }
     .btn-a { background:var(--a); color:var(--pd); }
     .btn-a:hover { background:var(--ah); transform:translateY(-2px); box-shadow:0 8px 28px rgba(232,170,62,.45); }
@@ -138,6 +132,7 @@ layout: null
     .btn-g:hover { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.8); transform:translateY(-2px); }
     .btn-d { background:var(--p); color:var(--w); }
     .btn-d:hover { background:var(--pl); transform:translateY(-2px); box-shadow:var(--sh2); }
+
     /* HEADER */
     .site-header { position:fixed; top:0; left:0; right:0; z-index:900; transition:background var(--tr),box-shadow var(--tr); }
     .site-header.sc { background:rgba(255,255,255,.94); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); box-shadow:var(--sh1); }
@@ -161,12 +156,14 @@ layout: null
     .hamburger.on span:nth-child(1) { transform:translateY(7.5px) rotate(45deg); }
     .hamburger.on span:nth-child(2) { opacity:0; transform:scaleX(0); }
     .hamburger.on span:nth-child(3) { transform:translateY(-7.5px) rotate(-45deg); }
-    /* DRAWER */
+
+    /* MOBILE DRAWER */
     .drawer { display:none; position:fixed; inset:0; z-index:800; background:var(--pd); flex-direction:column; padding:100px 32px 48px; gap:2px; transform:translateX(100%); transition:transform .35s var(--ease); }
     .drawer.open { transform:translateX(0); }
-    .drawer-lnk { display:block; padding:17px 0; font-size:1.45rem; font-weight:700; color:rgba(255,255,255,.75); border-bottom:1px solid rgba(255,255,255,.08); transition:color .2s,padding-left .2s; }
+    .drawer-lnk { display:block; padding:17px 0; font-size:1.45rem; font-weight:700; color:rgba(255,255,255,.75); border-bottom:1px solid rgba(255,255,255,.08); transition:color .2s, padding-left .2s; }
     .drawer-lnk:hover { color:var(--a); padding-left:8px; }
     .drawer-x { position:absolute; top:20px; right:24px; font-size:1.8rem; color:rgba(255,255,255,.5); cursor:pointer; padding:8px; line-height:1; }
+
     /* HERO */
     .hero { position:relative; min-height:100svh; display:flex; align-items:center; overflow:hidden; background:linear-gradient(145deg,#0c2922 0%,#143f37 55%,#1a5447 100%); }
     .orb { position:absolute; border-radius:50%; filter:blur(80px); pointer-events:none; }
@@ -185,10 +182,8 @@ layout: null
     .tb { display:flex; align-items:center; gap:7px; font-size:.84rem; font-weight:600; color:rgba(255,255,255,.58); }
     .tb svg { color:var(--a); width:17px; height:17px; flex-shrink:0; }
     .hero-vis { position:relative; }
-    .hero-img { border-radius:var(--r3); overflow:hidden; aspect-ratio:4/3; box-shadow:var(--sh4); background:rgba(255,255,255,.06); display:flex; align-items:center; justify-content:center; }
+    .hero-img { border-radius:var(--r3); overflow:hidden; aspect-ratio:4/3; box-shadow:var(--sh4); }
     .hero-img img { width:100%; height:100%; object-fit:cover; }
-    .hero-img-ph { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; color:rgba(255,255,255,.25); font-size:.9rem; }
-    .hero-img-ph svg { width:56px; height:56px; opacity:.3; }
     .hero-img-ov { position:absolute; inset:0; background:linear-gradient(to top,rgba(12,41,34,.5),transparent 55%); border-radius:var(--r3); }
     .fc { position:absolute; display:flex; align-items:center; gap:12px; padding:13px 17px; background:rgba(255,255,255,.96); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-radius:var(--r2); box-shadow:var(--sh3); border:1px solid rgba(255,255,255,.8); }
     .fc.r { bottom:-22px; left:-22px; animation:fl 4s ease-in-out infinite; }
@@ -198,406 +193,409 @@ layout: null
     .fc-ic svg { width:22px; height:22px; }
     .fc-l { font-size:.7rem; font-weight:700; color:var(--mu); text-transform:uppercase; letter-spacing:.05em; }
     .fc-v { font-size:1.12rem; font-weight:800; color:var(--t); line-height:1.2; }
+
     /* STATS */
-    .stats-bar { background:var(--p); padding:28px 0; }
-    .stats-row { display:flex; flex-wrap:wrap; justify-content:center; gap:0; }
-    .stat-item { flex:1; min-width:140px; text-align:center; padding:18px 24px; position:relative; }
-    .stat-item + .stat-item::before { content:''; position:absolute; left:0; top:25%; height:50%; width:1px; background:rgba(255,255,255,.15); }
-    .stat-val { font-size:2rem; font-weight:800; color:var(--a); line-height:1; margin-bottom:4px; }
-    .stat-lbl { font-size:.8rem; font-weight:600; color:rgba(255,255,255,.6); text-transform:uppercase; letter-spacing:.06em; }
+    .stats-bar { background:var(--p); padding:50px 0; }
+    .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); }
+    .stat-it { text-align:center; padding:18px 14px; border-right:1px solid rgba(255,255,255,.12); }
+    .stat-it:last-child { border-right:none; }
+    .stat-n { font-size:clamp(1.9rem,4vw,2.75rem); font-weight:800; color:var(--a); line-height:1; margin-bottom:6px; font-variant-numeric:tabular-nums; }
+    .stat-l { font-size:.8rem; color:rgba(255,255,255,.58); font-weight:600; }
+
     /* SERVICES */
-    .svc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:24px; }
-    .svc-card { background:var(--w); border-radius:var(--r2); padding:32px 28px; border:1px solid var(--bd); transition:var(--tr); position:relative; overflow:hidden; }
-    .svc-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--p),var(--a)); transform:scaleX(0); transform-origin:left; transition:transform var(--tr); }
-    .svc-card:hover { transform:translateY(-4px); box-shadow:var(--sh2); border-color:transparent; }
-    .svc-card:hover::before { transform:scaleX(1); }
-    .svc-ico { width:56px; height:56px; border-radius:var(--r1); background:var(--ow); border:1px solid var(--bd); display:flex; align-items:center; justify-content:center; margin-bottom:20px; transition:var(--tr); }
-    .svc-card:hover .svc-ico { background:var(--ap); border-color:rgba(232,170,62,.3); }
-    .svc-ico svg { width:26px; height:26px; stroke:var(--p); fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; transition:stroke var(--tr); }
-    .svc-card:hover .svc-ico svg { stroke:var(--a); }
-    .svc-badge { display:inline-block; padding:4px 10px; border-radius:999px; background:var(--ap); border:1px solid rgba(232,170,62,.35); color:#8a5f00; font-size:.68rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; margin-bottom:14px; }
-    .svc-card h3 { font-size:1.12rem; font-weight:700; color:var(--t); margin-bottom:10px; }
-    .svc-card p  { font-size:.93rem; color:var(--t2); line-height:1.65; }
-    /* HOW IT WORKS */
-    .how-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:32px; counter-reset:step; position:relative; }
-    .how-grid::before { content:''; position:absolute; top:44px; left:calc(12.5% + 22px); right:calc(12.5% + 22px); height:2px; background:linear-gradient(90deg,var(--a),var(--a) 50%,transparent); background-size:16px 2px; z-index:0; }
-    .how-item { text-align:center; position:relative; z-index:1; counter-increment:step; }
-    .how-num { width:88px; height:88px; border-radius:50%; background:var(--w); border:2px solid var(--bd); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:1.6rem; font-weight:800; color:var(--p); position:relative; box-shadow:var(--sh1); transition:var(--tr); }
-    .how-num::after { content:counter(step); }
-    .how-item:hover .how-num { background:var(--a); border-color:var(--a); color:var(--pd); box-shadow:0 8px 28px rgba(232,170,62,.4); transform:scale(1.08); }
-    .how-item h3 { font-size:1rem; font-weight:700; color:var(--t); margin-bottom:8px; }
-    .how-item p  { font-size:.87rem; color:var(--mu); line-height:1.6; }
-    /* PORTFOLIO */
-    .proj-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:28px; }
-    .proj-card { border-radius:var(--r2); overflow:hidden; background:var(--w); border:1px solid var(--bd); transition:var(--tr); }
-    .proj-card:hover { transform:translateY(-6px); box-shadow:var(--sh3); border-color:transparent; }
-    .proj-thumb { position:relative; aspect-ratio:16/10; overflow:hidden; background:linear-gradient(135deg,var(--pd),var(--pl)); }
-    .proj-thumb img { width:100%; height:100%; object-fit:cover; transition:transform .5s var(--ease); }
-    .proj-card:hover .proj-thumb img { transform:scale(1.05); }
-    .proj-ph { width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; color:rgba(255,255,255,.4); font-size:.85rem; font-weight:600; }
-    .proj-ph svg { width:44px; height:44px; opacity:.35; }
-    .proj-ov { position:absolute; inset:0; background:linear-gradient(to top,rgba(12,41,34,.75),transparent 50%); opacity:0; transition:opacity var(--tr); display:flex; align-items:flex-end; padding:20px; }
-    .proj-card:hover .proj-ov { opacity:1; }
-    .proj-cat-badge { display:inline-block; padding:5px 12px; border-radius:999px; background:var(--a); color:var(--pd); font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; }
-    .proj-feat { display:inline-block; padding:4px 10px; border-radius:999px; background:var(--ap); border:1px solid rgba(232,170,62,.4); color:#8a5f00; font-size:.68rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; margin-bottom:8px; }
-    .proj-body { padding:22px 24px; }
-    .proj-body h3 { font-size:1.05rem; font-weight:700; color:var(--t); margin-bottom:6px; }
-    .proj-loc { font-size:.82rem; color:var(--mu); margin-bottom:10px; display:flex; align-items:center; gap:5px; }
-    .proj-body p { font-size:.88rem; color:var(--t2); line-height:1.6; }
+    .svc-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+    .svc-card { background:var(--s); border-radius:var(--r2); padding:30px 26px; border:1.5px solid var(--bd); position:relative; overflow:hidden; transition:transform var(--tr),box-shadow var(--tr),border-color var(--tr); }
+    .svc-card::after { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--p),var(--a)); transform:scaleX(0); transform-origin:left; transition:transform var(--tr); }
+    .svc-card:hover { transform:translateY(-7px); box-shadow:var(--sh3); border-color:transparent; }
+    .svc-card:hover::after { transform:scaleX(1); }
+    .svc-ic { width:54px; height:54px; border-radius:15px; background:linear-gradient(135deg,var(--p),var(--pl)); display:flex; align-items:center; justify-content:center; margin-bottom:18px; transition:transform var(--tr); }
+    .svc-card:hover .svc-ic { transform:scale(1.1) rotate(-5deg); }
+    .svc-ic svg { width:26px; height:26px; stroke:var(--w); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+    .svc-ti { font-size:1.08rem; font-weight:700; color:var(--t); margin-bottom:9px; }
+    .svc-de { font-size:.87rem; color:var(--t2); line-height:1.7; }
+    .svc-lnk { display:inline-flex; align-items:center; gap:6px; margin-top:18px; font-size:.82rem; font-weight:700; color:var(--p); transition:gap var(--tr),color var(--tr); }
+    .svc-lnk:hover { gap:11px; color:var(--a); }
+    .svc-lnk svg { width:14px; height:14px; }
+
+    /* CTA */
+    .cta-sec { background:linear-gradient(130deg,var(--pd) 0%,var(--p) 100%); position:relative; overflow:hidden; }
+    .cta-sec::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 70% 100% at 100% 50%,rgba(232,170,62,.14),transparent); }
+    .cta-in { position:relative; z-index:1; display:flex; align-items:center; justify-content:space-between; gap:40px; flex-wrap:wrap; }
+    .cta-in h2 { font-size:clamp(1.45rem,3vw,2rem); font-weight:800; color:var(--w); margin-bottom:7px; }
+    .cta-in p { color:rgba(255,255,255,.62); font-size:.97rem; }
+
+    /* STEPS */
+    .steps { display:grid; grid-template-columns:repeat(4,1fr); position:relative; }
+    .steps::before { content:''; position:absolute; top:30px; left:12.5%; right:12.5%; height:2px; background:linear-gradient(90deg,var(--p),var(--a)); z-index:0; }
+    .step { text-align:center; padding:0 18px; position:relative; }
+    .step-n { width:60px; height:60px; border-radius:50%; background:var(--p); color:var(--w); font-size:1.2rem; font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; position:relative; z-index:1; border:4px solid var(--s2); box-shadow:var(--sh2); transition:var(--tr); }
+    .step:hover .step-n { background:var(--a); color:var(--pd); transform:scale(1.1); }
+    .step-ti { font-size:.96rem; font-weight:700; color:var(--t); margin-bottom:7px; }
+    .step-de { font-size:.83rem; color:var(--t2); line-height:1.65; }
+
+    /* PROJECTS */
+    .proj-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+    .proj-card { border-radius:var(--r2); overflow:hidden; aspect-ratio:4/3; position:relative; cursor:pointer; background:linear-gradient(135deg,var(--pd),var(--pl)); }
+    .proj-card img { width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease); }
+    .proj-card:hover img { transform:scale(1.07); }
+    .proj-ov { position:absolute; inset:0; background:linear-gradient(to top,rgba(10,38,34,.9) 0%,rgba(10,38,34,.3) 55%,transparent 100%); transition:var(--tr); }
+    .proj-card:hover .proj-ov { background:linear-gradient(to top,rgba(10,38,34,.95) 0%,rgba(10,38,34,.45) 65%,rgba(10,38,34,.1) 100%); }
+    .proj-info { position:absolute; bottom:0; left:0; right:0; padding:22px; }
+    .proj-tag { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:999px; background:rgba(232,170,62,.2); border:1px solid rgba(232,170,62,.4); color:var(--a); font-size:.7rem; font-weight:700; margin-bottom:7px; }
+    .proj-ti { font-size:1.03rem; font-weight:700; color:var(--w); margin-bottom:3px; }
+    .proj-loc { font-size:.78rem; color:rgba(255,255,255,.6); display:flex; align-items:center; gap:4px; }
+    .proj-ex { font-size:.82rem; color:rgba(255,255,255,.75); margin-top:7px; max-height:0; overflow:hidden; transition:max-height .4s var(--ease); }
+    .proj-card:hover .proj-ex { max-height:80px; }
+    .proj-ph-inner { width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; color:rgba(255,255,255,.3); font-size:.82rem; font-weight:600; position:absolute; inset:0; }
+    .proj-ph-inner svg { width:38px; height:38px; opacity:.3; }
+
     /* TESTIMONIALS */
-    .testi-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:24px; }
-    .testi-card { background:var(--w); border-radius:var(--r2); padding:30px 28px; border:1px solid var(--bd); transition:var(--tr); display:flex; flex-direction:column; }
-    .testi-card:hover { transform:translateY(-4px); box-shadow:var(--sh2); border-color:var(--a); }
-    .testi-stars { color:var(--a); font-size:1.05rem; letter-spacing:.1em; margin-bottom:14px; }
-    .testi-text { font-size:.95rem; color:var(--t2); line-height:1.75; font-style:italic; flex:1; margin-bottom:20px; }
-    .testi-text::before { content:'\201C'; }
-    .testi-text::after  { content:'\201D'; }
-    .testi-author { display:flex; align-items:center; gap:13px; }
-    .testi-av { width:46px; height:46px; border-radius:50%; object-fit:cover; border:2px solid var(--bd); }
-    .testi-init { width:46px; height:46px; border-radius:50%; background:var(--p); display:flex; align-items:center; justify-content:center; font-size:1.1rem; font-weight:700; color:var(--w); flex-shrink:0; }
-    .testi-name { font-size:.92rem; font-weight:700; color:var(--t); }
-    .testi-role { font-size:.78rem; color:var(--mu); }
+    .testi-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+    .testi-card { background:var(--s); border-radius:var(--r2); padding:26px; border:1.5px solid var(--bd); transition:var(--tr); }
+    .testi-card:hover { transform:translateY(-5px); box-shadow:var(--sh2); border-color:rgba(232,170,62,.35); }
+    .stars { display:flex; gap:3px; color:var(--a); font-size:1rem; margin-bottom:13px; }
+    .testi-q { font-size:.88rem; color:var(--t2); line-height:1.75; margin-bottom:18px; font-style:italic; position:relative; padding-left:18px; }
+    .testi-q::before { content:'"'; position:absolute; left:0; top:-4px; font-size:2.4rem; color:var(--a); line-height:1; font-style:normal; font-weight:800; }
+    .testi-au { display:flex; align-items:center; gap:11px; }
+    .testi-av { width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,var(--p),var(--pl)); color:var(--w); font-weight:800; font-size:1rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .testi-av img { width:44px; height:44px; border-radius:50%; object-fit:cover; }
+    .testi-nm { font-size:.87rem; font-weight:700; color:var(--t); }
+    .testi-lo { font-size:.77rem; color:var(--mu); }
+
     /* FAQ */
-    .faq-list { display:flex; flex-direction:column; gap:12px; max-width:780px; margin-inline:auto; }
-    .faq-item { background:var(--w); border:1px solid var(--bd); border-radius:var(--r1); overflow:hidden; transition:box-shadow var(--tr); }
-    .faq-item.open { box-shadow:var(--sh1); border-color:rgba(20,63,55,.25); }
-    .faq-q { width:100%; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:20px 24px; font-size:.98rem; font-weight:700; color:var(--t); text-align:left; transition:color var(--tr); }
-    .faq-q:hover { color:var(--p); }
-    .faq-q svg { width:20px; height:20px; flex-shrink:0; stroke:var(--mu); transition:transform var(--tr),stroke var(--tr); }
-    .faq-item.open .faq-q svg { transform:rotate(180deg); stroke:var(--p); }
-    .faq-ans { max-height:0; overflow:hidden; transition:max-height .38s var(--ease); }
-    .faq-ans-inner { padding:0 24px 22px; font-size:.93rem; color:var(--t2); line-height:1.75; border-top:1px solid var(--bd); padding-top:16px; }
+    .faq-st { display:flex; flex-direction:column; gap:11px; max-width:760px; margin-inline:auto; }
+    .faq-it { background:var(--s); border:1.5px solid var(--bd); border-radius:var(--r1); overflow:hidden; transition:border-color var(--tr),box-shadow var(--tr); }
+    .faq-it:hover { border-color:rgba(20,63,55,.35); }
+    .faq-it.on { border-color:var(--p); box-shadow:var(--sh1); }
+    .faq-btn { width:100%; display:flex; align-items:center; justify-content:space-between; padding:19px 22px; text-align:left; font-weight:700; font-size:.93rem; color:var(--t); gap:16px; cursor:pointer; background:none; border:none; font-family:inherit; }
+    .faq-ch { width:32px; height:32px; border-radius:50%; background:var(--s2); display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background var(--tr),transform var(--tr); }
+    .faq-ch svg { width:16px; height:16px; transition:stroke var(--tr); }
+    .faq-it.on .faq-ch { background:var(--p); transform:rotate(45deg); }
+    .faq-it.on .faq-ch svg { stroke:var(--w)!important; }
+    .faq-body { max-height:0; overflow:hidden; transition:max-height .42s var(--ease); font-size:.87rem; color:var(--t2); line-height:1.75; padding:0 22px; }
+    .faq-it.on .faq-body { max-height:300px; padding-bottom:20px; }
+
     /* CONTACT */
-    .contact-wrap { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
-    .contact-info { display:flex; flex-direction:column; gap:24px; }
-    .ci-item { display:flex; align-items:flex-start; gap:16px; }
-    .ci-icon { width:48px; height:48px; border-radius:var(--r1); background:var(--ap); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .ci-icon svg { width:22px; height:22px; stroke:var(--a); fill:none; stroke-width:1.8; stroke-linecap:round; }
-    .ci-lbl { font-size:.8rem; font-weight:700; color:var(--mu); text-transform:uppercase; letter-spacing:.06em; margin-bottom:3px; }
-    .ci-val { font-size:.97rem; color:var(--t); font-weight:600; }
-    .contact-form { background:var(--w); border-radius:var(--r2); padding:36px 32px; border:1px solid var(--bd); box-shadow:var(--sh1); }
-    .contact-form h3 { font-size:1.2rem; font-weight:800; color:var(--t); margin-bottom:6px; }
-    .contact-form p  { font-size:.88rem; color:var(--mu); margin-bottom:24px; }
-    .form-group { margin-bottom:18px; }
-    .form-group label { display:block; font-size:.82rem; font-weight:700; color:var(--t2); margin-bottom:7px; }
-    .form-group input, .form-group select, .form-group textarea { width:100%; padding:12px 16px; border:1.5px solid var(--bd); border-radius:var(--r1); font:inherit; font-size:.93rem; color:var(--t); background:var(--ow); transition:border-color var(--tr),box-shadow var(--tr); resize:none; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline:none; border-color:var(--p); box-shadow:0 0 0 3px rgba(20,63,55,.12); }
-    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .contact-wrap { display:grid; grid-template-columns:5fr 6fr; gap:60px; align-items:start; }
+    .ci-title { font-size:clamp(1.55rem,3vw,2.15rem); font-weight:800; margin-top:11px; margin-bottom:13px; line-height:1.2; }
+    .ci-desc { color:var(--t2); font-size:.97rem; line-height:1.7; margin-bottom:34px; }
+    .cd-list { display:flex; flex-direction:column; gap:17px; }
+    .cd { display:flex; align-items:flex-start; gap:13px; }
+    .cd-ic { width:45px; height:45px; border-radius:13px; background:var(--p); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .cd-ic svg { width:21px; height:21px; stroke:var(--w); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+    .cd-lb { font-size:.73rem; font-weight:700; color:var(--mu); text-transform:uppercase; letter-spacing:.05em; margin-bottom:3px; }
+    .cd-vl { font-size:.97rem; font-weight:700; color:var(--t); }
+    .cd-vl a { color:var(--p); }
+    .cd-vl a:hover { color:var(--a); }
+    .cf { background:var(--s); border-radius:var(--r3); padding:38px; box-shadow:var(--sh2); border:1.5px solid var(--bd); }
+    .cf-ti { font-size:1.28rem; font-weight:800; margin-bottom:24px; }
+    .f-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .f-g { margin-bottom:16px; }
+    .f-l { display:block; font-size:.8rem; font-weight:700; color:var(--t2); margin-bottom:6px; }
+    .f-i { width:100%; padding:12px 14px; border:1.5px solid var(--bd); border-radius:11px; font:inherit; font-size:.87rem; color:var(--t); background:var(--ow); outline:none; transition:border-color var(--tr),box-shadow var(--tr),background var(--tr); }
+    .f-i:focus { border-color:var(--p); background:var(--w); box-shadow:0 0 0 3px rgba(20,63,55,.08); }
+    textarea.f-i { resize:vertical; min-height:110px; }
+
     /* FOOTER */
-    .site-footer { background:var(--pd); color:rgba(255,255,255,.7); padding:64px 0 32px; }
-    .footer-grid { display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:48px; margin-bottom:48px; }
-    .footer-brand { font-size:1.1rem; font-weight:800; color:var(--w); display:flex; align-items:center; gap:10px; margin-bottom:14px; }
-    .footer-brand-icon { width:36px; height:36px; border-radius:10px; background:var(--a); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-    .footer-brand-icon svg { width:18px; height:18px; fill:var(--pd); }
-    .footer-tagline { font-size:.9rem; color:rgba(255,255,255,.45); margin-bottom:22px; }
-    .footer-socials { display:flex; gap:12px; }
-    .social-btn { width:38px; height:38px; border-radius:10px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1); display:flex; align-items:center; justify-content:center; font-size:1rem; transition:var(--tr); }
-    .social-btn:hover { background:var(--a); color:var(--pd); transform:translateY(-2px); }
-    .footer-heading { font-size:.75rem; font-weight:700; color:rgba(255,255,255,.4); text-transform:uppercase; letter-spacing:.1em; margin-bottom:18px; }
-    .footer-links { list-style:none; display:flex; flex-direction:column; gap:11px; }
-    .footer-links a { font-size:.88rem; color:rgba(255,255,255,.55); transition:color var(--tr); }
-    .footer-links a:hover { color:var(--a); }
-    .footer-bottom { border-top:1px solid rgba(255,255,255,.08); padding-top:28px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
-    .footer-bottom p { font-size:.8rem; color:rgba(255,255,255,.35); }
-    .footer-badge { display:flex; align-items:center; gap:7px; font-size:.75rem; color:rgba(255,255,255,.25); }
-    .footer-badge::before { content:'🔒'; font-size:.85rem; }
-    /* WA FLOAT */
-    .wa-float { position:fixed; bottom:28px; right:28px; z-index:890; }
-    .wa-float a { display:flex; align-items:center; justify-content:center; width:60px; height:60px; border-radius:50%; background:#25d366; box-shadow:0 6px 24px rgba(37,211,102,.45); color:#fff; font-size:1.6rem; transition:var(--tr); }
-    .wa-float a:hover { transform:scale(1.12) translateY(-3px); box-shadow:0 10px 32px rgba(37,211,102,.6); }
-    .wa-pulse { position:absolute; inset:-8px; border-radius:50%; border:2px solid #25d366; opacity:.4; animation:pulse 2.2s ease-in-out infinite; pointer-events:none; }
-    @keyframes pulse { 0%,100%{transform:scale(1);opacity:.4} 50%{transform:scale(1.3);opacity:0} }
-    /* ANIM */
-    .reveal { opacity:0; transform:translateY(28px); transition:opacity .65s var(--ease),transform .65s var(--ease); }
-    .reveal.vis { opacity:1; transform:none; }
+    .site-footer { background:#0a1e1a; padding:70px 0 0; color:rgba(255,255,255,.62); }
+    .ft-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:46px; padding-bottom:50px; border-bottom:1px solid rgba(255,255,255,.08); }
+    .ft-brand { display:flex; align-items:center; gap:11px; margin-bottom:16px; }
+    .ft-bn { font-size:1.1rem; font-weight:800; color:var(--w); }
+    .ft-desc { font-size:.84rem; line-height:1.75; margin-bottom:22px; max-width:305px; }
+    .ft-wa { display:inline-flex; align-items:center; gap:9px; padding:10px 18px; border-radius:999px; background:#25d366; color:var(--w); font-weight:700; font-size:.83rem; transition:var(--tr); }
+    .ft-wa:hover { background:#1db954; transform:translateY(-2px); }
+    .ft-ht { font-size:.74rem; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--w); margin-bottom:16px; }
+    .ft-lns { list-style:none; display:flex; flex-direction:column; gap:9px; }
+    .ft-lns a { font-size:.83rem; color:rgba(255,255,255,.48); transition:color .2s,padding-left .2s; }
+    .ft-lns a:hover { color:var(--a); padding-left:4px; }
+    .ft-bot { padding:18px 0; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:9px; }
+    .ft-cp { font-size:.77rem; color:rgba(255,255,255,.28); }
+
+    /* FLOATING WA */
+    .wa-btn { position:fixed; bottom:26px; right:26px; z-index:950; width:60px; height:60px; border-radius:50%; background:#25d366; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 28px rgba(37,211,102,.45); cursor:pointer; transition:transform var(--tr),box-shadow var(--tr); }
+    .wa-btn:hover { transform:scale(1.12); box-shadow:0 10px 40px rgba(37,211,102,.55); }
+    .wa-btn::before { content:''; position:absolute; inset:-5px; border-radius:50%; border:2.5px solid rgba(37,211,102,.4); animation:wa-r 2.2s ease-out infinite; }
+    @keyframes wa-r { 0%{transform:scale(1);opacity:.8} 100%{transform:scale(1.65);opacity:0} }
+    .wa-btn svg { width:30px; height:30px; fill:white; }
+
+    /* SCROLL REVEAL */
+    .rev { opacity:0; transform:translateY(26px); transition:opacity .65s var(--ease),transform .65s var(--ease); }
+    .rev.in { opacity:1; transform:translateY(0); }
+    .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s} .d4{transition-delay:.4s} .d5{transition-delay:.5s}
+
     /* RESPONSIVE */
-    @media(max-width:1024px) {
-      .hero-ct { grid-template-columns:1fr; gap:48px; padding-top:110px; }
-      .hero-vis { display:none; }
-      .contact-wrap { grid-template-columns:1fr; }
-      .footer-grid { grid-template-columns:1fr 1fr; }
+    @media(max-width:1060px){
+      .svc-grid,.proj-grid,.testi-grid{grid-template-columns:repeat(2,1fr)}
+      .stats-grid{grid-template-columns:repeat(2,1fr)}
+      .stat-it:nth-child(2){border-right:none}
+      .stat-it:nth-child(1),.stat-it:nth-child(2){border-bottom:1px solid rgba(255,255,255,.12)}
+      .steps{grid-template-columns:repeat(2,1fr);gap:38px}
+      .steps::before{display:none}
+      .ft-grid{grid-template-columns:1fr 1fr}
     }
-    @media(max-width:768px) {
-      .nav-links { display:none; }
-      .hamburger { display:flex; }
-      .drawer { display:flex; }
-      #navCta { display:none!important; }
-      .section { padding:72px 0; }
-      .how-grid::before { display:none; }
-      .footer-grid { grid-template-columns:1fr; }
-      .footer-bottom { justify-content:center; text-align:center; }
-      .form-row { grid-template-columns:1fr; }
+    @media(max-width:768px){
+      .section{padding:62px 0}
+      .sec-hd{margin-bottom:38px}
+      .hero-ct{grid-template-columns:1fr;gap:0;padding-block:108px 62px}
+      .hero-vis{display:none}
+      .nav-links,.nav-right .btn{display:none}
+      .hamburger{display:flex}
+      .drawer{display:flex}
+      .svc-grid,.proj-grid,.testi-grid{grid-template-columns:1fr}
+      .steps{grid-template-columns:1fr 1fr}
+      .contact-wrap{grid-template-columns:1fr}
+      .f-row{grid-template-columns:1fr}
+      .cta-in{flex-direction:column;text-align:center}
+      .ft-grid{grid-template-columns:1fr;gap:26px}
     }
-    @media(max-width:540px) {
-      .svc-grid, .proj-grid, .testi-grid { grid-template-columns:1fr; }
-      .stats-row { gap:4px; }
-      .stat-item + .stat-item::before { display:none; }
+    @media(max-width:480px){
+      .steps{grid-template-columns:1fr}
+      .hero-h1{font-size:2rem}
     }
   </style>
 </head>
 <body>
 
-<!-- ===================== HEADER ===================== -->
-<header class="site-header" id="siteHeader">
+<!-- FLOATING WHATSAPP -->
+{% assign wa_default_msg = d.whatsapp_message | default: "Halo Vistara Build, saya ingin konsultasi layanan Anda." | url_encode %}
+<a class="wa-btn" href="https://wa.me/{{ wa }}?text={{ wa_default_msg }}" target="_blank" rel="noopener noreferrer" aria-label="Chat via WhatsApp dengan {{ d.brand | default: 'Vistara Build' }}">
+  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16 2.667C8.636 2.667 2.667 8.636 2.667 16c0 2.365.634 4.679 1.836 6.7L2.667 29.333l6.8-1.783A13.266 13.266 0 0016 29.333c7.364 0 13.333-5.97 13.333-13.333S23.364 2.667 16 2.667zm0 24c-2.165 0-4.286-.587-6.126-1.697l-.44-.26-4.036 1.058 1.078-3.928-.286-.454A10.628 10.628 0 015.333 16C5.333 9.97 10.303 5.333 16 5.333c5.697 0 10.667 4.637 10.667 10.667S21.697 26.667 16 26.667zm5.84-7.973c-.32-.16-1.89-.932-2.183-1.04-.293-.106-.506-.16-.72.16-.213.32-.825 1.04-1.012 1.253-.187.213-.373.24-.693.08-.32-.16-1.35-.498-2.57-1.59-.95-.847-1.59-1.893-1.777-2.213-.187-.32-.02-.493.14-.653.144-.144.32-.373.48-.56.16-.187.213-.32.32-.534.107-.213.054-.4-.027-.56-.08-.16-.72-1.733-1.013-2.4-.267-.64-.547-.547-.747-.547h-.64c-.213 0-.56.08-.853.4-.293.32-1.12 1.093-1.12 2.667s1.147 3.093 1.307 3.307c.16.213 2.24 3.413 5.44 4.787.76.32 1.353.507 1.813.653.76.24 1.453.213 2 .133.613-.093 1.893-.773 2.16-1.52.267-.747.267-1.387.187-1.52-.08-.133-.293-.213-.613-.373z"/></svg>
+</a>
+
+<!-- MOBILE DRAWER -->
+<nav class="drawer" id="drawer" aria-label="Navigasi mobile" aria-hidden="true">
+  <button class="drawer-x" id="drawerX" aria-label="Tutup menu">✕</button>
+  <a href="#layanan"   class="drawer-lnk">Layanan</a>
+  <a href="#proses"    class="drawer-lnk">Cara Kerja</a>
+  <a href="#proyek"    class="drawer-lnk">Proyek</a>
+  <a href="#testimoni" class="drawer-lnk">Testimoni</a>
+  <a href="#faq"       class="drawer-lnk">FAQ</a>
+  <a href="#kontak"    class="drawer-lnk">Kontak</a>
+  <div style="margin-top:28px;">
+    <a href="https://wa.me/{{ wa }}" target="_blank" rel="noopener" class="btn btn-a" style="width:100%;justify-content:center;font-size:1rem;">💬 Hubungi Kami</a>
+  </div>
+</nav>
+
+<!-- HEADER -->
+<header class="site-header" id="hdr">
   <div class="container">
-    <nav class="nav-bar" role="navigation" aria-label="Navigasi utama">
-      <a href="#beranda" class="brand" id="headerBrand" aria-label="{{ d.brand }} – kembali ke atas">
+    <div class="nav-bar">
+      <a href="#beranda" class="brand" aria-label="{{ d.brand | default: 'Vistara Build' }}">
         <div class="brand-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="#0c2922" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         </div>
         {{ d.brand | default: "Vistara Build" }}
       </a>
       <ul class="nav-links" role="list">
         <li><a href="#layanan">Layanan</a></li>
-        <li><a href="#proyek">Portofolio</a></li>
+        <li><a href="#proses">Cara Kerja</a></li>
+        <li><a href="#proyek">Proyek</a></li>
         <li><a href="#testimoni">Testimoni</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="#kontak">Kontak</a></li>
       </ul>
       <div class="nav-right">
-        <a href="https://wa.me/{{ wa }}" class="btn btn-a" id="navCta" target="_blank" rel="noopener" aria-label="Hubungi via WhatsApp">💬 Hubungi Kami</a>
-        <button class="hamburger" id="hamburger" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="mobileDrawer">
+        <a href="#kontak" class="btn btn-a" id="navCta">Konsultasi Gratis</a>
+        <button class="hamburger" id="hbg" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="drawer">
           <span></span><span></span><span></span>
         </button>
       </div>
-    </nav>
+    </div>
   </div>
 </header>
 
-<!-- MOBILE DRAWER -->
-<nav class="drawer" id="mobileDrawer" aria-label="Menu mobile" aria-hidden="true">
-  <button class="drawer-x" id="drawerClose" aria-label="Tutup menu">✕</button>
-  <a href="#layanan"   class="drawer-lnk">Layanan</a>
-  <a href="#proyek"    class="drawer-lnk">Portofolio</a>
-  <a href="#testimoni" class="drawer-lnk">Testimoni</a>
-  <a href="#faq"       class="drawer-lnk">FAQ</a>
-  <a href="#kontak"    class="drawer-lnk">Kontak</a>
-  <a href="https://wa.me/{{ wa }}" class="btn btn-a" style="margin-top:28px;justify-content:center;" target="_blank" rel="noopener">💬 Konsultasi WhatsApp</a>
-</nav>
-
-<main id="beranda">
-
-<!-- ===================== HERO ===================== -->
-<section class="hero" aria-label="Halaman utama">
+<!-- HERO -->
+<section class="hero" id="beranda" aria-labelledby="h1">
   <div class="orb orb-1" aria-hidden="true"></div>
   <div class="orb orb-2" aria-hidden="true"></div>
   <div class="grid-pat" aria-hidden="true"></div>
   <div class="container">
     <div class="hero-ct">
-      <div class="hero-txt">
-        <div class="hero-chip" aria-label="Status layanan">
-          <span class="chip-dot" aria-hidden="true"></span>
-          {{ d.tagline | default: "Kontraktor Renovasi Yogyakarta" }}
-        </div>
-        <h1 class="hero-h1">{{ d.hero_title | default: "Solusi Tembok Lembap dan Pengecatan Rumah" }}</h1>
-        <p class="hero-desc">{{ d.hero_description }}</p>
+      <div>
+        <div class="hero-chip"><span class="chip-dot" aria-hidden="true"></span>{{ d.tagline | default: "Kontraktor Renovasi Yogyakarta" }}</div>
+        <h1 class="hero-h1" id="h1">{{ d.hero_title | default: "Solusi <mark>Tembok Lembap</mark> &amp; Pengecatan Profesional" }}</h1>
+        <p class="hero-desc">{{ d.hero_description | default: "Vistara Build hadir membantu menangani tembok lembap, cat mengelupas, rembesan, serta kebutuhan renovasi rumah di Yogyakarta — ditangani tenaga berpengalaman, harga transparan." }}</p>
         <div class="hero-acts">
-          {% assign wa_msg = d.whatsapp_message | default: "Halo Vistara Build, saya ingin konsultasi mengenai renovasi rumah." | url_encode %}
-          <a href="https://wa.me/{{ wa }}?text={{ wa_msg }}" class="btn btn-a" target="_blank" rel="noopener" id="heroCta">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.5 2C6.261 2 2 6.261 2 11.5c0 1.67.437 3.242 1.205 4.614L2 22l6.024-1.573A9.46 9.46 0 0011.5 21c5.239 0 9.5-4.261 9.5-9.5S16.739 2 11.5 2zm0 17.5a7.988 7.988 0 01-4.071-1.116l-.292-.173-3.576.934.956-3.488-.19-.3A7.968 7.968 0 013.5 11.5C3.5 7.089 7.089 3.5 11.5 3.5S19.5 7.089 19.5 11.5 15.911 19.5 11.5 19.5z"/></svg>
-            {{ d.hero_cta_primary | default: "Konsultasi Gratis" }}
-          </a>
-          {% if d.hero_cta_secondary %}
-          <a href="#proyek" class="btn btn-g" id="heroSecCta">
-            {{ d.hero_cta_secondary }}
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-          {% endif %}
+          {% assign wa_konsul = d.whatsapp_message | default: "Halo Vistara Build, saya ingin konsultasi gratis." | url_encode %}
+          <a href="https://wa.me/{{ wa }}?text={{ wa_konsul }}" target="_blank" rel="noopener" class="btn btn-a">💬 {{ d.hero_cta_primary | default: "Konsultasi Gratis" }}</a>
+          <a href="#layanan" class="btn btn-g">{{ d.hero_cta_secondary | default: "Lihat Layanan" }} <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
         </div>
-        <div class="hero-trust" aria-label="Keunggulan layanan">
-          <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Survei Gratis</div>
-          <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Garansi Pekerjaan</div>
-          <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Harga Transparan</div>
+        <div class="hero-trust">
+          {% if d.trust_badges %} {% for tb in d.trust_badges %}
+          <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>{{ tb }}</div>
+          {% endfor %} {% else %}
+          <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Garansi Pekerjaan</div>
+          <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Survei Lokasi Gratis</div>
+          <div class="tb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Harga Transparan</div>
+          {% endif %}
         </div>
       </div>
       <div class="hero-vis" aria-hidden="true">
         <div class="hero-img">
-          <div class="hero-img-ph">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <span>Foto Proyek Anda</span>
-          </div>
+          {% if d.hero_image and d.hero_image != "" %}
+          <img src="{{ d.hero_image }}" alt="Pengecatan profesional oleh {{ d.brand | default: 'Vistara Build' }}" width="800" height="600" loading="eager" fetchpriority="high">
+          {% else %}
+          <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=800&q=80" alt="Pengecatan profesional oleh {{ d.brand | default: 'Vistara Build' }}" width="800" height="600" loading="eager" fetchpriority="high">
+          {% endif %}
           <div class="hero-img-ov"></div>
         </div>
-        {% if d.stats %}
-        {% assign stat_0 = d.stats[0] %}
-        {% assign stat_1 = d.stats[1] %}
         <div class="fc r">
-          <div class="fc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
-          <div><div class="fc-l">Proyek Selesai</div><div class="fc-v">{{ stat_0.value | default: "150+" }}</div></div>
+          <div class="fc-ic"><svg viewBox="0 0 24 24" fill="#e8aa3e"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+          <div><div class="fc-l">Rating Klien</div><div class="fc-v">{% if d.stats %}{{ d.stats[0].value | default: "4.9 / 5.0" }}{% else %}4.9 / 5.0{% endif %} ⭐</div></div>
         </div>
         <div class="fc t">
-          <div class="fc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <div><div class="fc-l">Bergaransi</div><div class="fc-v">{{ stat_1.value | default: "100%" }}</div></div>
+          <div class="fc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#143f37" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <div><div class="fc-l">Proyek Selesai</div><div class="fc-v">{% if d.stats %}{{ d.stats[1].value | default: "150+" }}{% else %}150+{% endif %} Proyek</div></div>
         </div>
-        {% endif %}
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===================== STATS ===================== -->
-{% if d.stats %}
-<div class="stats-bar" role="region" aria-label="Statistik Vistara Build">
+<!-- STATS -->
+<section class="stats-bar" aria-label="Statistik {{ d.brand | default: 'Vistara Build' }}">
   <div class="container">
-    <div class="stats-row">
-      {% for stat in d.stats %}
-      <div class="stat-item">
-        <div class="stat-val">{{ stat.value }}</div>
-        <div class="stat-lbl">{{ stat.label }}</div>
+    <div class="stats-grid">
+      {% if site.data.site.stats %}{% for stat in site.data.site.stats %}
+      <div class="stat-it rev {% if forloop.index == 2 %}d1{% elsif forloop.index == 3 %}d2{% elsif forloop.index == 4 %}d3{% endif %}">
+        <div class="stat-n" data-target="{{ stat.value | remove: '+' | remove: '%' | remove: 'k' }}" data-suffix="{{ stat.value | slice: -1 }}">{{ stat.value }}</div>
+        <div class="stat-l">{{ stat.label }}</div>
       </div>
-      {% endfor %}
+      {% endfor %}{% else %}
+      <div class="stat-it rev"><div class="stat-n" data-target="150" data-suffix="+">0+</div><div class="stat-l">Proyek Selesai</div></div>
+      <div class="stat-it rev d1"><div class="stat-n" data-target="5" data-suffix="+">0+</div><div class="stat-l">Tahun Pengalaman</div></div>
+      <div class="stat-it rev d2"><div class="stat-n" data-target="98" data-suffix="%">0%</div><div class="stat-l">Kepuasan Klien</div></div>
+      <div class="stat-it rev d3"><div class="stat-n" data-target="5">0</div><div class="stat-l">Kab/Kota DIY Terlayani</div></div>
+      {% endif %}
     </div>
   </div>
-</div>
-{% endif %}
+</section>
 
-<!-- ===================== LAYANAN ===================== -->
-<section class="section" id="layanan" aria-label="Layanan Vistara Build">
+<!-- SERVICES -->
+<section class="section" id="layanan" aria-labelledby="h2-lyr">
   <div class="container">
-    <div class="sec-hd center reveal">
-      <span class="eyebrow">Layanan Kami</span>
-      <h2 class="sec-title">Solusi Lengkap Renovasi Rumah Anda</h2>
-      <p class="sec-sub">Dari tembok lembap hingga pengecatan ulang, kami hadir dengan solusi yang tepat, berkualitas, dan bergaransi.</p>
+    <div class="sec-hd rev">
+      <div class="eyebrow">Layanan Kami</div>
+      <h2 class="sec-title" id="h2-lyr">{{ d.services_title | default: "Solusi Lengkap untuk Hunian Anda" }}</h2>
+      <p class="sec-sub">{{ d.services_subtitle | default: "Dari inspeksi hingga penyelesaian, Vistara Build hadir dengan layanan profesional, tepat, dan terukur untuk setiap kebutuhan bangunan Anda." }}</p>
     </div>
     <div class="svc-grid">
       {% for svc in site.data.services.items %}
-      <article class="svc-card reveal">
-        <div class="svc-ico" aria-hidden="true">
+      {% assign di = "d" | append: forloop.index0 %}
+      <article class="svc-card rev {% if forloop.index > 1 %}{{ di }}{% endif %}" aria-labelledby="svc{{ forloop.index }}">
+        <div class="svc-ic" aria-hidden="true">
           {% case svc.icon %}
-          {% when 'water' %}
-          <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>
-          {% when 'paint' %}
-          <svg viewBox="0 0 24 24"><path d="M18.37 2.63L14 7l-1.59-1.59a2 2 0 00-2.82 0L8 7l9 9 1.59-1.58a2 2 0 000-2.83L17 10l4.37-4.37a2.12 2.12 0 00-3-3z"/><path d="M4 8l-2 2v4h4l2-2"/></svg>
-          {% when 'waterproof' %}
-          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          {% when 'home' %}
-          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          {% when 'build' %}
-          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-          {% when 'inspect' %}
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          {% when 'finish' %}
-          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          {% when 'design' %}
-          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          {% else %}
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+          {% when 'water' %}<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          {% when 'paint' %}<svg viewBox="0 0 24 24"><path d="M2 20h20M7 20V4l5-2 5 2v16"/></svg>
+          {% when 'waterproof' %}<svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          {% when 'home' %}<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          {% when 'build' %}<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          {% when 'inspect' %}<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          {% when 'finish' %}<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          {% when 'design' %}<svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          {% else %}<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
           {% endcase %}
         </div>
-        {% if svc.badge and svc.badge != "" %}<div class="svc-badge">{{ svc.badge }}</div>{% endif %}
-        <h3>{{ svc.title }}</h3>
-        <p>{{ svc.description }}</p>
+        <h3 class="svc-ti" id="svc{{ forloop.index }}">{{ svc.title }}</h3>
+        <p class="svc-de">{{ svc.description }}</p>
+        {% assign svc_msg = "Halo, saya ingin tanya soal " | append: svc.title | append: "." | url_encode %}
+        <a href="https://wa.me/{{ wa }}?text={{ svc_msg }}" class="svc-lnk" target="_blank" rel="noopener">Tanya Sekarang<svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
       </article>
       {% endfor %}
     </div>
   </div>
 </section>
 
-<!-- ===================== CARA KERJA ===================== -->
-<section class="section sec-alt" id="proses" aria-label="Cara kerja Vistara Build">
+<!-- CTA BANNER -->
+<section class="cta-sec section" aria-label="Ajakan bertindak">
   <div class="container">
-    <div class="sec-hd center reveal">
-      <span class="eyebrow">Proses Kerja</span>
-      <h2 class="sec-title">Cara Kami Bekerja</h2>
-      <p class="sec-sub">Proses yang transparan, mulai dari konsultasi hingga pekerjaan selesai dan bergaransi.</p>
-    </div>
-    <div class="how-grid">
-      <div class="how-item reveal">
-        <div class="how-num" aria-label="Langkah 1"></div>
-        <h3>Hubungi Kami</h3>
-        <p>Chat via WhatsApp atau isi formulir kontak untuk menyampaikan kebutuhan renovasi Anda.</p>
+    <div class="cta-in">
+      <div class="rev">
+        <h2>{{ d.cta_title | default: "Tembok lembap mengganggu kenyamanan Anda?" }}</h2>
+        <p>{{ d.cta_desc | default: "Hubungi kami sekarang untuk konsultasi dan survei lokasi gratis — tanpa kewajiban apapun." }}</p>
       </div>
-      <div class="how-item reveal">
-        <div class="how-num" aria-label="Langkah 2"></div>
-        <h3>Survei Lokasi</h3>
-        <p>Tim kami mendatangi lokasi Anda untuk inspeksi dan konsultasi secara gratis.</p>
-      </div>
-      <div class="how-item reveal">
-        <div class="how-num" aria-label="Langkah 3"></div>
-        <h3>Penawaran & Rencana</h3>
-        <p>Kami berikan estimasi biaya yang transparan dan rencana pengerjaan yang jelas.</p>
-      </div>
-      <div class="how-item reveal">
-        <div class="how-num" aria-label="Langkah 4"></div>
-        <h3>Pelaksanaan & Garansi</h3>
-        <p>Pekerjaan dilaksanakan oleh tim profesional dengan jaminan kualitas dan garansi resmi.</p>
-      </div>
+      {% assign wa_cta = d.whatsapp_message | default: "Halo Vistara Build, saya ingin konsultasi gratis sekarang." | url_encode %}
+      <a href="https://wa.me/{{ wa }}?text={{ wa_cta }}" target="_blank" rel="noopener" class="btn btn-a rev d2" style="font-size:1rem;padding:15px 34px;">💬 Chat WhatsApp Sekarang</a>
     </div>
   </div>
 </section>
 
-<!-- ===================== PORTOFOLIO ===================== -->
-<section class="section" id="proyek" aria-label="Portofolio proyek Vistara Build">
+<!-- HOW WE WORK -->
+<section class="section sec-alt" id="proses" aria-labelledby="h2-proses">
   <div class="container">
-    <div class="sec-hd center reveal">
-      <span class="eyebrow">Portofolio</span>
-      <h2 class="sec-title">Hasil Pekerjaan Kami</h2>
-      <p class="sec-sub">Setiap proyek dikerjakan dengan standar kualitas tinggi. Lihat beberapa hasil pekerjaan Vistara Build.</p>
+    <div class="sec-hd center rev">
+      <div class="eyebrow">Cara Kerja</div>
+      <h2 class="sec-title" id="h2-proses">{{ d.process_title | default: "Proses yang Simpel &amp; Transparan" }}</h2>
+      <p class="sec-sub">{{ d.process_subtitle | default: "Setiap tahapan pekerjaan berjalan jelas, terukur, dan sesuai kesepakatan dari awal hingga akhir." }}</p>
+    </div>
+    <div class="steps">
+      <div class="step rev"><div class="step-n" aria-hidden="true">1</div><h3 class="step-ti">Konsultasi &amp; Survei</h3><p class="step-de">Hubungi via WhatsApp. Tim kami menjadwalkan survei lokasi tanpa biaya.</p></div>
+      <div class="step rev d1"><div class="step-n" aria-hidden="true">2</div><h3 class="step-ti">Diagnosa &amp; Estimasi</h3><p class="step-de">Kami mendiagnosis kondisi bangunan dan memberikan estimasi biaya yang transparan.</p></div>
+      <div class="step rev d2"><div class="step-n" aria-hidden="true">3</div><h3 class="step-ti">Pengerjaan Profesional</h3><p class="step-de">Dilaksanakan tenaga berpengalaman dengan material berkualitas pilihan.</p></div>
+      <div class="step rev d3"><div class="step-n" aria-hidden="true">4</div><h3 class="step-ti">Selesai &amp; Garansi</h3><p class="step-de">Tepat waktu, disertai garansi resmi untuk ketenangan pikiran Anda.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="section" id="proyek" aria-labelledby="h2-proyek">
+  <div class="container">
+    <div class="sec-hd rev">
+      <div class="eyebrow">Portofolio</div>
+      <h2 class="sec-title" id="h2-proyek">{{ d.portfolio_title | default: "Hasil Nyata dari Proyek Kami" }}</h2>
+      <p class="sec-sub">{{ d.portfolio_subtitle | default: "Transformasi nyata yang telah kami wujudkan untuk klien di Yogyakarta dan sekitarnya." }}</p>
     </div>
     <div class="proj-grid">
       {% for proj in site.data.projects.items %}
-      <article class="proj-card reveal">
-        <div class="proj-thumb">
-          {% if proj.image and proj.image != "" %}
-          <img src="{{ proj.image }}" alt="{{ proj.title }} — {{ proj.location }}" loading="lazy" width="800" height="500">
-          {% else %}
-          <div class="proj-ph" aria-label="Foto proyek belum tersedia">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <span>{{ proj.title }}</span>
-          </div>
-          {% endif %}
-          <div class="proj-ov" aria-hidden="true">
-            <span class="proj-cat-badge">{{ proj.category | upcase }}</span>
-          </div>
+      {% assign di = "d" | append: forloop.index0 %}
+      <article class="proj-card rev {% if forloop.index > 1 %}{{ di }}{% endif %}" aria-labelledby="p{{ forloop.index }}">
+        {% if proj.image and proj.image != "" %}
+        <img src="{{ proj.image }}" alt="{{ proj.title }} — {{ proj.location }}" loading="lazy" width="600" height="450">
+        {% else %}
+        <div class="proj-ph-inner" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span>Tambahkan foto</span>
         </div>
-        <div class="proj-body">
-          {% if proj.featured %}<div class="proj-feat">⭐ Unggulan</div>{% endif %}
-          <h3>{{ proj.title }}</h3>
-          <p class="proj-loc">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            {{ proj.location }}
-          </p>
-          <p>{{ proj.description }}</p>
+        {% endif %}
+        <div class="proj-ov" aria-hidden="true"></div>
+        <div class="proj-info">
+          <div class="proj-tag">{{ proj.category }}</div>
+          <h3 class="proj-ti" id="p{{ forloop.index }}">{{ proj.title }}</h3>
+          <p class="proj-loc"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>{{ proj.location }}</p>
+          <p class="proj-ex">{{ proj.description }}</p>
         </div>
       </article>
       {% endfor %}
     </div>
-    <div style="text-align:center;margin-top:48px;">
-      {% assign wa_proj = d.whatsapp_message | default: "Halo Vistara Build, saya ingin melihat lebih banyak portofolio." | url_encode %}
-      <a href="https://wa.me/{{ wa }}?text={{ wa_proj }}" class="btn btn-d" target="_blank" rel="noopener">
-        💬 Konsultasikan Proyek Anda
-      </a>
-    </div>
   </div>
 </section>
 
-<!-- ===================== TESTIMONI ===================== -->
+<!-- TESTIMONIALS -->
 {% assign visible_testi = site.data.testimonials.items | where_exp: "item", "item.visible != false" %}
 {% if visible_testi.size > 0 %}
-<section class="section sec-alt" id="testimoni" aria-label="Testimoni pelanggan Vistara Build">
+<section class="section sec-alt" id="testimoni" aria-labelledby="h2-testi">
   <div class="container">
-    <div class="sec-hd center reveal">
-      <span class="eyebrow">Testimoni</span>
-      <h2 class="sec-title">Apa Kata Pelanggan Kami</h2>
-      <p class="sec-sub">Kepercayaan pelanggan adalah prioritas utama kami. Ini adalah pengalaman nyata dari mereka.</p>
+    <div class="sec-hd center rev">
+      <div class="eyebrow">Testimoni</div>
+      <h2 class="sec-title" id="h2-testi">{{ d.testimonials_title | default: "Yang Klien Kami Katakan" }}</h2>
+      <p class="sec-sub">{{ d.testimonials_subtitle | default: "Kepercayaan klien adalah aset terbesar kami. Berikut ulasan nyata dari pelanggan Vistara Build." }}</p>
     </div>
     <div class="testi-grid">
       {% for t in visible_testi %}
-      <article class="testi-card reveal">
-        <div class="testi-stars" aria-label="{{ t.rating | default: 5 }} bintang">
-          {% assign r = t.rating | default: 5 %}
-          {% if r >= 5 %}★★★★★{% elsif r == 4 %}★★★★☆{% elsif r == 3 %}★★★☆☆{% else %}★★★★★{% endif %}
+      {% assign di = "d" | append: forloop.index0 %}
+      <article class="testi-card rev {% if forloop.index > 1 %}{{ di }}{% endif %}" aria-label="Testimoni dari {{ t.name }}">
+        <div class="stars" aria-label="Rating {{ t.rating | default: 5 }} bintang">
+          {% assign r = t.rating | default: 5 %}{% if r >= 5 %}★★★★★{% elsif r == 4 %}★★★★☆{% else %}★★★☆☆{% endif %}
         </div>
-        <p class="testi-text">{{ t.text }}</p>
-        <div class="testi-author">
+        <p class="testi-q">{{ t.text }}</p>
+        <div class="testi-au">
           {% if t.avatar and t.avatar != "" %}
-          <img class="testi-av" src="{{ t.avatar }}" alt="Foto {{ t.name }}" width="46" height="46" loading="lazy">
+          <div class="testi-av"><img src="{{ t.avatar }}" alt="Foto {{ t.name }}" width="44" height="44" loading="lazy"></div>
           {% else %}
-          <div class="testi-init" aria-hidden="true">{{ t.name | slice: 0 }}</div>
+          <div class="testi-av" aria-hidden="true">{{ t.name | slice: 0 }}</div>
           {% endif %}
           <div>
-            <div class="testi-name">{{ t.name }}</div>
-            <div class="testi-role">{{ t.location }}{% if t.role %} · {{ t.role }}{% endif %}</div>
+            <div class="testi-nm">{{ t.name }}</div>
+            <div class="testi-lo">📍 {{ t.location }}{% if t.role %} · {{ t.role }}{% endif %}</div>
           </div>
         </div>
       </article>
@@ -607,25 +605,21 @@ layout: null
 </section>
 {% endif %}
 
-<!-- ===================== FAQ ===================== -->
+<!-- FAQ -->
 {% if visible_faq.size > 0 %}
-<section class="section" id="faq" aria-label="Pertanyaan yang sering ditanyakan">
+<section class="section" id="faq" aria-labelledby="h2-faq">
   <div class="container">
-    <div class="sec-hd center reveal">
-      <span class="eyebrow">FAQ</span>
-      <h2 class="sec-title">Pertanyaan yang Sering Ditanyakan</h2>
-      <p class="sec-sub">Temukan jawaban atas pertanyaan umum seputar layanan Vistara Build.</p>
+    <div class="sec-hd center rev">
+      <div class="eyebrow">FAQ</div>
+      <h2 class="sec-title" id="h2-faq">{{ d.faq_title | default: "Pertanyaan yang Sering Ditanyakan" }}</h2>
+      <p class="sec-sub">{{ d.faq_subtitle | default: "Jawaban untuk pertanyaan umum seputar layanan Vistara Build." }}</p>
     </div>
-    <div class="faq-list" role="list">
+    <div class="faq-st" role="list">
       {% for item in visible_faq %}
-      <div class="faq-item" id="faq-{{ forloop.index }}" role="listitem">
-        <button class="faq-q" aria-expanded="false" aria-controls="faq-ans-{{ forloop.index }}" id="faq-btn-{{ forloop.index }}">
-          {{ item.question }}
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="faq-ans" id="faq-ans-{{ forloop.index }}" role="region" aria-labelledby="faq-btn-{{ forloop.index }}" hidden>
-          <div class="faq-ans-inner">{{ item.answer }}</div>
-        </div>
+      {% assign di = "d" | append: forloop.index0 %}
+      <div class="faq-it rev {% if forloop.index > 1 %}{{ di }}{% endif %}" role="listitem">
+        <button class="faq-btn" aria-expanded="false" id="fq{{ forloop.index }}b" aria-controls="fq{{ forloop.index }}r">{{ item.question }}<span class="faq-ch" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#143f37" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></button>
+        <div class="faq-body" id="fq{{ forloop.index }}r" role="region" aria-labelledby="fq{{ forloop.index }}b">{{ item.answer }}</div>
       </div>
       {% endfor %}
     </div>
@@ -633,244 +627,164 @@ layout: null
 </section>
 {% endif %}
 
-<!-- ===================== KONTAK ===================== -->
-<section class="section sec-alt" id="kontak" aria-label="Hubungi Vistara Build">
+<!-- CONTACT -->
+<section class="section sec-alt" id="kontak" aria-labelledby="h2-kontak">
   <div class="container">
-    <div class="sec-hd reveal">
-      <span class="eyebrow">Kontak</span>
-      <h2 class="sec-title">Siap Membantu Anda</h2>
-      <p class="sec-sub">Konsultasikan kebutuhan renovasi rumah Anda sekarang. Survei gratis, estimasi transparan.</p>
-    </div>
     <div class="contact-wrap">
-      <div class="contact-info reveal">
-        <div class="ci-item">
-          <div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.81a19.79 19.79 0 01-3.07-8.62A2 2 0 012 .18h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg></div>
-          <div>
-            <div class="ci-lbl">WhatsApp</div>
-            <div class="ci-val"><a href="https://wa.me/{{ wa }}" target="_blank" rel="noopener">{{ d.whatsapp | default: "085747040163" }}</a></div>
+      <div>
+        <div class="eyebrow rev">Hubungi Kami</div>
+        <h2 class="ci-title rev" id="h2-kontak">{{ d.contact_title | default: "Siap Bantu Masalah<br>Bangunan Anda" }}</h2>
+        <p class="ci-desc rev">{{ d.contact_desc | default: "Konsultasikan kebutuhan renovasi dan perbaikan rumah Anda dengan tim Vistara Build. Kami siap memberikan solusi terbaik, cepat, dan terjangkau." }}</p>
+        <div class="cd-list">
+          <div class="cd rev">
+            <div class="cd-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.7 9.8a19.79 19.79 0 01-3.07-8.63A2 2 0 012.62 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 9.6a16 16 0 006.29 6.29l.96-.96a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div>
+            <div><div class="cd-lb">WhatsApp / Telepon</div><div class="cd-vl"><a href="https://wa.me/{{ wa }}" target="_blank" rel="noopener">{{ d.whatsapp_display | default: "0857-4704-0163" }}</a></div></div>
+          </div>
+          {% if d.email and d.email != "" %}
+          <div class="cd rev d1">
+            <div class="cd-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div><div class="cd-lb">Email</div><div class="cd-vl"><a href="mailto:{{ d.email }}">{{ d.email }}</a></div></div>
+          </div>
+          {% endif %}
+          <div class="cd rev d1">
+            <div class="cd-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+            <div><div class="cd-lb">Area Layanan</div><div class="cd-vl">{{ d.service_area | default: "Yogyakarta &amp; Seluruh DIY" }}</div></div>
+          </div>
+          <div class="cd rev d2">
+            <div class="cd-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <div><div class="cd-lb">Jam Operasional</div><div class="cd-vl">{{ d.hours | default: "Senin – Sabtu, 08.00 – 17.00 WIB" }}</div></div>
           </div>
         </div>
-        {% if d.email and d.email != "" %}
-        <div class="ci-item">
-          <div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-          <div>
-            <div class="ci-lbl">Email</div>
-            <div class="ci-val"><a href="mailto:{{ d.email }}">{{ d.email }}</a></div>
-          </div>
-        </div>
-        {% endif %}
-        {% if d.address and d.address != "" %}
-        <div class="ci-item">
-          <div class="ci-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-          <div>
-            <div class="ci-lbl">Alamat</div>
-            <div class="ci-val">{{ d.address }}</div>
-          </div>
-        </div>
-        {% endif %}
-        {% if d.hours and d.hours != "" %}
-        <div class="ci-item">
-          <div class="ci-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          <div>
-            <div class="ci-lbl">Jam Operasional</div>
-            <div class="ci-val">{{ d.hours }}</div>
-          </div>
-        </div>
-        {% endif %}
       </div>
-      <div class="contact-form reveal" id="contactFormWrap">
-        <h3>Kirim Pesan via WhatsApp</h3>
-        <p>Isi formulir di bawah, pesan akan dikirim langsung ke WhatsApp kami.</p>
-        <form id="contactForm" novalidate>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="cf-name">Nama Anda *</label>
-              <input type="text" id="cf-name" name="name" required placeholder="Budi Santoso">
-            </div>
-            <div class="form-group">
-              <label for="cf-phone">No. HP / WA</label>
-              <input type="tel" id="cf-phone" name="phone" placeholder="08xxxxxxxxxx">
-            </div>
+      <div class="cf rev d2">
+        <h3 class="cf-ti">Kirim Pesan Sekarang</h3>
+        <form id="cf" novalidate aria-label="Formulir kontak {{ d.brand | default: 'Vistara Build' }}">
+          <div class="f-row">
+            <div class="f-g"><label class="f-l" for="fn">Nama Lengkap *</label><input class="f-i" id="fn" name="nama" type="text" placeholder="Bapak / Ibu ..." required autocomplete="name"></div>
+            <div class="f-g"><label class="f-l" for="ft">Nomor HP / WA *</label><input class="f-i" id="ft" name="telp" type="tel" placeholder="08xx-xxxx-xxxx" required autocomplete="tel"></div>
           </div>
-          <div class="form-group">
-            <label for="cf-service">Layanan yang Dibutuhkan</label>
-            <select id="cf-service" name="service">
-              <option value="">-- Pilih Layanan --</option>
-              {% for svc in site.data.services.items %}
-              <option value="{{ svc.title }}">{{ svc.title }}</option>
-              {% endfor %}
-              <option value="Lainnya">Lainnya</option>
+          <div class="f-g"><label class="f-l" for="fs">Layanan yang Dibutuhkan</label>
+            <select class="f-i" id="fs" name="layanan">
+              <option value="">Pilih layanan...</option>
+              {% for svc in site.data.services.items %}<option>{{ svc.title }}</option>{% endfor %}
+              <option>Lainnya</option>
             </select>
           </div>
-          <div class="form-group">
-            <label for="cf-msg">Deskripsi Masalah / Kebutuhan *</label>
-            <textarea id="cf-msg" name="message" rows="4" required placeholder="Ceritakan kondisi tembok atau kebutuhan renovasi Anda..."></textarea>
-          </div>
-          <button type="submit" class="btn btn-a" style="width:100%;justify-content:center;padding:15px;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.5 2C6.261 2 2 6.261 2 11.5c0 1.67.437 3.242 1.205 4.614L2 22l6.024-1.573A9.46 9.46 0 0011.5 21c5.239 0 9.5-4.261 9.5-9.5S16.739 2 11.5 2zm0 17.5a7.988 7.988 0 01-4.071-1.116l-.292-.173-3.576.934.956-3.488-.19-.3A7.968 7.968 0 013.5 11.5C3.5 7.089 7.089 3.5 11.5 3.5S19.5 7.089 19.5 11.5 15.911 19.5 11.5 19.5z"/></svg>
-            Kirim via WhatsApp
-          </button>
+          <div class="f-g"><label class="f-l" for="fm">Deskripsi Kondisi Bangunan *</label><textarea class="f-i" id="fm" name="pesan" placeholder="Ceritakan kondisi tembok / atap / bangunan Anda..." required></textarea></div>
+          <button type="submit" class="btn btn-a" style="width:100%;justify-content:center;font-size:.97rem;padding:15px;">💬 Kirim via WhatsApp</button>
         </form>
       </div>
     </div>
   </div>
 </section>
 
-</main>
-
-<!-- ===================== FOOTER ===================== -->
-<footer class="site-footer" role="contentinfo">
+<!-- FOOTER -->
+<footer class="site-footer" aria-label="Footer {{ d.brand | default: 'Vistara Build' }}">
   <div class="container">
-    <div class="footer-grid">
+    <div class="ft-grid">
       <div>
-        <div class="footer-brand">
-          <div class="footer-brand-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="#0c2922" stroke-width="1.8" stroke-linecap="round"/></svg>
-          </div>
-          {{ d.brand | default: "Vistara Build" }}
+        <div class="ft-brand">
+          <div class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+          <span class="ft-bn">{{ d.brand | default: "Vistara Build" }}</span>
         </div>
-        <p class="footer-tagline">{{ d.footer_tagline | default: "Mitra Terpercaya Renovasi Rumah Anda." }}</p>
-        <div class="footer-socials" aria-label="Media sosial">
-          {% if d.instagram and d.instagram != "" %}
-          <a href="{{ d.instagram }}" class="social-btn" target="_blank" rel="noopener" aria-label="Instagram Vistara Build">📸</a>
-          {% else %}
-          <span class="social-btn" style="opacity:.3;cursor:default;" aria-hidden="true">📸</span>
-          {% endif %}
-          {% if d.facebook and d.facebook != "" %}
-          <a href="{{ d.facebook }}" class="social-btn" target="_blank" rel="noopener" aria-label="Facebook Vistara Build">👍</a>
-          {% else %}
-          <span class="social-btn" style="opacity:.3;cursor:default;" aria-hidden="true">👍</span>
-          {% endif %}
-          {% if d.tiktok and d.tiktok != "" %}
-          <a href="{{ d.tiktok }}" class="social-btn" target="_blank" rel="noopener" aria-label="TikTok Vistara Build">🎵</a>
-          {% else %}
-          <span class="social-btn" style="opacity:.3;cursor:default;" aria-hidden="true">🎵</span>
-          {% endif %}
-          <a href="https://wa.me/{{ wa }}" class="social-btn" target="_blank" rel="noopener" aria-label="WhatsApp Vistara Build">💬</a>
-        </div>
+        <p class="ft-desc">{{ d.footer_tagline | default: "Kontraktor renovasi terpercaya di Yogyakarta. Melayani treatment tembok lembap, pengecatan, waterproofing, perbaikan atap, dan renovasi rumah dengan standar profesional." }}</p>
+        <a href="https://wa.me/{{ wa }}?text={{ wa_default_msg }}" target="_blank" rel="noopener" class="ft-wa"><svg width="17" height="17" viewBox="0 0 32 32" fill="white"><path d="M16 2.667C8.636 2.667 2.667 8.636 2.667 16c0 2.365.634 4.679 1.836 6.7L2.667 29.333l6.8-1.783A13.266 13.266 0 0016 29.333c7.364 0 13.333-5.97 13.333-13.333S23.364 2.667 16 2.667z"/></svg>{{ d.whatsapp_display | default: "0857-4704-0163" }}</a>
       </div>
       <div>
-        <h3 class="footer-heading">Layanan</h3>
-        <ul class="footer-links" role="list">
-          {% for svc in site.data.services.items limit: 5 %}
+        <h4 class="ft-ht">Layanan</h4>
+        <ul class="ft-lns" role="list">
+          {% for svc in site.data.services.items limit: 6 %}
           <li><a href="#layanan">{{ svc.title }}</a></li>
           {% endfor %}
         </ul>
       </div>
       <div>
-        <h3 class="footer-heading">Informasi</h3>
-        <ul class="footer-links" role="list">
+        <h4 class="ft-ht">Navigasi</h4>
+        <ul class="ft-lns" role="list">
           <li><a href="#beranda">Beranda</a></li>
+          <li><a href="#layanan">Layanan</a></li>
+          <li><a href="#proses">Cara Kerja</a></li>
           <li><a href="#proyek">Portofolio</a></li>
           <li><a href="#testimoni">Testimoni</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li><a href="#kontak">Kontak</a></li>
         </ul>
-        {% if d.address and d.address != "" %}
-        <div style="margin-top:20px;font-size:.82rem;color:rgba(255,255,255,.4);line-height:1.7;">
-          📍 {{ d.address }}<br>
-          {% if d.hours and d.hours != "" %}⏰ {{ d.hours }}{% endif %}
-        </div>
-        {% endif %}
       </div>
     </div>
-    <div class="footer-bottom">
-      <p>{{ d.copyright | default: "© 2025 Vistara Build. Semua hak cipta dilindungi." }}</p>
-      <div class="footer-badge">Website aman & terenkripsi</div>
+    <div class="ft-bot">
+      <p class="ft-cp">{{ d.copyright | default: "© 2025 Vistara Build. Daerah Istimewa Yogyakarta, Indonesia." }}</p>
+      <p class="ft-cp">{{ d.footer_tagline_short | default: "Jasa Renovasi &amp; Pengecatan Profesional Yogyakarta" }}</p>
     </div>
   </div>
 </footer>
 
-<!-- ===================== WA FLOAT ===================== -->
-<div class="wa-float" aria-label="Hubungi via WhatsApp">
-  <span class="wa-pulse" aria-hidden="true"></span>
-  <a href="https://wa.me/{{ wa }}?text={{ d.whatsapp_message | default: 'Halo Vistara Build' | url_encode }}" target="_blank" rel="noopener" aria-label="Chat WhatsApp sekarang" title="Chat WhatsApp">
-    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.5 2C6.261 2 2 6.261 2 11.5c0 1.67.437 3.242 1.205 4.614L2 22l6.024-1.573A9.46 9.46 0 0011.5 21c5.239 0 9.5-4.261 9.5-9.5S16.739 2 11.5 2zm0 17.5a7.988 7.988 0 01-4.071-1.116l-.292-.173-3.576.934.956-3.488-.19-.3A7.968 7.968 0 013.5 11.5C3.5 7.089 7.089 3.5 11.5 3.5S19.5 7.089 19.5 11.5 15.911 19.5 11.5 19.5z"/></svg>
-  </a>
-</div>
-
-<!-- ===================== SCRIPTS ===================== -->
 <script>
-(function(){
-  var WA = "{{ wa }}";
+'use strict';
+// Header scroll
+const hdr    = document.getElementById('hdr');
+const navCta = document.getElementById('navCta');
+window.addEventListener('scroll', () => {
+  const sc = window.scrollY > 60;
+  hdr.classList.toggle('sc', sc);
+  navCta.style.display = sc ? 'inline-flex' : 'none';
+}, { passive: true });
 
-  // ── Header scroll ──
-  var hdr = document.getElementById('siteHeader');
-  var navCta = document.getElementById('navCta');
-  function onScroll(){
-    if(window.scrollY > 60){
-      hdr.classList.add('sc');
-      if(navCta) navCta.style.display = 'flex';
-    } else {
-      hdr.classList.remove('sc');
-      if(navCta) navCta.style.display = 'none';
-    }
-  }
-  window.addEventListener('scroll', onScroll, {passive:true});
-  onScroll();
+// Mobile drawer
+const hbg     = document.getElementById('hbg');
+const drawer  = document.getElementById('drawer');
+const drawerX = document.getElementById('drawerX');
+function openD()  { drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); hbg.classList.add('on'); hbg.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
+function closeD() { drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); hbg.classList.remove('on'); hbg.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+hbg.addEventListener('click', openD);
+drawerX.addEventListener('click', closeD);
+drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeD));
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeD(); });
 
-  // ── Mobile drawer ──
-  var ham = document.getElementById('hamburger');
-  var drawer = document.getElementById('mobileDrawer');
-  var dClose = document.getElementById('drawerClose');
-  function openDrawer(){ ham.classList.add('on'); ham.setAttribute('aria-expanded','true'); drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
-  function closeDrawer(){ ham.classList.remove('on'); ham.setAttribute('aria-expanded','false'); drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
-  if(ham){ ham.addEventListener('click', openDrawer); }
-  if(dClose){ dClose.addEventListener('click', closeDrawer); }
-  drawer.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeDrawer); });
+// Scroll reveal
+const revEls = document.querySelectorAll('.rev');
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); revObs.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -28px 0px' });
+revEls.forEach(el => revObs.observe(el));
 
-  // ── FAQ accordion ──
-  document.querySelectorAll('.faq-q').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var item = btn.closest('.faq-item');
-      var ans  = item.querySelector('.faq-ans');
-      var open = item.classList.contains('open');
-      // Close all
-      document.querySelectorAll('.faq-item.open').forEach(function(el){
-        el.classList.remove('open');
-        el.querySelector('.faq-q').setAttribute('aria-expanded','false');
-        el.querySelector('.faq-ans').style.maxHeight = '0';
-        el.querySelector('.faq-ans').removeAttribute('style'); // let CSS handle
-        el.querySelector('.faq-ans').setAttribute('hidden','');
-      });
-      if(!open){
-        item.classList.add('open');
-        btn.setAttribute('aria-expanded','true');
-        ans.removeAttribute('hidden');
-        ans.style.maxHeight = ans.scrollHeight + 'px';
-      }
-    });
+// Counter animation
+const cntEls = document.querySelectorAll('.stat-n[data-target]');
+const cntObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(!e.isIntersecting) return;
+    const el = e.target, tgt = +el.dataset.target, suf = el.dataset.suffix ?? '+', dur = 1500, t0 = performance.now();
+    const tick = now => {
+      const p = Math.min((now-t0)/dur, 1), ease = 1-Math.pow(1-p,3);
+      el.textContent = Math.round(ease*tgt) + suf;
+      if(p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+    cntObs.unobserve(el);
   });
+}, { threshold: 0.5 });
+cntEls.forEach(c => cntObs.observe(c));
 
-  // ── Contact form → WhatsApp ──
-  var form = document.getElementById('contactForm');
-  if(form){
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      var name    = (document.getElementById('cf-name').value || '').trim();
-      var phone   = (document.getElementById('cf-phone').value || '').trim();
-      var service = (document.getElementById('cf-service').value || '').trim();
-      var msg     = (document.getElementById('cf-msg').value || '').trim();
-      if(!name || !msg){ alert('Nama dan deskripsi wajib diisi.'); return; }
-      var text = 'Halo Vistara Build!\n\n'
-               + '👤 Nama: ' + name + '\n'
-               + (phone   ? '📱 HP/WA: ' + phone + '\n' : '')
-               + (service ? '🔧 Layanan: ' + service + '\n' : '')
-               + '\n📝 Kebutuhan:\n' + msg;
-      window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(text), '_blank', 'noopener');
-    });
-  }
+// FAQ accordion
+document.querySelectorAll('.faq-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-it'), isOn = item.classList.contains('on');
+    document.querySelectorAll('.faq-it.on').forEach(o => { o.classList.remove('on'); o.querySelector('.faq-btn').setAttribute('aria-expanded','false'); });
+    if(!isOn) { item.classList.add('on'); btn.setAttribute('aria-expanded','true'); }
+  });
+});
 
-  // ── Reveal on scroll ──
-  var reveals = document.querySelectorAll('.reveal');
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(en){
-      if(en.isIntersecting){ en.target.classList.add('vis'); io.unobserve(en.target); }
-    });
-  }, { threshold: 0.12 });
-  reveals.forEach(function(el){ io.observe(el); });
-})();
+// Contact form → WhatsApp
+const WA = "{{ wa }}";
+document.getElementById('cf').addEventListener('submit', e => {
+  e.preventDefault();
+  const nama = document.getElementById('fn').value.trim();
+  const telp = document.getElementById('ft').value.trim();
+  const lyr  = document.getElementById('fs').value || 'Belum dipilih';
+  const msg2 = document.getElementById('fm').value.trim();
+  if(!nama||!telp||!msg2){ alert('Mohon isi nama, nomor HP, dan deskripsi kondisi bangunan.'); return; }
+  const txt = `Halo {{ d.brand | default: "Vistara Build" }} 👋\n\n*Nama:* ${nama}\n*No. HP:* ${telp}\n*Layanan:* ${lyr}\n\n*Kondisi Bangunan:*\n${msg2}`;
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(txt)}`, '_blank', 'noopener,noreferrer');
+});
 </script>
-
 </body>
 </html>
