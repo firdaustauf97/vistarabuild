@@ -162,11 +162,11 @@ layout: null
     .hamburger.on span:nth-child(3) { transform:translateY(-7.5px) rotate(-45deg); }
 
     /* MOBILE DRAWER */
-    .drawer { display:none; position:fixed; inset:0; z-index:800; background:var(--pd); flex-direction:column; padding:100px 32px 48px; gap:2px; transform:translateX(100%); transition:transform .35s var(--ease); }
+    .drawer { display:none; position:fixed; inset:0; z-index:9999; background:var(--pd); flex-direction:column; padding:100px 32px 48px; gap:2px; transform:translateX(100%); transition:transform .35s var(--ease); }
     .drawer.open { transform:translateX(0); }
     .drawer-lnk { display:block; padding:17px 0; font-size:1.45rem; font-weight:700; color:rgba(255,255,255,.75); border-bottom:1px solid rgba(255,255,255,.08); transition:color .2s, padding-left .2s; }
     .drawer-lnk:hover { color:var(--a); padding-left:8px; }
-    .drawer-x { position:absolute; top:20px; right:24px; font-size:1.8rem; color:rgba(255,255,255,.5); cursor:pointer; padding:8px; line-height:1; }
+    .drawer-x { position:absolute; top:20px; right:24px; font-size:2rem; color:#ffffff; cursor:pointer; padding:12px; line-height:1; z-index:10000; background:rgba(255,255,255,.1); border-radius:50%; width:44px; height:44px; display:flex; align-items:center; justify-content:center; }
 
     /* HERO */
     .hero { position:relative; min-height:100svh; display:flex; align-items:center; overflow:hidden; background:linear-gradient(145deg,#0c2922 0%,#143f37 55%,#1a5447 100%); }
@@ -236,6 +236,17 @@ layout: null
     .step:hover .step-n { background:var(--a); color:var(--pd); transform:scale(1.1); }
     .step-ti { font-size:.96rem; font-weight:700; color:var(--t); margin-bottom:7px; }
     .step-de { font-size:.83rem; color:var(--t2); line-height:1.65; }
+
+    /* BEFORE / AFTER SLIDER */
+    .ba-container { position:relative; width:100%; height:100%; overflow:hidden; user-select:none; -webkit-user-select:none; touch-action:pan-y; }
+    .ba-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; pointer-events:none; }
+    .ba-before-layer { position:absolute; inset:0; width:100%; height:100%; overflow:hidden; clip-path:inset(0 calc(100% - var(--pos, 50%)) 0 0); }
+    .ba-handle { position:absolute; top:0; bottom:0; left:var(--pos, 50%); width:3px; background:#ffffff; box-shadow:0 0 12px rgba(0,0,0,0.5); transform:translateX(-50%); pointer-events:none; z-index:5; }
+    .ba-handle-button { position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:38px; height:38px; border-radius:50%; background:var(--a); color:var(--pd); box-shadow:0 4px 16px rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; font-size:.85rem; font-weight:800; }
+    .ba-range { position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:ew-resize; z-index:10; margin:0; }
+    .ba-badge { position:absolute; top:14px; z-index:6; padding:4px 10px; border-radius:999px; font-size:.68rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; pointer-events:none; }
+    .ba-badge-before { left:14px; background:rgba(12,41,34,0.85); color:#ffffff; border:1px solid rgba(255,255,255,0.3); }
+    .ba-badge-after { right:14px; background:var(--a); color:var(--pd); }
 
     /* PROJECTS */
     .proj-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
@@ -563,9 +574,26 @@ layout: null
       {% for proj in site.data.projects.items %}
       {% assign di = "d" | append: forloop.index0 %}
       <article class="proj-card rev {% if forloop.index > 1 %}{{ di }}{% endif %}" aria-labelledby="p{{ forloop.index }}">
-        {% if proj.image and proj.image != "" %}
+        {% if proj.image_before and proj.image_before != "" and proj.image and proj.image != "" %}
+        <!-- INTERACTIVE BEFORE / AFTER SLIDER -->
+        <div class="ba-container" style="--pos: 50%;">
+          <img class="ba-img" src="{{ proj.image | relative_url }}" alt="{{ proj.title }} (Sesudah)" loading="lazy">
+          <div class="ba-before-layer">
+            <img class="ba-img" src="{{ proj.image_before | relative_url }}" alt="{{ proj.title }} (Sebelum)" loading="lazy">
+          </div>
+          <div class="ba-handle" aria-hidden="true"><div class="ba-handle-button">↔</div></div>
+          <span class="ba-badge ba-badge-before">Sebelum</span>
+          <span class="ba-badge ba-badge-after">Sesudah</span>
+          <input type="range" min="0" max="100" value="50" class="ba-range" aria-label="Geser untuk membandingkan sebelum dan sesudah {{ proj.title }}">
+        </div>
+        {% elsif proj.image and proj.image != "" %}
+        <!-- SINGLE AFTER IMAGE -->
         <img src="{{ proj.image | relative_url }}" alt="{{ proj.title }} — {{ proj.location }}" loading="lazy" width="600" height="450">
+        {% elsif proj.image_before and proj.image_before != "" %}
+        <!-- SINGLE BEFORE IMAGE -->
+        <img src="{{ proj.image_before | relative_url }}" alt="{{ proj.title }} — {{ proj.location }}" loading="lazy" width="600" height="450">
         {% else %}
+        <!-- PLACEHOLDER -->
         <div class="proj-ph-inner" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
           <span>Tambahkan foto</span>
@@ -759,12 +787,25 @@ window.addEventListener('scroll', () => {
 const hbg     = document.getElementById('hbg');
 const drawer  = document.getElementById('drawer');
 const drawerX = document.getElementById('drawerX');
+
 function openD()  { drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); hbg.classList.add('on'); hbg.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
 function closeD() { drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); hbg.classList.remove('on'); hbg.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
-hbg.addEventListener('click', openD);
-drawerX.addEventListener('click', closeD);
+
+hbg.addEventListener('click', () => {
+  if (drawer.classList.contains('open')) closeD();
+  else openD();
+});
+if (drawerX) drawerX.addEventListener('click', closeD);
 drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeD));
 document.addEventListener('keydown', e => { if(e.key==='Escape') closeD(); });
+
+// Before / After Slider
+document.querySelectorAll('.ba-range').forEach(range => {
+  range.addEventListener('input', e => {
+    const container = e.target.closest('.ba-container');
+    if (container) container.style.setProperty('--pos', e.target.value + '%');
+  });
+});
 
 // Scroll reveal
 const revEls = document.querySelectorAll('.rev');
