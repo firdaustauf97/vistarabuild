@@ -287,6 +287,28 @@
         <div class="sec-hd"><h2>⚙️ Identitas &amp; Konten Utama</h2></div>
 
         <div class="form-card">
+          <h3 style="font-size:1rem;margin-bottom:16px;">🖼️ Pengaturan Logo Brand</h3>
+          <div class="form-grp">
+            <label class="label">Logo Lengkap (Header Website)</label>
+            <div class="img-picker">
+              <div class="img-prev" id="prev_logo_full" style="background:#143f37;padding:6px;">${d.logo_full ? `<img src="../${d.logo_full}">` : 'No Logo'}</div>
+              <input type="hidden" id="site_logo_full" value="${d.logo_full || ''}">
+              <input type="file" id="file_logo_full" style="display:none" onchange="handleImgUpload(this, 'site_logo_full', 'prev_logo_full')">
+              <button type="button" class="file-btn" onclick="document.getElementById('file_logo_full').click()">Ganti Logo Lengkap</button>
+            </div>
+          </div>
+          <div class="form-grp" style="margin-top:14px;">
+            <label class="label">Logo Icon / Symbol (Favicon / Badge)</label>
+            <div class="img-picker">
+              <div class="img-prev" id="prev_logo_mark">${d.logo_mark ? `<img src="../${d.logo_mark}">` : 'No Logo'}</div>
+              <input type="hidden" id="site_logo_mark" value="${d.logo_mark || ''}">
+              <input type="file" id="file_logo_mark" style="display:none" onchange="handleImgUpload(this, 'site_logo_mark', 'prev_logo_mark')">
+              <button type="button" class="file-btn" onclick="document.getElementById('file_logo_mark').click()">Ganti Logo Icon</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-card">
           <h3 style="font-size:1rem;margin-bottom:16px;">Nama &amp; Brand</h3>
           <div class="form-grp">
             <label class="label">Nama Bisnis</label>
@@ -490,6 +512,8 @@
       if (!getToken()) { openTokenModal(); return; }
 
       if (activeTab === 'site') {
+        siteData.logo_full = document.getElementById('site_logo_full').value;
+        siteData.logo_mark = document.getElementById('site_logo_mark').value;
         siteData.brand = document.getElementById('site_brand').value;
         siteData.tagline = document.getElementById('site_tagline').value;
         siteData.hero_title = document.getElementById('site_hero_title').value;
