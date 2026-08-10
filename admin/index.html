@@ -34,19 +34,19 @@
     .admin-icon { width: 34px; height: 34px; border-radius: 9px; background: var(--a); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .admin-icon svg { width: 18px; height: 18px; fill: var(--pd); }
     .hdr-acts { display: flex; align-items: center; gap: 12px; }
-    .btn-save { background: var(--a); color: var(--pd); font-weight: 800; padding: 9px 20px; border-radius: 999px; font-size: .88rem; display: inline-flex; align-items: center; gap: 6px; transition: background .2s; }
-    .btn-save:hover { background: var(--ah); }
+    .btn-save { background: var(--a); color: var(--pd); font-weight: 800; padding: 9px 20px; border-radius: 999px; font-size: .88rem; display: inline-flex; align-items: center; gap: 6px; transition: background .2s, transform .1s; }
+    .btn-save:hover { background: var(--ah); transform: translateY(-1px); }
     .btn-token { background: rgba(255,255,255,.12); color: rgba(255,255,255,.85); font-size: .78rem; font-weight: 600; padding: 6px 14px; border-radius: 8px; transition: background .2s; }
     .btn-token:hover { background: rgba(255,255,255,.2); color: #fff; }
 
     /* LAYOUT */
     .admin-body { display: flex; flex: 1; }
-    .sidebar { width: 250px; background: #fff; border-right: 1px solid var(--bd); padding: 20px 12px; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
-    .nav-item { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; font-weight: 700; font-size: .9rem; color: var(--t2); transition: background .2s, color .2s; cursor: pointer; text-align: left; }
+    .sidebar { width: 260px; background: #fff; border-right: 1px solid var(--bd); padding: 20px 12px; display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; font-weight: 700; font-size: .88rem; color: var(--t2); transition: background .2s, color .2s; cursor: pointer; text-align: left; background: none; }
     .nav-item:hover { background: var(--ap); color: #8a5f00; }
     .nav-item.active { background: var(--p); color: #fff; }
 
-    .content { flex: 1; padding: 32px 40px; max-width: 900px; }
+    .content { flex: 1; padding: 32px 40px; max-width: 960px; }
     .sec-hd { margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; }
     .sec-hd h2 { font-size: 1.4rem; font-weight: 800; color: var(--t); }
 
@@ -57,23 +57,23 @@
     .label { display: block; font-size: .83rem; font-weight: 700; color: var(--t); margin-bottom: 6px; }
     .hint { font-size: .75rem; color: var(--mu); margin-top: 4px; }
     .input-txt { width: 100%; padding: 11px 14px; border: 1.5px solid var(--bd); border-radius: 10px; font-size: .9rem; background: #fff; outline: none; transition: border-color .2s; }
-    .input-txt:focus { border-color: var(--p); }
+    .input-txt:focus { border-color: var(--p); box-shadow: 0 0 0 3px rgba(20,63,55,.1); }
     textarea.input-txt { min-height: 90px; resize: vertical; }
 
     /* IMAGE UPLOADER */
-    .img-picker { display: flex; align-items: center; gap: 16px; }
-    .img-prev { width: 64px; height: 64px; border-radius: 10px; border: 1px solid var(--bd); background: var(--bg); object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: .7rem; color: var(--mu); overflow: hidden; }
+    .img-picker { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .img-prev { width: 72px; height: 72px; border-radius: 10px; border: 1px solid var(--bd); background: var(--bg); object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: .7rem; color: var(--mu); overflow: hidden; flex-shrink: 0; }
     .img-prev img { width: 100%; height: 100%; object-fit: cover; }
-    .file-btn { padding: 8px 16px; border-radius: 8px; background: var(--bg); border: 1px solid var(--bd); font-size: .82rem; font-weight: 700; color: var(--t2); cursor: pointer; }
+    .file-btn { padding: 9px 16px; border-radius: 9px; background: var(--bg); border: 1px solid var(--bd); font-size: .82rem; font-weight: 700; color: var(--t2); cursor: pointer; transition: background .2s; }
     .file-btn:hover { background: var(--bd); }
 
     /* REPEATABLE ITEMS */
-    .item-box { background: var(--bg); border: 1px solid var(--bd); border-radius: 14px; padding: 18px; margin-bottom: 14px; position: relative; }
-    .item-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-    .item-num { font-weight: 800; font-size: .85rem; color: var(--p); }
-    .btn-del { color: #dc2626; font-size: .8rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; background: #fee2e2; }
+    .item-box { background: var(--bg); border: 1px solid var(--bd); border-radius: 14px; padding: 20px; margin-bottom: 16px; position: relative; }
+    .item-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .item-num { font-weight: 800; font-size: .88rem; color: var(--p); }
+    .btn-del { color: #dc2626; font-size: .8rem; font-weight: 700; padding: 4px 12px; border-radius: 6px; background: #fee2e2; transition: background .2s; }
     .btn-del:hover { background: #fca5a5; }
-    .btn-add { background: var(--ap); color: #8a5f00; font-weight: 700; padding: 10px 18px; border-radius: 10px; font-size: .85rem; margin-top: 8px; }
+    .btn-add { background: var(--ap); color: #8a5f00; font-weight: 800; padding: 12px 20px; border-radius: 12px; font-size: .88rem; width: 100%; text-align: center; transition: background .2s; margin-top: 8px; }
     .btn-add:hover { background: #fce8b8; }
 
     /* TOKEN MODAL */
@@ -81,7 +81,7 @@
     .modal-card { background: #fff; border-radius: 20px; width: min(100%, 460px); padding: 32px 28px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
     .modal-title { font-size: 1.35rem; font-weight: 800; color: var(--pd); margin-bottom: 6px; }
     .modal-sub { font-size: .85rem; color: var(--t2); margin-bottom: 20px; line-height: 1.5; }
-    .tok-link { display: block; margin-top: 12px; font-size: .82rem; color: var(--p); font-weight: 700; text-decoration: underline; }
+    .tok-link { display: block; margin-top: 14px; font-size: .82rem; color: var(--p); font-weight: 700; text-decoration: underline; }
 
     /* TOAST STATUS */
     .toast { position: fixed; bottom: 24px; right: 24px; background: var(--pd); color: #fff; padding: 12px 24px; border-radius: 999px; font-weight: 700; font-size: .9rem; box-shadow: 0 10px 30px rgba(0,0,0,.3); z-index: 1000; transform: translateY(100px); opacity: 0; transition: all .3s cubic-bezier(0.4,0,0.2,1); }
@@ -103,7 +103,7 @@
       <div class="admin-icon">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="#0c2922" stroke-width="1.8" stroke-linecap="round"/></svg>
       </div>
-      Vistara Build — Admin
+      Vistara Build — Kelola Website
     </div>
     <div class="hdr-acts">
       <button type="button" class="btn-token" onclick="openTokenModal()">🔑 Kode Akses</button>
@@ -113,19 +113,21 @@
 
   <!-- BODY -->
   <div class="admin-body">
-    <!-- SIDEBAR -->
+    <!-- SIDEBAR NAV -->
     <nav class="sidebar">
-      <button class="nav-item active" onclick="switchTab('site')">⚙️ Identitas &amp; Konten</button>
-      <button class="nav-item" onclick="switchTab('services')">🔧 Layanan</button>
-      <button class="nav-item" onclick="switchTab('projects')">🏗️ Portofolio</button>
-      <button class="nav-item" onclick="switchTab('testimonials')">⭐ Testimoni</button>
-      <button class="nav-item" onclick="switchTab('faq')">❓ FAQ</button>
-      <a href="../" target="_blank" class="nav-item" style="margin-top:auto;color:var(--mu);">↗️ Lihat Website</a>
+      <button class="nav-item active" onclick="switchTab('site', event)">⚙️ Identitas &amp; Hero</button>
+      <button class="nav-item" onclick="switchTab('stats', event)">📊 Statistik Perusahaan</button>
+      <button class="nav-item" onclick="switchTab('services', event)">🔧 Layanan</button>
+      <button class="nav-item" onclick="switchTab('projects', event)">🏗️ Portofolio &amp; Kategori</button>
+      <button class="nav-item" onclick="switchTab('testimonials', event)">⭐ Testimoni Klien</button>
+      <button class="nav-item" onclick="switchTab('faq', event)">❓ Pertanyaan (FAQ)</button>
+      <button class="nav-item" onclick="switchTab('contact', event)">📞 Kontak, Medsos &amp; SEO</button>
+      <a href="../" target="_blank" class="nav-item" style="margin-top:auto;color:var(--mu);">↗️ Lihat Website Utama</a>
     </nav>
 
-    <!-- CONTENT -->
+    <!-- MAIN CONTENT AREA -->
     <main class="content" id="mainContent">
-      <div style="text-align:center;padding:60px 0;color:var(--mu);">Memuat data website...</div>
+      <div style="text-align:center;padding:60px 0;color:var(--mu);font-weight:700;">🔄 Memuat seluruh data website dari server...</div>
     </main>
   </div>
 
@@ -142,7 +144,7 @@
     </div>
   </div>
 
-  <!-- TOAST -->
+  <!-- TOAST NOTIFICATION -->
   <div class="toast" id="toast">✅ Perubahan berhasil disimpan ke website!</div>
 
   <script>
@@ -158,7 +160,7 @@
     function closeTokenModal() { document.getElementById('tokModal').style.display = 'none'; }
     function saveToken() {
       const tok = (document.getElementById('tokInput').value || '').trim();
-      if (!tok) { alert('Masukkan token ghp_...'); return; }
+      if (!tok) { alert('Mohon masukkan token ghp_...'); return; }
       localStorage.setItem('vistara_admin_tok', tok);
       closeTokenModal();
       loadAllData();
@@ -263,28 +265,31 @@
       }
     }
 
-    function switchTab(tab) {
+    function switchTab(tab, evt) {
       activeTab = tab;
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-      event.target.classList.add('active');
+      if (evt && evt.target) evt.target.classList.add('active');
       renderTab(tab);
     }
 
     function renderTab(tab) {
       const container = document.getElementById('mainContent');
       if (tab === 'site') renderSiteTab(container);
+      else if (tab === 'stats') renderStatsTab(container);
       else if (tab === 'services') renderServicesTab(container);
       else if (tab === 'projects') renderProjectsTab(container);
       else if (tab === 'testimonials') renderTestimonialsTab(container);
       else if (tab === 'faq') renderFaqTab(container);
+      else if (tab === 'contact') renderContactTab(container);
     }
 
     /* ─── TAB RENDERING ─── */
 
+    // 1. IDENTITAS & HERO
     function renderSiteTab(c) {
       const d = siteData || {};
       c.innerHTML = `
-        <div class="sec-hd"><h2>⚙️ Identitas &amp; Konten Utama</h2></div>
+        <div class="sec-hd"><h2>⚙️ Identitas &amp; Hero Utama</h2></div>
 
         <div class="form-card">
           <h3 style="font-size:1rem;margin-bottom:16px;">🖼️ Pengaturan Logo Brand</h3>
@@ -298,7 +303,7 @@
             </div>
           </div>
           <div class="form-grp" style="margin-top:14px;">
-            <label class="label">Logo Icon / Symbol (Favicon / Badge)</label>
+            <label class="label">Logo Icon / Symbol (Favicon &amp; Badge)</label>
             <div class="img-picker">
               <div class="img-prev" id="prev_logo_mark">${d.logo_mark ? `<img src="../${d.logo_mark}">` : 'No Logo'}</div>
               <input type="hidden" id="site_logo_mark" value="${d.logo_mark || ''}">
@@ -330,31 +335,64 @@
             <label class="label">Deskripsi Hero</label>
             <textarea class="input-txt" id="site_hero_desc">${d.hero_description || ''}</textarea>
           </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="form-grp">
+              <label class="label">Teks Tombol Utama</label>
+              <input class="input-txt" id="site_cta_primary" value="${d.hero_cta_primary || 'Konsultasi Gratis'}">
+            </div>
+            <div class="form-grp">
+              <label class="label">Teks Tombol Kedua</label>
+              <input class="input-txt" id="site_cta_secondary" value="${d.hero_cta_secondary || 'Lihat Portofolio'}">
+            </div>
+          </div>
           <div class="form-grp">
-            <label class="label">Foto Hero Utama</label>
+            <label class="label">Foto Hero Utama (Jika Kosong Menggunakan Foto Pilihan)</label>
             <div class="img-picker">
               <div class="img-prev" id="prev_hero_image">${d.hero_image ? `<img src="../${d.hero_image}">` : 'No Foto'}</div>
               <input type="hidden" id="site_hero_image" value="${d.hero_image || ''}">
               <input type="file" id="file_hero_image" style="display:none" onchange="handleImgUpload(this, 'site_hero_image', 'prev_hero_image')">
-              <button type="button" class="file-btn" onclick="document.getElementById('file_hero_image').click()">Pilih Foto Baru</button>
+              <button type="button" class="file-btn" onclick="document.getElementById('file_hero_image').click()">Pilih Foto Hero Baru</button>
             </div>
-          </div>
-        </div>
-
-        <div class="form-card">
-          <h3 style="font-size:1rem;margin-bottom:16px;">Kontak &amp; Operasional</h3>
-          <div class="form-grp">
-            <label class="label">Nomor WhatsApp (Tanpa +)</label>
-            <input class="input-txt" id="site_whatsapp" value="${d.whatsapp || ''}">
-          </div>
-          <div class="form-grp">
-            <label class="label">Jam Operasional</label>
-            <input class="input-txt" id="site_hours" value="${d.hours || ''}">
           </div>
         </div>
       `;
     }
 
+    // 2. STATISTIK PERUSAHAAN
+    function renderStatsTab(c) {
+      const d = siteData || {};
+      const stats = d.stats || [
+        { value: '150+', label: 'Proyek Selesai' },
+        { value: '5+', label: 'Tahun Pengalaman' },
+        { value: '98%', label: 'Kepuasan Klien' },
+        { value: '100%', label: 'Bergaransi' }
+      ];
+
+      let html = `<div class="sec-hd"><h2>📊 Statistik Perusahaan</h2></div><div class="form-card">`;
+      html += `<p style="font-size:.85rem;color:var(--mu);margin-bottom:20px;">Atur 4 angka statistik utama yang muncul di bagian atas website.</p>`;
+
+      stats.forEach((st, idx) => {
+        html += `
+          <div class="item-box">
+            <span class="item-num">Statistik #${idx+1}</span>
+            <div style="display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-top:10px;">
+              <div>
+                <label class="label">Nilai / Angka (misal: 150+, 98%, 5+)</label>
+                <input class="input-txt" id="stat_val_${idx}" value="${st.value || ''}">
+              </div>
+              <div>
+                <label class="label">Label Keterangan (misal: Proyek Selesai)</label>
+                <input class="input-txt" id="stat_lbl_${idx}" value="${st.label || ''}">
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      html += `</div>`;
+      c.innerHTML = html;
+    }
+
+    // 3. LAYANAN
     function renderServicesTab(c) {
       const items = (servicesData && servicesData.items) ? servicesData.items : [];
       let html = `<div class="sec-hd"><h2>🔧 Daftar Layanan</h2></div><div class="form-card">`;
@@ -370,7 +408,20 @@
               <input class="input-txt" id="svc_title_${idx}" value="${item.title || ''}">
             </div>
             <div class="form-grp">
-              <label class="label">Deskripsi</label>
+              <label class="label">Pilihan Ikon Layanan</label>
+              <select class="input-txt" id="svc_icon_${idx}">
+                <option value="water" ${item.icon==='water'?'selected':''}>💧 Air / Lembap (Water Spray)</option>
+                <option value="paint" ${item.icon==='paint'?'selected':''}>🎨 Pengecatan (Paint Roller)</option>
+                <option value="waterproof" ${item.icon==='waterproof'?'selected':''}>🛡️ Waterproofing (Shield Layer)</option>
+                <option value="home" ${item.icon==='home'?'selected':''}>🏠 Rumah / Bangunan (Home)</option>
+                <option value="build" ${item.icon==='build'?'selected':''}>🏗️ Konstruksi / Renovasi (Building)</option>
+                <option value="inspect" ${item.icon==='inspect'?'selected':''}>🔍 Survei &amp; Diagnosa (Search)</option>
+                <option value="finish" ${item.icon==='finish'?'selected':''}>✨ Finishing &amp; Rapih (Check Mark)</option>
+                <option value="design" ${item.icon==='design'?'selected':''}>📏 Pagar &amp; Desain (Ruler)</option>
+              </select>
+            </div>
+            <div class="form-grp">
+              <label class="label">Deskripsi Layanan</label>
               <textarea class="input-txt" id="svc_desc_${idx}">${item.description || ''}</textarea>
             </div>
           </div>
@@ -380,9 +431,10 @@
       c.innerHTML = html;
     }
 
+    // 4. PORTOFOLIO & KATEGORI
     function renderProjectsTab(c) {
       const items = (projectsData && projectsData.items) ? projectsData.items : [];
-      let html = `<div class="sec-hd"><h2>🏗️ Portofolio Proyek</h2></div><div class="form-card">`;
+      let html = `<div class="sec-hd"><h2>🏗️ Portofolio &amp; Kategori Pekerjaan</h2></div><div class="form-card">`;
       items.forEach((item, idx) => {
         html += `
           <div class="item-box">
@@ -391,44 +443,60 @@
               <button type="button" class="btn-del" onclick="deleteProject(${idx})">Hapus</button>
             </div>
             <div class="form-grp">
-              <label class="label">Judul Proyek</label>
+              <label class="label">Judul Proyek Pekerjaan</label>
               <input class="input-txt" id="proj_title_${idx}" value="${item.title || ''}">
-            </div>
-            <div class="form-grp">
-              <label class="label">Lokasi</label>
-              <input class="input-txt" id="proj_loc_${idx}" value="${item.location || ''}">
-            </div>
-            <div class="form-grp">
-              <label class="label">Deskripsi Pekerjaan</label>
-              <textarea class="input-txt" id="proj_desc_${idx}">${item.description || ''}</textarea>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
               <div class="form-grp">
-                <label class="label">Foto Sebelum (Before)</label>
+                <label class="label">Lokasi Proyek</label>
+                <input class="input-txt" id="proj_loc_${idx}" value="${item.location || ''}">
+              </div>
+              <div class="form-grp">
+                <label class="label">Jenis Pekerjaan (Kategori Filter)</label>
+                <select class="input-txt" id="proj_cat_${idx}">
+                  <option value="lembap" ${item.category==='lembap'?'selected':''}>💧 Treatment Tembok Lembap</option>
+                  <option value="cat" ${item.category==='cat'?'selected':''}>🎨 Pengecatan Interior &amp; Eksterior</option>
+                  <option value="waterproof" ${item.category==='waterproof'?'selected':''}>🛡️ Waterproofing &amp; Anti Rembes</option>
+                  <option value="renovasi" ${item.category==='renovasi'?'selected':''}>🔨 Renovasi Rumah &amp; Bangunan</option>
+                  <option value="pagar" ${item.category==='pagar'?'selected':''}>🚧 Fabrikasi &amp; Pemasangan Pagar</option>
+                  <option value="atap" ${item.category==='atap'?'selected':''}>⛺ Kanopi, Atap &amp; Plafon</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-grp">
+              <label class="label">Deskripsi Pekerjaan Detail</label>
+              <textarea class="input-txt" id="proj_desc_${idx}">${item.description || ''}</textarea>
+            </div>
+
+            <!-- FOTO SEBELUM & SESUDAH -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;background:#fff;padding:14px;border-radius:12px;border:1px solid var(--bd);">
+              <div class="form-grp" style="margin-bottom:0;">
+                <label class="label">📷 Foto SEBELUM (Before)</label>
                 <div class="img-picker">
                   <div class="img-prev" id="prev_proj_b_${idx}">${item.image_before ? `<img src="../${item.image_before}">` : 'No Foto'}</div>
                   <input type="hidden" id="proj_b_${idx}" value="${item.image_before || ''}">
                   <input type="file" id="file_proj_b_${idx}" style="display:none" onchange="handleImgUpload(this, 'proj_b_${idx}', 'prev_proj_b_${idx}')">
-                  <button type="button" class="file-btn" onclick="document.getElementById('file_proj_b_${idx}').click()">Pilih Foto</button>
+                  <button type="button" class="file-btn" onclick="document.getElementById('file_proj_b_${idx}').click()">Pilih Foto Sebelum</button>
                 </div>
               </div>
-              <div class="form-grp">
-                <label class="label">Foto Hasil (After)</label>
+              <div class="form-grp" style="margin-bottom:0;">
+                <label class="label">📸 Foto SESUDAH (After)</label>
                 <div class="img-picker">
                   <div class="img-prev" id="prev_proj_a_${idx}">${item.image ? `<img src="../${item.image}">` : 'No Foto'}</div>
                   <input type="hidden" id="proj_a_${idx}" value="${item.image || ''}">
                   <input type="file" id="file_proj_a_${idx}" style="display:none" onchange="handleImgUpload(this, 'proj_a_${idx}', 'prev_proj_a_${idx}')">
-                  <button type="button" class="file-btn" onclick="document.getElementById('file_proj_a_${idx}').click()">Pilih Foto</button>
+                  <button type="button" class="file-btn" onclick="document.getElementById('file_proj_a_${idx}').click()">Pilih Foto Hasil</button>
                 </div>
               </div>
             </div>
           </div>
         `;
       });
-      html += `<button type="button" class="btn-add" onclick="addProject()">+ Tambah Proyek Baru</button></div>`;
+      html += `<button type="button" class="btn-add" onclick="addProject()">+ Tambah Proyek Portofolio Baru</button></div>`;
       c.innerHTML = html;
     }
 
+    // 5. TESTIMONI
     function renderTestimonialsTab(c) {
       const items = (testimonialsData && testimonialsData.items) ? testimonialsData.items : [];
       let html = `<div class="sec-hd"><h2>⭐ Testimoni Klien</h2></div><div class="form-card">`;
@@ -439,16 +507,18 @@
               <span class="item-num">Testimoni #${idx+1}</span>
               <button type="button" class="btn-del" onclick="deleteTestimonial(${idx})">Hapus</button>
             </div>
-            <div class="form-grp">
-              <label class="label">Nama Klien</label>
-              <input class="input-txt" id="testi_name_${idx}" value="${item.name || ''}">
+            <div style="display:grid;grid-template-columns:2fr 1fr;gap:14px;">
+              <div class="form-grp">
+                <label class="label">Nama Klien</label>
+                <input class="input-txt" id="testi_name_${idx}" value="${item.name || ''}">
+              </div>
+              <div class="form-grp">
+                <label class="label">Lokasi Klien</label>
+                <input class="input-txt" id="testi_loc_${idx}" value="${item.location || ''}">
+              </div>
             </div>
             <div class="form-grp">
-              <label class="label">Lokasi</label>
-              <input class="input-txt" id="testi_loc_${idx}" value="${item.location || ''}">
-            </div>
-            <div class="form-grp">
-              <label class="label">Ulasan / Testimoni</label>
+              <label class="label">Ulasan / Pendapat Klien</label>
               <textarea class="input-txt" id="testi_text_${idx}">${item.text || ''}</textarea>
             </div>
           </div>
@@ -458,9 +528,10 @@
       c.innerHTML = html;
     }
 
+    // 6. FAQ
     function renderFaqTab(c) {
       const items = (faqData && faqData.items) ? faqData.items : [];
-      let html = `<div class="sec-hd"><h2>❓ FAQ Pertanyaan</h2></div><div class="form-card">`;
+      let html = `<div class="sec-hd"><h2>❓ FAQ Pertanyaan Umum</h2></div><div class="form-card">`;
       items.forEach((item, idx) => {
         html += `
           <div class="item-box">
@@ -469,18 +540,76 @@
               <button type="button" class="btn-del" onclick="deleteFaq(${idx})">Hapus</button>
             </div>
             <div class="form-grp">
-              <label class="label">Pertanyaan</label>
+              <label class="label">Pertanyaan yang Sering Diajukan</label>
               <input class="input-txt" id="faq_q_${idx}" value="${item.question || ''}">
             </div>
             <div class="form-grp">
-              <label class="label">Jawaban</label>
+              <label class="label">Jawaban Penjelasan</label>
               <textarea class="input-txt" id="faq_a_${idx}">${item.answer || ''}</textarea>
             </div>
           </div>
         `;
       });
-      html += `<button type="button" class="btn-add" onclick="addFaq()">+ Tambah FAQ Baru</button></div>`;
+      html += `<button type="button" class="btn-add" onclick="addFaq()">+ Tambah Pertanyaan FAQ Baru</button></div>`;
       c.innerHTML = html;
+    }
+
+    // 7. KONTAK, MEDSOS & SEO
+    function renderContactTab(c) {
+      const d = siteData || {};
+      c.innerHTML = `
+        <div class="sec-hd"><h2>📞 Kontak, Medsos &amp; Pengaturan SEO</h2></div>
+
+        <div class="form-card">
+          <h3 style="font-size:1rem;margin-bottom:16px;">WhatsApp &amp; Kontak Utama</h3>
+          <div class="form-grp">
+            <label class="label">Nomor WhatsApp (Tanpa + atau spasi, contoh: 6285747040163)</label>
+            <input class="input-txt" id="site_whatsapp" value="${d.whatsapp || ''}">
+          </div>
+          <div class="form-grp">
+            <label class="label">Pesan Otomatis WhatsApp Saat Klien Klik Tombol</label>
+            <input class="input-txt" id="site_wa_msg" value="${d.whatsapp_message || ''}">
+          </div>
+          <div class="form-grp">
+            <label class="label">Alamat Kantor / Area Layanan</label>
+            <input class="input-txt" id="site_address" value="${d.address || ''}">
+          </div>
+          <div class="form-grp">
+            <label class="label">Jam Operasional Kantor</label>
+            <input class="input-txt" id="site_hours" value="${d.hours || ''}">
+          </div>
+        </div>
+
+        <div class="form-card">
+          <h3 style="font-size:1rem;margin-bottom:16px;">Link Media Sosial</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="form-grp">
+              <label class="label">Instagram URL</label>
+              <input class="input-txt" id="site_ig" value="${d.instagram || ''}" placeholder="https://instagram.com/vistarabuild">
+            </div>
+            <div class="form-grp">
+              <label class="label">TikTok URL</label>
+              <input class="input-txt" id="site_tt" value="${d.tiktok || ''}" placeholder="https://tiktok.com/@vistarabuild">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <h3 style="font-size:1rem;margin-bottom:16px;">🔍 Pengaturan Mesin Pencari (Google SEO)</h3>
+          <div class="form-grp">
+            <label class="label">Deskripsi Meta SEO (Muncul di Google Search)</label>
+            <textarea class="input-txt" id="site_meta_desc">${d.meta_description || ''}</textarea>
+          </div>
+          <div class="form-grp">
+            <label class="label">Kata Kunci Meta SEO (Dipisahkan koma)</label>
+            <input class="input-txt" id="site_meta_kw" value="${d.meta_keywords || ''}">
+          </div>
+          <div class="form-grp">
+            <label class="label">Teks Hak Cipta Footer</label>
+            <input class="input-txt" id="site_copyright" value="${d.copyright || ''}">
+          </div>
+        </div>
+      `;
     }
 
     /* ─── UPLOAD HELPER ─── */
@@ -495,10 +624,10 @@
     }
 
     /* ─── ITEM ADD / DEL ─── */
-    function addService() { servicesData.items = servicesData.items || []; servicesData.items.push({ title: 'Layanan Baru', description: '' }); renderServicesTab(document.getElementById('mainContent')); }
+    function addService() { servicesData.items = servicesData.items || []; servicesData.items.push({ title: 'Layanan Baru', icon: 'water', description: '' }); renderServicesTab(document.getElementById('mainContent')); }
     function deleteService(i) { servicesData.items.splice(i, 1); renderServicesTab(document.getElementById('mainContent')); }
 
-    function addProject() { projectsData.items = projectsData.items || []; projectsData.items.push({ title: 'Proyek Baru', location: 'Yogyakarta', description: '', category: 'renovasi' }); renderProjectsTab(document.getElementById('mainContent')); }
+    function addProject() { projectsData.items = projectsData.items || []; projectsData.items.push({ title: 'Proyek Baru', location: 'Yogyakarta', category: 'lembap', description: '', image_before: '', image: '', featured: false, year: 2024 }); renderProjectsTab(document.getElementById('mainContent')); }
     function deleteProject(i) { projectsData.items.splice(i, 1); renderProjectsTab(document.getElementById('mainContent')); }
 
     function addTestimonial() { testimonialsData.items = testimonialsData.items || []; testimonialsData.items.push({ name: 'Pelanggan Baru', location: 'Yogyakarta', text: '', rating: 5 }); renderTestimonialsTab(document.getElementById('mainContent')); }
@@ -518,16 +647,29 @@
         siteData.tagline = document.getElementById('site_tagline').value;
         siteData.hero_title = document.getElementById('site_hero_title').value;
         siteData.hero_description = document.getElementById('site_hero_desc').value;
+        siteData.hero_cta_primary = document.getElementById('site_cta_primary').value;
+        siteData.hero_cta_secondary = document.getElementById('site_cta_secondary').value;
         siteData.hero_image = document.getElementById('site_hero_image').value;
-        siteData.whatsapp = document.getElementById('site_whatsapp').value;
-        siteData.hours = document.getElementById('site_hours').value;
+        await saveFile('_data/site.yml', siteData);
+      }
+      else if (activeTab === 'stats') {
+        siteData.stats = siteData.stats || [];
+        for (let idx = 0; idx < 4; idx++) {
+          const v = document.getElementById(`stat_val_${idx}`);
+          const l = document.getElementById(`stat_lbl_${idx}`);
+          if (v && l) {
+            siteData.stats[idx] = { value: v.value, label: l.value };
+          }
+        }
         await saveFile('_data/site.yml', siteData);
       }
       else if (activeTab === 'services') {
         (servicesData.items || []).forEach((item, idx) => {
           const t = document.getElementById(`svc_title_${idx}`);
+          const ic = document.getElementById(`svc_icon_${idx}`);
           const d = document.getElementById(`svc_desc_${idx}`);
           if (t) item.title = t.value;
+          if (ic) item.icon = ic.value;
           if (d) item.description = d.value;
         });
         await saveFile('_data/services.yml', servicesData);
@@ -536,11 +678,13 @@
         (projectsData.items || []).forEach((item, idx) => {
           const t = document.getElementById(`proj_title_${idx}`);
           const l = document.getElementById(`proj_loc_${idx}`);
+          const c = document.getElementById(`proj_cat_${idx}`);
           const d = document.getElementById(`proj_desc_${idx}`);
           const b = document.getElementById(`proj_b_${idx}`);
           const a = document.getElementById(`proj_a_${idx}`);
           if (t) item.title = t.value;
           if (l) item.location = l.value;
+          if (c) item.category = c.value;
           if (d) item.description = d.value;
           if (b) item.image_before = b.value;
           if (a) item.image = a.value;
@@ -566,6 +710,18 @@
           if (a) item.answer = a.value;
         });
         await saveFile('_data/faq.yml', faqData);
+      }
+      else if (activeTab === 'contact') {
+        siteData.whatsapp = document.getElementById('site_whatsapp').value;
+        siteData.whatsapp_message = document.getElementById('site_wa_msg').value;
+        siteData.address = document.getElementById('site_address').value;
+        siteData.hours = document.getElementById('site_hours').value;
+        siteData.instagram = document.getElementById('site_ig').value;
+        siteData.tiktok = document.getElementById('site_tt').value;
+        siteData.meta_description = document.getElementById('site_meta_desc').value;
+        siteData.meta_keywords = document.getElementById('site_meta_kw').value;
+        siteData.copyright = document.getElementById('site_copyright').value;
+        await saveFile('_data/site.yml', siteData);
       }
     }
 
