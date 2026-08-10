@@ -1,0 +1,435 @@
+locale: "id"
+
+logo_url: "https://vistarabuild.web.id/assets/uploads/logo-vistara-full.png"
+
+site_url: "https://vistarabuild.web.id/"
+display_url: "https://vistarabuild.web.id/"
+
+show_preview_links: true
+
+backend:
+  name: github
+  repo: firdaustauf97/vistarabuild
+  branch: main
+  base_url: https://vistara-build-oauth.firdauscdps.workers.dev
+  auth_endpoint: auth
+  auth_scope: repo
+
+# Direct commit mode to main branch for smooth image & media uploads
+media_folder: "assets/uploads"
+public_folder: "assets/uploads"
+
+# ─────────────────────────────────────────────
+#  COLLECTIONS
+# ─────────────────────────────────────────────
+collections:
+
+  # ══════════════════════════════════════════
+  #  1. IDENTITAS & KONTEN UTAMA  →  site.yml
+  # ══════════════════════════════════════════
+  - name: "website"
+    label: "⚙️ Kelola Website"
+    files:
+
+      - name: "general"
+        label: "Identitas & Konten Utama"
+        file: "_data/site.yml"
+        editor:
+          preview: false
+        fields:
+
+          # ── BRAND ──────────────────────────
+          - label: "Nama Bisnis"
+            name: "brand"
+            widget: "string"
+            hint: "Nama bisnis yang tampil di header dan footer, misal: Vistara Build"
+
+          - label: "Logo Simbol (Header)"
+            name: "logo_mark"
+            widget: "image"
+            required: false
+            hint: "Logo berbentuk simbol / monogram dengan latar transparan (.png). Ukuran ideal: 80×80 px."
+
+          - label: "Logo Lengkap (Footer & OG)"
+            name: "logo_full"
+            widget: "image"
+            required: false
+            hint: "Logo lengkap nama + simbol untuk footer dan gambar media sosial. Ukuran ideal: 400×120 px."
+
+          - label: "Favicon 32 px"
+            name: "favicon_32"
+            widget: "image"
+            required: false
+            hint: "Ikon kecil yang tampil di tab browser. Ukuran: 32×32 px."
+
+          - label: "Favicon 192 px"
+            name: "favicon_192"
+            widget: "image"
+            required: false
+            hint: "Ikon untuk shortcut Android. Ukuran: 192×192 px."
+
+          - label: "Favicon 512 px"
+            name: "favicon_512"
+            widget: "image"
+            required: false
+            hint: "Ikon untuk PWA / layar splash. Ukuran: 512×512 px."
+
+          # ── HERO ───────────────────────────
+          - label: "Tagline Singkat"
+            name: "tagline"
+            widget: "string"
+            hint: "Tagline di bawah nama brand, misal: Kontraktor Renovasi Yogyakarta"
+
+          - label: "Judul Hero (H1)"
+            name: "hero_title"
+            widget: "string"
+            hint: "Judul utama yang tampil besar di bagian atas halaman."
+
+          - label: "Deskripsi Hero"
+            name: "hero_description"
+            widget: "text"
+            hint: "Paragraf singkat di bawah judul hero, 2–3 kalimat."
+
+          - label: "Foto Hero Utama"
+            name: "hero_image"
+            widget: "image"
+            required: false
+            hint: "Foto utama di samping teks hero. Ukuran ideal: 800×600 px."
+
+          - label: "Teks Tombol Utama Hero"
+            name: "hero_cta_primary"
+            widget: "string"
+            default: "Konsultasi Gratis"
+            hint: "Teks tombol hijau yang mengarah ke WhatsApp."
+
+          - label: "Teks Tombol Kedua Hero"
+            name: "hero_cta_secondary"
+            widget: "string"
+            default: "Lihat Portofolio"
+            required: false
+            hint: "Teks tombol transparan yang mengarah ke seksi portofolio."
+
+          # ── STATS ──────────────────────────
+          - label: "Statistik"
+            name: "stats"
+            widget: "list"
+            summary: "{{fields.value}} {{fields.label}}"
+            hint: "Angka-angka pencapaian yang tampil di bawah tombol hero."
+            fields:
+              - label: "Angka"
+                name: "value"
+                widget: "string"
+                hint: "Contoh: 150+, 5+, 98%"
+              - label: "Keterangan"
+                name: "label"
+                widget: "string"
+                hint: "Contoh: Proyek Selesai, Tahun Pengalaman"
+
+          # ── KONTAK ─────────────────────────
+          - label: "Nomor WhatsApp"
+            name: "whatsapp"
+            widget: "string"
+            hint: "Format tanpa + dan tanpa spasi, misal: 6285747040163"
+
+          - label: "Pesan WhatsApp Default"
+            name: "whatsapp_message"
+            widget: "text"
+            required: false
+            hint: "Pesan otomatis yang muncul saat pengunjung klik tombol WhatsApp."
+            default: "Halo Vistara Build, saya ingin konsultasi mengenai renovasi rumah."
+
+          - label: "Alamat Lengkap"
+            name: "address"
+            widget: "text"
+            required: false
+            hint: "Alamat yang tampil di footer, misal: Jl. Contoh No. 1, Yogyakarta"
+
+          - label: "Email (opsional)"
+            name: "email"
+            widget: "string"
+            required: false
+            hint: "Email bisnis yang tampil di footer."
+
+          - label: "Jam Operasional"
+            name: "hours"
+            widget: "string"
+            required: false
+            hint: "Contoh: Senin–Sabtu, 08.00–17.00 WIB"
+
+          # ── SOSIAL MEDIA ───────────────────
+          - label: "Link Instagram"
+            name: "instagram"
+            widget: "string"
+            required: false
+            hint: "URL lengkap profil Instagram, misal: https://instagram.com/vistarabuild"
+
+          - label: "Link Facebook"
+            name: "facebook"
+            widget: "string"
+            required: false
+            hint: "URL lengkap halaman Facebook."
+
+          - label: "Link TikTok"
+            name: "tiktok"
+            widget: "string"
+            required: false
+            hint: "URL lengkap profil TikTok."
+
+          # ── SEO ────────────────────────────
+          - label: "Meta Deskripsi (SEO)"
+            name: "meta_description"
+            widget: "text"
+            hint: "Deskripsi yang tampil di hasil pencarian Google. Ideal 140–160 karakter."
+
+          - label: "Kata Kunci SEO"
+            name: "meta_keywords"
+            widget: "string"
+            required: false
+            hint: "Pisahkan dengan koma, misal: kontraktor Yogyakarta, renovasi rumah, waterproofing"
+
+          - label: "Gambar OG (Media Sosial)"
+            name: "og_image"
+            widget: "image"
+            required: false
+            hint: "Gambar yang muncul saat link website dibagikan di WhatsApp/medsos. Ukuran: 1200×630 px."
+
+          # ── FOOTER ─────────────────────────
+          - label: "Teks Copyright Footer"
+            name: "copyright"
+            widget: "string"
+            required: false
+            hint: "Misal: © 2025 Vistara Build. Semua hak cipta dilindungi."
+
+          - label: "Kalimat Penutup Footer"
+            name: "footer_tagline"
+            widget: "string"
+            required: false
+            hint: "Kalimat singkat di bawah logo footer, misal: Mitra Terpercaya Renovasi Rumah Anda."
+
+  # ══════════════════════════════════════════
+  #  2. LAYANAN  →  services.yml
+  # ══════════════════════════════════════════
+  - name: "layanan"
+    label: "🔧 Layanan"
+    files:
+      - name: "services"
+        label: "Daftar Layanan"
+        file: "_data/services.yml"
+        editor:
+          preview: false
+        fields:
+          - label: "Daftar Layanan"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.title}}"
+            hint: "Tambah, edit, atau hapus layanan yang ditawarkan."
+            fields:
+              - label: "Nama Layanan"
+                name: "title"
+                widget: "string"
+                hint: "Misal: Treatment Tembok Lembap"
+
+              - label: "Ikon"
+                name: "icon"
+                widget: "select"
+                hint: "Pilih ikon yang paling sesuai dengan layanan ini."
+                options:
+                  - { label: "💧 Tembok Lembap / Air", value: "water" }
+                  - { label: "🎨 Pengecatan", value: "paint" }
+                  - { label: "🛡️ Waterproofing", value: "waterproof" }
+                  - { label: "🏠 Renovasi", value: "home" }
+                  - { label: "🔨 Konstruksi / Bangunan", value: "build" }
+                  - { label: "✨ Finishing / Rapikan", value: "finish" }
+                  - { label: "🔍 Inspeksi / Survei", value: "inspect" }
+                  - { label: "📐 Desain / Perencanaan", value: "design" }
+
+              - label: "Deskripsi Layanan"
+                name: "description"
+                widget: "text"
+                hint: "Penjelasan singkat 1–3 kalimat tentang layanan ini."
+
+              - label: "Badge / Label Khusus"
+                name: "badge"
+                widget: "string"
+                required: false
+                hint: "Opsional. Contoh: Paling Populer, Gratis Survei, Bergaransi"
+
+              - label: "Urutkan (angka kecil tampil pertama)"
+                name: "order"
+                widget: "number"
+                required: false
+                value_type: "int"
+                default: 1
+
+  # ══════════════════════════════════════════
+  #  3. PORTOFOLIO PROYEK  →  projects.yml
+  # ══════════════════════════════════════════
+  - name: "portofolio"
+    label: "🏗️ Portofolio"
+    files:
+      - name: "projects"
+        label: "Daftar Proyek"
+        file: "_data/projects.yml"
+        editor:
+          preview: false
+        fields:
+          - label: "Daftar Proyek"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.title}} — {{fields.location}}"
+            hint: "Tambah, edit, atau hapus proyek selesai yang ingin ditampilkan."
+            fields:
+              - label: "Judul Proyek"
+                name: "title"
+                widget: "string"
+                hint: "Misal: Treatment Tembok Lembap Perumahan Sleman"
+
+              - label: "Lokasi"
+                name: "location"
+                widget: "string"
+                hint: "Misal: Sleman, Yogyakarta"
+
+              - label: "Kategori"
+                name: "category"
+                widget: "select"
+                options:
+                  - { label: "Treatment Lembap", value: "lembap" }
+                  - { label: "Pengecatan", value: "cat" }
+                  - { label: "Waterproofing", value: "waterproof" }
+                  - { label: "Renovasi", value: "renovasi" }
+                  - { label: "Lainnya", value: "lainnya" }
+
+              - label: "Deskripsi Singkat"
+                name: "description"
+                widget: "text"
+                hint: "Ringkasan pekerjaan dan hasil. 2–4 kalimat."
+
+              - label: "Foto Proyek"
+                name: "image"
+                widget: "image"
+                required: false
+                hint: "Foto hasil pekerjaan. Ukuran ideal: 800×600 px (landscape)."
+
+              - label: "Foto Sebelum"
+                name: "image_before"
+                widget: "image"
+                required: false
+                hint: "Opsional. Foto kondisi sebelum pekerjaan dilakukan."
+
+              - label: "Jadikan Proyek Unggulan?"
+                name: "featured"
+                widget: "boolean"
+                default: false
+                hint: "Proyek unggulan akan ditampilkan paling atas / diberi label khusus."
+
+              - label: "Tahun Pengerjaan"
+                name: "year"
+                widget: "number"
+                required: false
+                value_type: "int"
+                hint: "Misal: 2024"
+
+  # ══════════════════════════════════════════
+  #  4. TESTIMONI  →  testimonials.yml
+  # ══════════════════════════════════════════
+  - name: "testimoni"
+    label: "⭐ Testimoni"
+    files:
+      - name: "testimonials"
+        label: "Daftar Testimoni"
+        file: "_data/testimonials.yml"
+        editor:
+          preview: false
+        fields:
+          - label: "Daftar Testimoni"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.name}} — {{fields.location}}"
+            hint: "Tambah, edit, atau hapus ulasan dari pelanggan."
+            fields:
+              - label: "Nama Pelanggan"
+                name: "name"
+                widget: "string"
+                hint: "Gunakan nama lengkap atau nama+inisial, misal: Budi S."
+
+              - label: "Lokasi"
+                name: "location"
+                widget: "string"
+                hint: "Misal: Sleman, Yogyakarta"
+
+              - label: "Pekerjaan / Profesi"
+                name: "role"
+                widget: "string"
+                required: false
+                hint: "Opsional. Misal: Pemilik Rumah, Manajer Properti"
+
+              - label: "Rating Bintang"
+                name: "rating"
+                widget: "select"
+                options:
+                  - { label: "⭐⭐⭐⭐⭐ 5 Bintang", value: 5 }
+                  - { label: "⭐⭐⭐⭐ 4 Bintang", value: 4 }
+                  - { label: "⭐⭐⭐ 3 Bintang", value: 3 }
+                default: 5
+
+              - label: "Isi Testimoni"
+                name: "text"
+                widget: "text"
+                hint: "Kutipan ulasan dari pelanggan. 2–5 kalimat."
+
+              - label: "Foto Pelanggan"
+                name: "avatar"
+                widget: "image"
+                required: false
+                hint: "Opsional. Foto wajah pelanggan (bulat). Ukuran: 100×100 px."
+
+              - label: "Tampilkan di Website?"
+                name: "visible"
+                widget: "boolean"
+                default: true
+                hint: "Matikan untuk menyembunyikan testimoni ini tanpa menghapusnya."
+
+  # ══════════════════════════════════════════
+  #  5. FAQ  →  faq.yml
+  # ══════════════════════════════════════════
+  - name: "faq"
+    label: "❓ FAQ"
+    files:
+      - name: "faq"
+        label: "Pertanyaan Yang Sering Ditanyakan"
+        file: "_data/faq.yml"
+        editor:
+          preview: false
+        fields:
+          - label: "Daftar Pertanyaan"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.question}}"
+            hint: "Tambah, edit, atau hapus pertanyaan yang sering ditanyakan pelanggan."
+            fields:
+              - label: "Pertanyaan"
+                name: "question"
+                widget: "string"
+                hint: "Tulis pertanyaan seperti yang ditanyakan pelanggan."
+
+              - label: "Jawaban"
+                name: "answer"
+                widget: "text"
+                hint: "Jawaban singkat dan jelas. 2–5 kalimat."
+
+              - label: "Kategori"
+                name: "category"
+                widget: "select"
+                required: false
+                options:
+                  - { label: "Layanan", value: "layanan" }
+                  - { label: "Harga", value: "harga" }
+                  - { label: "Proses & Waktu", value: "proses" }
+                  - { label: "Garansi", value: "garansi" }
+                  - { label: "Umum", value: "umum" }
+                default: "umum"
+
+              - label: "Tampilkan di Website?"
+                name: "visible"
+                widget: "boolean"
+                default: true

@@ -1,0 +1,36 @@
+items:
+  - icon: water
+    title: Treatment Tembok Lembap
+    description: Pemeriksaan kondisi tembok, identifikasi sumber air, perbaikan lapisan, dan treatment sesuai kebutuhan hingga tuntas.
+    badge: Paling Populer
+    order: 1
+
+  - icon: paint
+    title: Pengecatan Tembok
+    description: Persiapan permukaan, perbaikan retak ringan, aplikasi primer, serta pengecatan interior dan eksterior dengan hasil rapi.
+    badge: ""
+    order: 2
+
+  - icon: waterproof
+    title: Waterproofing
+    description: Aplikasi lapisan waterproofing untuk atap, dak beton, kamar mandi, dan area rawan rembesan agar bebas bocor.
+    badge: Bergaransi
+    order: 3
+
+  - icon: build
+    title: Renovasi Ringan
+    description: Perbaikan plester, acian, retak struktur ringan, dan renovasi bagian rumah yang rusak dengan material berkualitas.
+    badge: ""
+    order: 4
+
+  - icon: inspect
+    title: Inspeksi & Konsultasi
+    description: Survei lokasi gratis untuk identifikasi masalah, rekomendasi solusi, dan estimasi biaya secara transparan.
+    badge: Gratis Survei
+    order: 5
+
+  - icon: finish
+    title: Finishing & Rapikan
+    description: Sentuhan akhir permukaan dinding, perapian detail cat, dan memastikan setiap hasil kerja tampil bersih dan sempurna.
+    badge: ""
+    order: 6

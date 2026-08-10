@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard — Vistara Build</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#143f37">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/uploads/favicon-32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- js-yaml library for instant parsing & saving -->
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --p:  #143f37; --pl: #1a5447; --pd: #0c2922;
+      --a:  #e8aa3e; --ah: #f2bd5d; --ap: #fdf3dc;
+      --w:  #ffffff; --bg: #f0f4f2; --card: #ffffff;
+      --t:  #0f1f1a; --t2: #3a5049; --mu: #6e8881; --bd: #d3e3de;
+      --fn: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    }
+    body { font-family: var(--fn); background: var(--bg); color: var(--t); min-height: 100vh; display: flex; flex-direction: column; }
+    button { font: inherit; cursor: pointer; border: none; }
+    input, textarea, select { font: inherit; }
+
+    /* HEADER */
+    .admin-hdr { background: var(--pd); color: #fff; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,.15); }
+    .admin-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.15rem; }
+    .admin-icon { width: 34px; height: 34px; border-radius: 9px; background: var(--a); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .admin-icon svg { width: 18px; height: 18px; fill: var(--pd); }
+    .hdr-acts { display: flex; align-items: center; gap: 12px; }
+    .btn-save { background: var(--a); color: var(--pd); font-weight: 800; padding: 9px 20px; border-radius: 999px; font-size: .88rem; display: inline-flex; align-items: center; gap: 6px; transition: background .2s; }
+    .btn-save:hover { background: var(--ah); }
+    .btn-token { background: rgba(255,255,255,.12); color: rgba(255,255,255,.85); font-size: .78rem; font-weight: 600; padding: 6px 14px; border-radius: 8px; transition: background .2s; }
+    .btn-token:hover { background: rgba(255,255,255,.2); color: #fff; }
+
+    /* LAYOUT */
+    .admin-body { display: flex; flex: 1; }
+    .sidebar { width: 250px; background: #fff; border-right: 1px solid var(--bd); padding: 20px 12px; display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; font-weight: 700; font-size: .9rem; color: var(--t2); transition: background .2s, color .2s; cursor: pointer; text-align: left; }
+    .nav-item:hover { background: var(--ap); color: #8a5f00; }
+    .nav-item.active { background: var(--p); color: #fff; }
+
+    .content { flex: 1; padding: 32px 40px; max-width: 900px; }
+    .sec-hd { margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; }
+    .sec-hd h2 { font-size: 1.4rem; font-weight: 800; color: var(--t); }
+
+    /* FORM CARDS */
+    .form-card { background: var(--card); border: 1.5px solid var(--bd); border-radius: 16px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,.03); }
+    .form-grp { margin-bottom: 18px; }
+    .form-grp:last-child { margin-bottom: 0; }
+    .label { display: block; font-size: .83rem; font-weight: 700; color: var(--t); margin-bottom: 6px; }
+    .hint { font-size: .75rem; color: var(--mu); margin-top: 4px; }
+    .input-txt { width: 100%; padding: 11px 14px; border: 1.5px solid var(--bd); border-radius: 10px; font-size: .9rem; background: #fff; outline: none; transition: border-color .2s; }
+    .input-txt:focus { border-color: var(--p); }
+    textarea.input-txt { min-height: 90px; resize: vertical; }
+
+    /* IMAGE UPLOADER */
+    .img-picker { display: flex; align-items: center; gap: 16px; }
+    .img-prev { width: 64px; height: 64px; border-radius: 10px; border: 1px solid var(--bd); background: var(--bg); object-fit: cover; display: flex; align-items: center; justify-content: center; font-size: .7rem; color: var(--mu); overflow: hidden; }
+    .img-prev img { width: 100%; height: 100%; object-fit: cover; }
+    .file-btn { padding: 8px 16px; border-radius: 8px; background: var(--bg); border: 1px solid var(--bd); font-size: .82rem; font-weight: 700; color: var(--t2); cursor: pointer; }
+    .file-btn:hover { background: var(--bd); }
+
+    /* REPEATABLE ITEMS */
+    .item-box { background: var(--bg); border: 1px solid var(--bd); border-radius: 14px; padding: 18px; margin-bottom: 14px; position: relative; }
+    .item-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .item-num { font-weight: 800; font-size: .85rem; color: var(--p); }
+    .btn-del { color: #dc2626; font-size: .8rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; background: #fee2e2; }
+    .btn-del:hover { background: #fca5a5; }
+    .btn-add { background: var(--ap); color: #8a5f00; font-weight: 700; padding: 10px 18px; border-radius: 10px; font-size: .85rem; margin-top: 8px; }
+    .btn-add:hover { background: #fce8b8; }
+
+    /* TOKEN MODAL */
+    .modal-ov { position: fixed; inset: 0; background: rgba(12,41,34,.75); backdrop-filter: blur(8px); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .modal-card { background: #fff; border-radius: 20px; width: min(100%, 460px); padding: 32px 28px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
+    .modal-title { font-size: 1.35rem; font-weight: 800; color: var(--pd); margin-bottom: 6px; }
+    .modal-sub { font-size: .85rem; color: var(--t2); margin-bottom: 20px; line-height: 1.5; }
+    .tok-link { display: block; margin-top: 12px; font-size: .82rem; color: var(--p); font-weight: 700; text-decoration: underline; }
+
+    /* TOAST STATUS */
+    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--pd); color: #fff; padding: 12px 24px; border-radius: 999px; font-weight: 700; font-size: .9rem; box-shadow: 0 10px 30px rgba(0,0,0,.3); z-index: 1000; transform: translateY(100px); opacity: 0; transition: all .3s cubic-bezier(0.4,0,0.2,1); }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    @media(max-width: 768px) {
+      .admin-body { flex-direction: column; }
+      .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--bd); padding: 10px; flex-direction: row; overflow-x: auto; }
+      .nav-item { padding: 8px 12px; font-size: .8rem; white-space: nowrap; }
+      .content { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="admin-hdr">
+    <div class="admin-brand">
+      <div class="admin-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="#0c2922" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </div>
+      Vistara Build — Admin
+    </div>
+    <div class="hdr-acts">
+      <button type="button" class="btn-token" onclick="openTokenModal()">🔑 Kode Akses</button>
+      <button type="button" class="btn-save" onclick="saveActiveTab()">💾 SIMPAN PERUBAHAN</button>
+    </div>
+  </header>
+
+  <!-- BODY -->
+  <div class="admin-body">
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+      <button class="nav-item active" onclick="switchTab('site')">⚙️ Identitas &amp; Konten</button>
+      <button class="nav-item" onclick="switchTab('services')">🔧 Layanan</button>
+      <button class="nav-item" onclick="switchTab('projects')">🏗️ Portofolio</button>
+      <button class="nav-item" onclick="switchTab('testimonials')">⭐ Testimoni</button>
+      <button class="nav-item" onclick="switchTab('faq')">❓ FAQ</button>
+      <a href="../" target="_blank" class="nav-item" style="margin-top:auto;color:var(--mu);">↗️ Lihat Website</a>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="content" id="mainContent">
+      <div style="text-align:center;padding:60px 0;color:var(--mu);">Memuat data website...</div>
+    </main>
+  </div>
+
+  <!-- TOKEN MODAL -->
+  <div class="modal-ov" id="tokModal" style="display:none;">
+    <div class="modal-card">
+      <h3 class="modal-title">🔑 Masukkan Kode Akses Admin</h3>
+      <p class="modal-sub">Masukkan GitHub Personal Access Token Anda sekali saja untuk menyimpan perubahan secara langsung ke website.</p>
+      <input type="password" id="tokInput" class="input-txt" placeholder="ghp_xxxxxxxxxxxx" style="margin-bottom:14px;font-family:monospace;">
+      <button type="button" class="btn-save" style="width:100%;justify-content:center;padding:12px;" onclick="saveToken()">Simpan &amp; Lanjutkan</button>
+      <a href="https://github.com/settings/tokens/new?description=VistaraBuildAdmin&scopes=repo" target="_blank" rel="noopener" class="tok-link">
+        👉 Klik di sini untuk membuat Kode Akses (1-Klik)
+      </a>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">✅ Perubahan berhasil disimpan ke website!</div>
+
+  <script>
+    'use strict';
+    const REPO = 'firdaustauf97/vistarabuild';
+    const BRANCH = 'main';
+    let activeTab = 'site';
+    let siteData = {}, servicesData = {}, projectsData = {}, testimonialsData = {}, faqData = {};
+    let shaMap = {};
+
+    function getToken() { return localStorage.getItem('vistara_admin_tok') || ''; }
+    function openTokenModal() { document.getElementById('tokModal').style.display = 'flex'; }
+    function closeTokenModal() { document.getElementById('tokModal').style.display = 'none'; }
+    function saveToken() {
+      const tok = (document.getElementById('tokInput').value || '').trim();
+      if (!tok) { alert('Masukkan token ghp_...'); return; }
+      localStorage.setItem('vistara_admin_tok', tok);
+      closeTokenModal();
+      loadAllData();
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    async function fetchFile(path) {
+      const tok = getToken();
+      const headers = tok ? { 'Authorization': `token ${tok}` } : {};
+      const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`, { headers });
+      if (!res.ok) throw new Error(`Gagal memuat ${path}`);
+      const json = await res.json();
+      shaMap[path] = json.sha;
+      const decoded = decodeURIComponent(escape(atob(json.content.replace(/\n/g, ''))));
+      return jsyaml.load(decoded) || {};
+    }
+
+    async function saveFile(path, yamlObj) {
+      const tok = getToken();
+      if (!tok) { openTokenModal(); return; }
+      const yamlStr = jsyaml.dump(yamlObj);
+      const contentBase64 = btoa(unescape(encodeURIComponent(yamlStr)));
+      
+      const payload = {
+        message: `Update ${path} via Admin Panel`,
+        content: contentBase64,
+        branch: BRANCH
+      };
+      if (shaMap[path]) payload.sha = shaMap[path];
+
+      const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${tok}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) {
+        if (res.status === 401 || res.status === 404) {
+          alert('Kode akses (Token) tidak valid atau tidak memiliki izin akses repo. Silakan ganti token.');
+          openTokenModal();
+          return;
+        }
+        throw new Error('Gagal menyimpan file.');
+      }
+      const resJson = await res.json();
+      shaMap[path] = resJson.content.sha;
+      showToast('✅ Berhasil disimpan ke website!');
+    }
+
+    async function uploadImage(file) {
+      const tok = getToken();
+      if (!tok) { openTokenModal(); return ''; }
+      const reader = new FileReader();
+      return new Promise((resolve, reject) => {
+        reader.onload = async () => {
+          const base64Content = reader.result.split(',')[1];
+          const fileName = `img_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+          const path = `assets/uploads/${fileName}`;
+
+          const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `token ${tok}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              message: `Upload ${fileName}`,
+              content: base64Content,
+              branch: BRANCH
+            })
+          });
+          if (res.ok) {
+            resolve(`assets/uploads/${fileName}`);
+          } else {
+            alert('Gagal mengunggah foto.');
+            reject();
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function loadAllData() {
+      try {
+        siteData = await fetchFile('_data/site.yml');
+        servicesData = await fetchFile('_data/services.yml');
+        projectsData = await fetchFile('_data/projects.yml');
+        testimonialsData = await fetchFile('_data/testimonials.yml');
+        faqData = await fetchFile('_data/faq.yml');
+        renderTab(activeTab);
+      } catch(err) {
+        console.error(err);
+        if (!getToken()) openTokenModal();
+      }
+    }
+
+    function switchTab(tab) {
+      activeTab = tab;
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      event.target.classList.add('active');
+      renderTab(tab);
+    }
+
+    function renderTab(tab) {
+      const container = document.getElementById('mainContent');
+      if (tab === 'site') renderSiteTab(container);
+      else if (tab === 'services') renderServicesTab(container);
+      else if (tab === 'projects') renderProjectsTab(container);
+      else if (tab === 'testimonials') renderTestimonialsTab(container);
+      else if (tab === 'faq') renderFaqTab(container);
+    }
+
+    /* ─── TAB RENDERING ─── */
+
+    function renderSiteTab(c) {
+      const d = siteData || {};
+      c.innerHTML = `
+        <div class="sec-hd"><h2>⚙️ Identitas &amp; Konten Utama</h2></div>
+
+        <div class="form-card">
+          <h3 style="font-size:1rem;margin-bottom:16px;">Nama &amp; Brand</h3>
+          <div class="form-grp">
+            <label class="label">Nama Bisnis</label>
+            <input class="input-txt" id="site_brand" value="${d.brand || ''}">
+          </div>
+          <div class="form-grp">
+            <label class="label">Tagline Singkat</label>
+            <input class="input-txt" id="site_tagline" value="${d.tagline || ''}">
+          </div>
+        </div>
+
+        <div class="form-card">
+          <h3 style="font-size:1rem;margin-bottom:16px;">Konten Hero (Bagian Atas)</h3>
+          <div class="form-grp">
+            <label class="label">Judul Utama (H1)</label>
+            <input class="input-txt" id="site_hero_title" value="${d.hero_title || ''}">
+          </div>
+          <div class="form-grp">
+            <label class="label">Deskripsi Hero</label>
+            <textarea class="input-txt" id="site_hero_desc">${d.hero_description || ''}</textarea>
+          </div>
+          <div class="form-grp">
+            <label class="label">Foto Hero Utama</label>
+            <div class="img-picker">
+              <div class="img-prev" id="prev_hero_image">${d.hero_image ? `<img src="../${d.hero_image}">` : 'No Foto'}</div>
+              <input type="hidden" id="site_hero_image" value="${d.hero_image || ''}">
+              <input type="file" id="file_hero_image" style="display:none" onchange="handleImgUpload(this, 'site_hero_image', 'prev_hero_image')">
+              <button type="button" class="file-btn" onclick="document.getElementById('file_hero_image').click()">Pilih Foto Baru</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <h3 style="font-size:1rem;margin-bottom:16px;">Kontak &amp; Operasional</h3>
+          <div class="form-grp">
+            <label class="label">Nomor WhatsApp (Tanpa +)</label>
+            <input class="input-txt" id="site_whatsapp" value="${d.whatsapp || ''}">
+          </div>
+          <div class="form-grp">
+            <label class="label">Jam Operasional</label>
+            <input class="input-txt" id="site_hours" value="${d.hours || ''}">
+          </div>
+        </div>
+      `;
+    }
+
+    function renderServicesTab(c) {
+      const items = (servicesData && servicesData.items) ? servicesData.items : [];
+      let html = `<div class="sec-hd"><h2>🔧 Daftar Layanan</h2></div><div class="form-card">`;
+      items.forEach((item, idx) => {
+        html += `
+          <div class="item-box">
+            <div class="item-top">
+              <span class="item-num">Layanan #${idx+1}</span>
+              <button type="button" class="btn-del" onclick="deleteService(${idx})">Hapus</button>
+            </div>
+            <div class="form-grp">
+              <label class="label">Nama Layanan</label>
+              <input class="input-txt" id="svc_title_${idx}" value="${item.title || ''}">
+            </div>
+            <div class="form-grp">
+              <label class="label">Deskripsi</label>
+              <textarea class="input-txt" id="svc_desc_${idx}">${item.description || ''}</textarea>
+            </div>
+          </div>
+        `;
+      });
+      html += `<button type="button" class="btn-add" onclick="addService()">+ Tambah Layanan Baru</button></div>`;
+      c.innerHTML = html;
+    }
+
+    function renderProjectsTab(c) {
+      const items = (projectsData && projectsData.items) ? projectsData.items : [];
+      let html = `<div class="sec-hd"><h2>🏗️ Portofolio Proyek</h2></div><div class="form-card">`;
+      items.forEach((item, idx) => {
+        html += `
+          <div class="item-box">
+            <div class="item-top">
+              <span class="item-num">Proyek #${idx+1}</span>
+              <button type="button" class="btn-del" onclick="deleteProject(${idx})">Hapus</button>
+            </div>
+            <div class="form-grp">
+              <label class="label">Judul Proyek</label>
+              <input class="input-txt" id="proj_title_${idx}" value="${item.title || ''}">
+            </div>
+            <div class="form-grp">
+              <label class="label">Lokasi</label>
+              <input class="input-txt" id="proj_loc_${idx}" value="${item.location || ''}">
+            </div>
+            <div class="form-grp">
+              <label class="label">Deskripsi Pekerjaan</label>
+              <textarea class="input-txt" id="proj_desc_${idx}">${item.description || ''}</textarea>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div class="form-grp">
+                <label class="label">Foto Sebelum (Before)</label>
+                <div class="img-picker">
+                  <div class="img-prev" id="prev_proj_b_${idx}">${item.image_before ? `<img src="../${item.image_before}">` : 'No Foto'}</div>
+                  <input type="hidden" id="proj_b_${idx}" value="${item.image_before || ''}">
+                  <input type="file" id="file_proj_b_${idx}" style="display:none" onchange="handleImgUpload(this, 'proj_b_${idx}', 'prev_proj_b_${idx}')">
+                  <button type="button" class="file-btn" onclick="document.getElementById('file_proj_b_${idx}').click()">Pilih Foto</button>
+                </div>
+              </div>
+              <div class="form-grp">
+                <label class="label">Foto Hasil (After)</label>
+                <div class="img-picker">
+                  <div class="img-prev" id="prev_proj_a_${idx}">${item.image ? `<img src="../${item.image}">` : 'No Foto'}</div>
+                  <input type="hidden" id="proj_a_${idx}" value="${item.image || ''}">
+                  <input type="file" id="file_proj_a_${idx}" style="display:none" onchange="handleImgUpload(this, 'proj_a_${idx}', 'prev_proj_a_${idx}')">
+                  <button type="button" class="file-btn" onclick="document.getElementById('file_proj_a_${idx}').click()">Pilih Foto</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      html += `<button type="button" class="btn-add" onclick="addProject()">+ Tambah Proyek Baru</button></div>`;
+      c.innerHTML = html;
+    }
+
+    function renderTestimonialsTab(c) {
+      const items = (testimonialsData && testimonialsData.items) ? testimonialsData.items : [];
+      let html = `<div class="sec-hd"><h2>⭐ Testimoni Klien</h2></div><div class="form-card">`;
+      items.forEach((item, idx) => {
+        html += `
+          <div class="item-box">
+            <div class="item-top">
+              <span class="item-num">Testimoni #${idx+1}</span>
+              <button type="button" class="btn-del" onclick="deleteTestimonial(${idx})">Hapus</button>
+            </div>
+            <div class="form-grp">
+              <label class="label">Nama Klien</label>
+              <input class="input-txt" id="testi_name_${idx}" value="${item.name || ''}">
+            </div>
+            <div class="form-grp">
+              <label class="label">Lokasi</label>
+              <input class="input-txt" id="testi_loc_${idx}" value="${item.location || ''}">
+            </div>
+            <div class="form-grp">
+              <label class="label">Ulasan / Testimoni</label>
+              <textarea class="input-txt" id="testi_text_${idx}">${item.text || ''}</textarea>
+            </div>
+          </div>
+        `;
+      });
+      html += `<button type="button" class="btn-add" onclick="addTestimonial()">+ Tambah Testimoni Baru</button></div>`;
+      c.innerHTML = html;
+    }
+
+    function renderFaqTab(c) {
+      const items = (faqData && faqData.items) ? faqData.items : [];
+      let html = `<div class="sec-hd"><h2>❓ FAQ Pertanyaan</h2></div><div class="form-card">`;
+      items.forEach((item, idx) => {
+        html += `
+          <div class="item-box">
+            <div class="item-top">
+              <span class="item-num">FAQ #${idx+1}</span>
+              <button type="button" class="btn-del" onclick="deleteFaq(${idx})">Hapus</button>
+            </div>
+            <div class="form-grp">
+              <label class="label">Pertanyaan</label>
+              <input class="input-txt" id="faq_q_${idx}" value="${item.question || ''}">
+            </div>
+            <div class="form-grp">
+              <label class="label">Jawaban</label>
+              <textarea class="input-txt" id="faq_a_${idx}">${item.answer || ''}</textarea>
+            </div>
+          </div>
+        `;
+      });
+      html += `<button type="button" class="btn-add" onclick="addFaq()">+ Tambah FAQ Baru</button></div>`;
+      c.innerHTML = html;
+    }
+
+    /* ─── UPLOAD HELPER ─── */
+    async function handleImgUpload(inputEl, hiddenId, prevId) {
+      if (!inputEl.files || !inputEl.files[0]) return;
+      const path = await uploadImage(inputEl.files[0]);
+      if (path) {
+        document.getElementById(hiddenId).value = path;
+        document.getElementById(prevId).innerHTML = `<img src="../${path}">`;
+        showToast('📸 Foto berhasil diunggah!');
+      }
+    }
+
+    /* ─── ITEM ADD / DEL ─── */
+    function addService() { servicesData.items = servicesData.items || []; servicesData.items.push({ title: 'Layanan Baru', description: '' }); renderServicesTab(document.getElementById('mainContent')); }
+    function deleteService(i) { servicesData.items.splice(i, 1); renderServicesTab(document.getElementById('mainContent')); }
+
+    function addProject() { projectsData.items = projectsData.items || []; projectsData.items.push({ title: 'Proyek Baru', location: 'Yogyakarta', description: '', category: 'renovasi' }); renderProjectsTab(document.getElementById('mainContent')); }
+    function deleteProject(i) { projectsData.items.splice(i, 1); renderProjectsTab(document.getElementById('mainContent')); }
+
+    function addTestimonial() { testimonialsData.items = testimonialsData.items || []; testimonialsData.items.push({ name: 'Pelanggan Baru', location: 'Yogyakarta', text: '', rating: 5 }); renderTestimonialsTab(document.getElementById('mainContent')); }
+    function deleteTestimonial(i) { testimonialsData.items.splice(i, 1); renderTestimonialsTab(document.getElementById('mainContent')); }
+
+    function addFaq() { faqData.items = faqData.items || []; faqData.items.push({ question: 'Pertanyaan Baru', answer: '' }); renderFaqTab(document.getElementById('mainContent')); }
+    function deleteFaq(i) { faqData.items.splice(i, 1); renderFaqTab(document.getElementById('mainContent')); }
+
+    /* ─── SAVE TAB DATA ─── */
+    async function saveActiveTab() {
+      if (!getToken()) { openTokenModal(); return; }
+
+      if (activeTab === 'site') {
+        siteData.brand = document.getElementById('site_brand').value;
+        siteData.tagline = document.getElementById('site_tagline').value;
+        siteData.hero_title = document.getElementById('site_hero_title').value;
+        siteData.hero_description = document.getElementById('site_hero_desc').value;
+        siteData.hero_image = document.getElementById('site_hero_image').value;
+        siteData.whatsapp = document.getElementById('site_whatsapp').value;
+        siteData.hours = document.getElementById('site_hours').value;
+        await saveFile('_data/site.yml', siteData);
+      }
+      else if (activeTab === 'services') {
+        (servicesData.items || []).forEach((item, idx) => {
+          const t = document.getElementById(`svc_title_${idx}`);
+          const d = document.getElementById(`svc_desc_${idx}`);
+          if (t) item.title = t.value;
+          if (d) item.description = d.value;
+        });
+        await saveFile('_data/services.yml', servicesData);
+      }
+      else if (activeTab === 'projects') {
+        (projectsData.items || []).forEach((item, idx) => {
+          const t = document.getElementById(`proj_title_${idx}`);
+          const l = document.getElementById(`proj_loc_${idx}`);
+          const d = document.getElementById(`proj_desc_${idx}`);
+          const b = document.getElementById(`proj_b_${idx}`);
+          const a = document.getElementById(`proj_a_${idx}`);
+          if (t) item.title = t.value;
+          if (l) item.location = l.value;
+          if (d) item.description = d.value;
+          if (b) item.image_before = b.value;
+          if (a) item.image = a.value;
+        });
+        await saveFile('_data/projects.yml', projectsData);
+      }
+      else if (activeTab === 'testimonials') {
+        (testimonialsData.items || []).forEach((item, idx) => {
+          const n = document.getElementById(`testi_name_${idx}`);
+          const l = document.getElementById(`testi_loc_${idx}`);
+          const t = document.getElementById(`testi_text_${idx}`);
+          if (n) item.name = n.value;
+          if (l) item.location = l.value;
+          if (t) item.text = t.value;
+        });
+        await saveFile('_data/testimonials.yml', testimonialsData);
+      }
+      else if (activeTab === 'faq') {
+        (faqData.items || []).forEach((item, idx) => {
+          const q = document.getElementById(`faq_q_${idx}`);
+          const a = document.getElementById(`faq_a_${idx}`);
+          if (q) item.question = q.value;
+          if (a) item.answer = a.value;
+        });
+        await saveFile('_data/faq.yml', faqData);
+      }
+    }
+
+    // Initialize on load
+    if (getToken()) {
+      loadAllData();
+    } else {
+      openTokenModal();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+items:
+  - question: Apakah tembok lembap cukup dicat ulang?
+    answer: >
+      Tidak selalu. Sumber kelembapan sebaiknya diperiksa terlebih dahulu agar masalah tidak
+      cepat muncul kembali. Vistara Build menawarkan inspeksi awal gratis untuk menentukan
+      penanganan yang tepat sesuai kondisi tembok Anda.
+    category: layanan
+    visible: true
+
+  - question: Apakah tersedia survei lokasi gratis?
+    answer: >
+      Tersedia gratis untuk area Yogyakarta dan sekitarnya (Sleman, Bantul, Kulon Progo,
+      Gunungkidul). Hubungi Vistara Build melalui WhatsApp untuk konfirmasi jadwal survei.
+    category: layanan
+    visible: true
+
+  - question: Berapa biaya treatment tembok lembap?
+    answer: >
+      Biaya bergantung pada luas area, kondisi tembok, dan metode penanganan yang diperlukan.
+      Estimasi harga yang transparan dan terperinci akan diberikan setelah survei, tanpa
+      biaya tersembunyi.
+    category: harga
+    visible: true
+
+  - question: Apakah ada garansi pekerjaan?
+    answer: >
+      Ya. Setiap pekerjaan Vistara Build disertai garansi sesuai jenis layanan dan material
+      yang digunakan. Garansi mencakup perbaikan kembali jika masalah yang sama muncul
+      dalam periode garansi.
+    category: garansi
+    visible: true
+
+  - question: Berapa lama waktu pengerjaan?
+    answer: >
+      Tergantung luas dan jenis pekerjaan. Pengecatan rumah rata-rata 3–7 hari kerja.
+      Treatment tembok lembap 1–3 hari. Waterproofing 1–2 hari. Estimasi waktu yang
+      akurat diberikan saat survei lokasi.
+    category: proses
+    visible: true
+
+  - question: Area mana saja yang dilayani?
+    answer: >
+      Seluruh wilayah Daerah Istimewa Yogyakarta: Kota Yogyakarta, Kabupaten Sleman,
+      Bantul, Kulon Progo, dan Gunungkidul. Untuk area di luar DIY, silakan hubungi
+      kami terlebih dahulu.
+    category: umum
+    visible: true

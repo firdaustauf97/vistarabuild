@@ -1,0 +1,32 @@
+items:
+  - name: Budi Santoso
+    location: Sleman, Yogyakarta
+    role: Pemilik Rumah
+    rating: 5
+    text: >
+      Sangat puas dengan hasil treatment tembok lembap di rumah saya. Tim Vistara Build bekerja
+      rapi, tepat waktu, dan hasilnya memuaskan. Masalah lembap yang sudah bertahun-tahun
+      akhirnya terselesaikan!
+    avatar: ""
+    visible: true
+
+  - name: Dewi Rahayu
+    location: Bantul, Yogyakarta
+    role: Ibu Rumah Tangga
+    rating: 5
+    text: >
+      Awalnya ragu, tapi setelah survei gratis langsung percaya. Pengecatan rumah selesai tepat
+      waktu dan hasilnya sangat rapi. Harga juga sesuai estimasi, tidak ada biaya tersembunyi.
+      Sangat direkomendasikan!
+    avatar: ""
+    visible: true
+
+  - name: Eko Prasetyo
+    location: Kota Yogyakarta
+    role: Pemilik Kost
+    rating: 5
+    text: >
+      Dak beton kost saya bocor selama 3 tahun dan sudah coba berbagai jasa tapi tetap bermasalah.
+      Vistara Build berhasil menyelesaikannya dengan garansi 3 tahun. Profesional dan terpercaya!
+    avatar: ""
+    visible: true

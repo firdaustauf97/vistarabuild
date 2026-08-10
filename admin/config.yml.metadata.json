@@ -1,0 +1,5 @@
+{
+  "summary": "Updated admin/config.yml with direct commit mode and corrected media_folder/public_folder settings so image uploads to GitHub work smoothly.",
+  "updatedAt": "2026-08-07T08:21:19.609182600Z",
+  "userFacing": true
+}
