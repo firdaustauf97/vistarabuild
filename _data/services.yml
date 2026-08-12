@@ -1,36 +1,50 @@
 items:
   - icon: water
-    title: Treatment Tembok Lembap
-    description: Pemeriksaan kondisi tembok, identifikasi sumber air, perbaikan lapisan, dan treatment sesuai kebutuhan hingga tuntas.
+    title: Treatment Tembok Lembap & Tembok Rembes
+    description: >-
+      Mengatasi tembok lembap, tembok rembes, cat mengelupas, dan masalah akibat
+      masuknya air pada dinding rumah. Kami membantu mengecek penyebab masalah
+      dan menentukan metode treatment yang sesuai untuk rumah di Yogyakarta dan
+      sekitarnya.
     badge: Paling Populer
     order: 1
-
   - icon: paint
     title: Pengecatan Tembok
-    description: Persiapan permukaan, perbaikan retak ringan, aplikasi primer, serta pengecatan interior dan eksterior dengan hasil rapi.
-    badge: ""
+    description: >-
+      Jasa pengecatan tembok dan rumah dengan persiapan permukaan yang tepat
+      agar hasil pengecatan lebih rapi, merata, dan tahan lama. Cocok untuk
+      rumah baru maupun renovasi di Yogyakarta.
+    badge: ''
     order: 2
-
   - icon: waterproof
-    title: Waterproofing
-    description: Aplikasi lapisan waterproofing untuk atap, dak beton, kamar mandi, dan area rawan rembesan agar bebas bocor.
+    title: Waterproofing & Penanganan Rembesan
+    description: >-
+      Solusi waterproofing untuk membantu mengatasi rembesan dan masuknya air
+      pada dinding, area tertentu di rumah, serta permukaan yang membutuhkan
+      perlindungan terhadap air.
     badge: Bergaransi
     order: 3
-
-  - icon: build
-    title: Renovasi Ringan
-    description: Perbaikan plester, acian, retak struktur ringan, dan renovasi bagian rumah yang rusak dengan material berkualitas.
-    badge: ""
+  - icon: home
+    title: Konsultasi & Solusi Renovasi Rumah
+    description: >-
+      Konsultasi untuk membantu menentukan solusi renovasi, perbaikan tembok,
+      pengecatan, waterproofing, dan kebutuhan perbaikan rumah berdasarkan
+      kondisi di lapangan.
+    badge: ''
     order: 4
-
   - icon: inspect
-    title: Inspeksi & Konsultasi
-    description: Survei lokasi gratis untuk identifikasi masalah, rekomendasi solusi, dan estimasi biaya secara transparan.
+    title: Inspeksi Kondisi Tembok
+    description: >-
+      Pemeriksaan kondisi tembok untuk membantu mengetahui indikasi lembap,
+      rembes, cat mengelupas, jamur, atau masalah lain sebelum menentukan metode
+      perbaikan yang sesuai.
     badge: Gratis Survei
     order: 5
-
   - icon: finish
-    title: Finishing & Rapikan
-    description: Sentuhan akhir permukaan dinding, perapian detail cat, dan memastikan setiap hasil kerja tampil bersih dan sempurna.
-    badge: ""
+    title: Finishing & Perapihan Tembok
+    description: >-
+      Pekerjaan finishing dan perapihan permukaan tembok setelah proses
+      perbaikan, sehingga permukaan lebih rapi dan siap untuk tahap pengecatan
+      atau penyelesaian akhir.
+    badge: ''
     order: 6
