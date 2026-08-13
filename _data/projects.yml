@@ -10,17 +10,6 @@ items:
     image_before: assets/uploads/img_1786603397572_Tembok_Before.jpeg
     featured: true
     year: 2024
-  - title: Pengecatan Interior & Eksterior Rumah Tinggal
-    location: Bantul, Yogyakarta
-    category: cat
-    description: >
-      Pengecatan ulang rumah tinggal 2 lantai meliputi persiapan permukaan,
-      perbaikan retak ringan, aplikasi primer, dan finishing dengan cat premium.
-      Hasil rapi dan tahan lama.
-    image: ''
-    image_before: ''
-    featured: false
-    year: 2024
   - title: Fabrikasi dan Pemasangan Pagar
     location: Sleman,Yogyakarta
     category: pagar
