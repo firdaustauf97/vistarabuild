@@ -119,6 +119,7 @@
       <button class="nav-item" onclick="switchTab('stats', event)">📊 Statistik Perusahaan</button>
       <button class="nav-item" onclick="switchTab('services', event)">🔧 Layanan</button>
       <button class="nav-item" onclick="switchTab('projects', event)">🏗️ Portofolio &amp; Kategori</button>
+      <button class="nav-item" onclick="switchTab('articles', event)">📰 Artikel &amp; Tips</button>
       <button class="nav-item" onclick="switchTab('testimonials', event)">⭐ Testimoni Klien</button>
       <button class="nav-item" onclick="switchTab('faq', event)">❓ Pertanyaan (FAQ)</button>
       <button class="nav-item" onclick="switchTab('contact', event)">📞 Kontak, Medsos &amp; SEO</button>
@@ -258,6 +259,7 @@
         projectsData = await fetchFile('_data/projects.yml');
         testimonialsData = await fetchFile('_data/testimonials.yml');
         faqData = await fetchFile('_data/faq.yml');
+        articlesData = await fetchFile('_data/articles.yml');
         renderTab(activeTab);
       } catch(err) {
         console.error(err);
@@ -278,6 +280,7 @@
       else if (tab === 'stats') renderStatsTab(container);
       else if (tab === 'services') renderServicesTab(container);
       else if (tab === 'projects') renderProjectsTab(container);
+      else if (tab === 'articles') renderArticlesTab(container);
       else if (tab === 'testimonials') renderTestimonialsTab(container);
       else if (tab === 'faq') renderFaqTab(container);
       else if (tab === 'contact') renderContactTab(container);
@@ -494,6 +497,62 @@
       });
       html += `<button type="button" class="btn-add" onclick="addProject()">+ Tambah Proyek Portofolio Baru</button></div>`;
       c.innerHTML = html;
+    // 4.5. ARTIKEL & TIPS
+    function renderArticlesTab(c) {
+      const items = (articlesData && articlesData.items) ? articlesData.items : [];
+      let html = `<div class="sec-hd"><h2>📰 Artikel &amp; Tips Edukasi</h2></div><div class="form-card">`;
+      items.forEach((item, idx) => {
+        html += `
+          <div class="item-box">
+            <div class="item-top">
+              <span class="item-num">Artikel #${idx+1}</span>
+              <button type="button" class="btn-del" onclick="deleteArticle(${idx})">Hapus</button>
+            </div>
+            <div class="form-grp">
+              <label class="label">Judul Artikel</label>
+              <input class="input-txt" id="art_title_${idx}" value="${item.title || ''}">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+              <div class="form-grp">
+                <label class="label">Kategori Artikel</label>
+                <select class="input-txt" id="art_cat_${idx}">
+                  <option value="lembap" ${item.category==='lembap'?'selected':''}>💧 Tembok Lembap</option>
+                  <option value="cat" ${item.category==='cat'?'selected':''}>🎨 Pengecatan</option>
+                  <option value="waterproof" ${item.category==='waterproof'?'selected':''}>🛡️ Waterproofing</option>
+                  <option value="renovasi" ${item.category==='renovasi'?'selected':''}>🔨 Renovasi Rumah</option>
+                </select>
+              </div>
+              <div class="form-grp">
+                <label class="label">Tanggal Terbit</label>
+                <input class="input-txt" id="art_date_${idx}" value="${item.date || '14 Agustus 2026'}">
+              </div>
+              <div class="form-grp">
+                <label class="label">Penulis</label>
+                <input class="input-txt" id="art_author_${idx}" value="${item.author || 'Tim Vistara Build'}">
+              </div>
+            </div>
+            <div class="form-grp">
+              <label class="label">Foto Sampul Artikel</label>
+              <div class="img-picker">
+                <div class="img-prev" id="prev_art_img_${idx}">${item.image ? `<img src="../${item.image}">` : 'No Foto'}</div>
+                <input type="hidden" id="art_img_${idx}" value="${item.image || ''}">
+                <input type="file" id="file_art_img_${idx}" style="display:none" onchange="handleImgUpload(this, 'art_img_${idx}', 'prev_art_img_${idx}')">
+                <button type="button" class="file-btn" onclick="document.getElementById('file_art_img_${idx}').click()">Pilih Foto Sampul</button>
+              </div>
+            </div>
+            <div class="form-grp">
+              <label class="label">Ringkasan Artikel (Singkat)</label>
+              <textarea class="input-txt" id="art_sum_${idx}">${item.summary || ''}</textarea>
+            </div>
+            <div class="form-grp">
+              <label class="label">Isi Artikel Lengkap</label>
+              <textarea class="input-txt" id="art_cnt_${idx}" style="min-height:160px;">${item.content || ''}</textarea>
+            </div>
+          </div>
+        `;
+      });
+      html += `<button type="button" class="btn-add" onclick="addArticle()">+ Tambah Artikel Baru</button></div>`;
+      c.innerHTML = html;
     }
 
     // 5. TESTIMONI
@@ -630,6 +689,9 @@
     function addProject() { projectsData.items = projectsData.items || []; projectsData.items.push({ title: 'Proyek Baru', location: 'Yogyakarta', category: 'lembap', description: '', image_before: '', image: '', featured: false, year: 2024 }); renderProjectsTab(document.getElementById('mainContent')); }
     function deleteProject(i) { projectsData.items.splice(i, 1); renderProjectsTab(document.getElementById('mainContent')); }
 
+    function addArticle() { articlesData.items = articlesData.items || []; articlesData.items.push({ id: 'artikel-' + Date.now(), title: 'Judul Artikel Baru', category: 'lembap', category_label: 'Tembok Lembap', date: '14 Agustus 2026', author: 'Tim Vistara Build', image: 'assets/uploads/hero-pengecatan-dinding.jpg', summary: '', content: '' }); renderArticlesTab(document.getElementById('mainContent')); }
+    function deleteArticle(i) { articlesData.items.splice(i, 1); renderArticlesTab(document.getElementById('mainContent')); }
+
     function addTestimonial() { testimonialsData.items = testimonialsData.items || []; testimonialsData.items.push({ name: 'Pelanggan Baru', location: 'Yogyakarta', text: '', rating: 5 }); renderTestimonialsTab(document.getElementById('mainContent')); }
     function deleteTestimonial(i) { testimonialsData.items.splice(i, 1); renderTestimonialsTab(document.getElementById('mainContent')); }
 
@@ -690,6 +752,31 @@
           if (a) item.image = a.value;
         });
         await saveFile('_data/projects.yml', projectsData);
+      }
+      else if (activeTab === 'articles') {
+        (articlesData.items || []).forEach((item, idx) => {
+          const t = document.getElementById(`art_title_${idx}`);
+          const c = document.getElementById(`art_cat_${idx}`);
+          const d = document.getElementById(`art_date_${idx}`);
+          const a = document.getElementById(`art_author_${idx}`);
+          const img = document.getElementById(`art_img_${idx}`);
+          const s = document.getElementById(`art_sum_${idx}`);
+          const cnt = document.getElementById(`art_cnt_${idx}`);
+          if (t) item.title = t.value;
+          if (c) {
+            item.category = c.value;
+            item.category_label = c.options[c.selectedIndex].text.replace(/^[^\s]+\s+/, '');
+          }
+          if (d) item.date = d.value;
+          if (a) item.author = a.value;
+          if (img) item.image = img.value;
+          if (s) item.summary = s.value;
+          if (cnt) item.content = cnt.value;
+          if (!item.id) {
+            item.id = (t ? t.value : 'artikel').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+          }
+        });
+        await saveFile('_data/articles.yml', articlesData);
       }
       else if (activeTab === 'testimonials') {
         (testimonialsData.items || []).forEach((item, idx) => {

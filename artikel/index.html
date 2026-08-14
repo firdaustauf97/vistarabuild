@@ -1,0 +1,304 @@
+---
+layout: null
+---
+{% assign d = site.data.site %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artikel &amp; Tips Edukasi — {{ d.brand | default: "Vistara Build" }}</title>
+
+  <meta name="description" content="Kumpulan artikel, tips perawatan tembok lembap, panduan pengecatan, dan edukasi renovasi rumah di Yogyakarta oleh {{ d.brand | default: 'Vistara Build' }}.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#143f37">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ d.favicon_32 | default: '/assets/uploads/favicon-32.png' | relative_url }}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --p:  #143f37; --pl: #1a5447; --pd: #0c2922;
+      --a:  #e8aa3e; --ah: #f2bd5d; --ap: #fdf3dc;
+      --w:  #ffffff; --bg: #f4f7f6; --s:  #ffffff; --s2: #ebf2ef;
+      --t:  #0f1f1a; --t2: #3a5049; --mu: #6e8881; --bd: #d3e3de;
+      --fn: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --r:  16px; --r2: 24px;
+      --sh: 0 4px 20px rgba(12,41,34,.07);
+      --sh2:0 12px 40px rgba(12,41,34,.12);
+      --tr: .3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { font-family: var(--fn); background: var(--bg); color: var(--t); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; height: auto; display: block; }
+    .container { width: min(100% - 32px, 1200px); margin-inline: auto; }
+
+    /* HEADER */
+    .site-header { position: sticky; top: 0; z-index: 900; background: rgba(12,41,34,.96); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,255,255,.08); padding: 14px 0; }
+    .nav-wrap { display: flex; align-items: center; justify-space: space-between; }
+    .brand-link { display: flex; align-items: center; gap: 10px; }
+    .brand-img-badge { background: #ffffff; padding: 4px 10px; border-radius: 10px; display: inline-flex; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+    .brand-img { height: 42px; width: auto; object-fit: contain; }
+    .brand-txt { font-size: 1.35rem; font-weight: 800; color: var(--w); letter-spacing: -.02em; }
+
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+    .nav-links a { font-size: .9rem; font-weight: 600; color: rgba(255,255,255,.8); transition: color var(--tr); }
+    .nav-links a:hover, .nav-links a.active { color: var(--a); }
+
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: .88rem; font-weight: 700; padding: 11px 22px; border-radius: 999px; transition: var(--tr); cursor: pointer; border: none; }
+    .btn-a { background: var(--a); color: var(--pd); box-shadow: 0 4px 16px rgba(232,170,62,.3); }
+    .btn-a:hover { background: var(--ah); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,170,62,.4); }
+
+    /* HERO BANNER */
+    .page-banner { background: linear-gradient(145deg, #0c2922 0%, #143f37 60%, #1a5447 100%); color: var(--w); padding: 56px 0 44px; text-align: center; position: relative; overflow: hidden; }
+    .page-banner::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(232,170,62,.15), transparent); }
+    .banner-title { font-size: clamp(1.8rem, 4vw, 2.75rem); font-weight: 800; margin-bottom: 12px; position: relative; z-index: 1; }
+    .banner-sub { font-size: 1.02rem; color: rgba(255,255,255,.75); max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+
+    /* SEARCH & FILTER */
+    .filter-sec { margin: -24px 0 36px; position: relative; z-index: 10; }
+    .filter-card { background: var(--s); border-radius: 20px; padding: 18px 22px; border: 1.5px solid var(--bd); box-shadow: var(--sh2); display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .search-box { display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1.5px solid var(--bd); border-radius: 12px; padding: 8px 16px; flex: 1; min-width: 260px; }
+    .search-box input { border: none; background: transparent; font-family: inherit; font-size: .9rem; outline: none; width: 100%; color: var(--t); }
+    .cat-pills { display: flex; items-center; gap: 8px; flex-wrap: wrap; }
+    .pill { padding: 8px 16px; border-radius: 999px; background: var(--bg); border: 1px solid var(--bd); font-size: .82rem; font-weight: 700; color: var(--t2); cursor: pointer; transition: var(--tr); }
+    .pill:hover, .pill.active { background: var(--p); color: var(--w); border-color: var(--p); }
+
+    /* ARTICLES GRID */
+    .art-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 26px; margin-bottom: 60px; }
+    .art-card { background: var(--s); border-radius: var(--r2); border: 1.5px solid var(--bd); overflow: hidden; transition: var(--tr); display: flex; flex-direction: column; cursor: pointer; }
+    .art-card:hover { transform: translateY(-6px); box-shadow: var(--sh2); border-color: rgba(232,170,62,.4); }
+    .art-img-wrap { position: relative; aspect-ratio: 16/9; overflow: hidden; background: var(--pd); }
+    .art-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--tr); }
+    .art-card:hover .art-img-wrap img { transform: scale(1.06); }
+    .art-cat-badge { position: absolute; top: 14px; left: 14px; background: rgba(12,41,34,.9); color: var(--a); border: 1px solid rgba(232,170,62,.3); padding: 4px 11px; border-radius: 999px; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; backdrop-filter: blur(8px); }
+
+    .art-body { padding: 22px; display: flex; flex-direction: column; flex: 1; }
+    .art-meta { font-size: .78rem; color: var(--mu); margin-bottom: 8px; display: flex; align-items: center; gap: 12px; font-weight: 600; }
+    .art-title { font-size: 1.12rem; font-weight: 800; color: var(--t); margin-bottom: 10px; line-height: 1.4; transition: color var(--tr); }
+    .art-card:hover .art-title { color: var(--p); }
+    .art-sum { font-size: .88rem; color: var(--t2); line-height: 1.6; margin-bottom: 18px; flex: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .art-read-more { font-size: .83rem; font-weight: 800; color: var(--p); display: inline-flex; align-items: center; gap: 6px; }
+
+    /* MODAL READER */
+    .modal-ov { position: fixed; inset: 0; background: rgba(12,41,34,.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 9999; display: flex; justify-content: center; padding: 20px; overflow-y: auto; opacity: 0; visibility: hidden; transition: opacity .3s, visibility .3s; }
+    .modal-ov.show { opacity: 1; visibility: visible; }
+    .modal-card { background: var(--s); border-radius: 24px; width: min(100%, 780px); margin: auto; padding: 36px 32px; position: relative; box-shadow: 0 24px 80px rgba(0,0,0,.4); animation: modal-in .35s var(--tr); }
+    @keyframes modal-in { from { transform: translateY(20px) scale(.97); } to { transform: translateY(0) scale(1); } }
+    .btn-close-modal { position: absolute; top: 20px; right: 20px; width: 38px; height: 38px; border-radius: 50%; background: var(--bg); border: 1px solid var(--bd); font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: var(--tr); }
+    .btn-close-modal:hover { background: #fee2e2; color: #dc2626; }
+
+    .reader-cat { display: inline-block; background: var(--ap); color: #8a5f00; font-size: .78rem; font-weight: 800; padding: 4px 12px; border-radius: 999px; text-transform: uppercase; margin-bottom: 12px; }
+    .reader-title { font-size: clamp(1.4rem, 3vw, 2.1rem); font-weight: 800; color: var(--pd); line-height: 1.35; margin-bottom: 12px; }
+    .reader-meta { font-size: .82rem; color: var(--mu); font-weight: 600; margin-bottom: 24px; display: flex; gap: 16px; border-bottom: 1px solid var(--bd); padding-bottom: 16px; }
+    .reader-img { border-radius: 16px; overflow: hidden; margin-bottom: 28px; aspect-ratio: 16/9; }
+    .reader-img img { width: 100%; height: 100%; object-fit: cover; }
+    .reader-body { font-size: 1rem; color: var(--t2); line-height: 1.8; white-space: pre-line; margin-bottom: 36px; }
+
+    /* ARTICLE CTA BOX AT BOTTOM */
+    .article-cta-box { background: linear-gradient(135deg, #0c2922 0%, #143f37 60%, #1a5447 100%); border-radius: 20px; padding: 32px 28px; text-align: center; color: var(--w); border: 1px solid rgba(232,170,62,.3); box-shadow: 0 16px 48px rgba(12,41,34,.35); position: relative; overflow: hidden; margin-top: 36px; }
+    .article-cta-box::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 100% at 100% 0%, rgba(232,170,62,.18), transparent); }
+    .cta-badge { display: inline-block; background: rgba(232,170,62,.2); color: var(--a); border: 1px solid rgba(232,170,62,.4); padding: 4px 14px; border-radius: 999px; font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 12px; position: relative; z-index: 1; }
+    .cta-title { font-size: 1.35rem; font-weight: 800; color: var(--w); margin-bottom: 8px; position: relative; z-index: 1; }
+    .cta-desc { font-size: .92rem; color: rgba(255,255,255,.78); max-width: 580px; margin: 0 auto 20px; position: relative; z-index: 1; }
+    .btn-wa-cta { background: #25d366; color: #ffffff; font-weight: 800; font-size: .96rem; padding: 14px 28px; border-radius: 999px; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 6px 20px rgba(37,211,102,.35); transition: var(--tr); position: relative; z-index: 1; }
+    .btn-wa-cta:hover { background: #20ba5a; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(37,211,102,.45); }
+
+    /* FOOTER */
+    footer { background: var(--pd); color: rgba(255,255,255,.6); padding: 40px 0 24px; font-size: .88rem; border-top: 1px solid rgba(255,255,255,.08); }
+    .ft-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; border-top: 1px solid rgba(255,255,255,.08); padding-top: 24px; margin-top: 24px; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href="../" class="brand-link">
+        {% if d.logo_full and d.logo_full != "" %}
+        <span class="brand-img-badge"><img src="{{ d.logo_full | relative_url }}" alt="{{ d.brand }}" class="brand-img"></span>
+        {% else %}
+        <span class="brand-txt">{{ d.brand | default: "Vistara Build" }}</span>
+        {% endif %}
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="../#beranda">Beranda</a></li>
+        <li><a href="../#layanan">Layanan</a></li>
+        <li><a href="../#proyek">Portofolio</a></li>
+        <li><a href="../#proses">Cara Kerja</a></li>
+        <li><a href="../#faq">FAQ</a></li>
+        <li><a href="./" class="active">Artikel</a></li>
+      </ul>
+
+      {% assign wa = d.whatsapp | default: "6285747040163" %}
+      {% assign wa_msg = d.whatsapp_message | default: "Halo Vistara Build, saya ingin konsultasi gratis." | url_encode %}
+      <a href="https://wa.me/{{ wa }}?text={{ wa_msg }}" target="_blank" rel="noopener" class="btn btn-a">💬 Konsultasi Gratis</a>
+    </div>
+  </header>
+
+  <!-- BANNER -->
+  <section class="page-banner">
+    <div class="container">
+      <h1 class="banner-title">Artikel &amp; Tips Edukasi</h1>
+      <p class="banner-sub">Panduan seputar penanganan tembok lembap, tips memilih warna cat, perawatan rumah, dan inspirasi renovasi di Yogyakarta.</p>
+    </div>
+  </section>
+
+  <!-- SEARCH & FILTER -->
+  <div class="container filter-sec">
+    <div class="filter-card">
+      <div class="search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6e8881" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="Cari artikel (misal: tembok lembap, cat, waterproofing)..." onkeyup="filterArticles()">
+      </div>
+      <div class="cat-pills">
+        <button class="pill active" onclick="filterCat('all', event)">Semua Artikel</button>
+        <button class="pill" onclick="filterCat('lembap', event)">💧 Tembok Lembap</button>
+        <button class="pill" onclick="filterCat('cat', event)">🎨 Pengecatan</button>
+        <button class="pill" onclick="filterCat('waterproof', event)">🛡️ Waterproofing</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARTICLES GRID -->
+  <main class="container">
+    <div class="art-grid" id="articlesGrid">
+      {% if site.data.articles and site.data.articles.items %}
+        {% for art in site.data.articles.items %}
+        <article class="art-card" data-cat="{{ art.category }}" data-title="{{ art.title | downcase }}" onclick="openArticleModal('{{ art.id }}')">
+          <div class="art-img-wrap">
+            {% if art.image and art.image != "" %}
+            <img src="{{ art.image | relative_url }}" alt="{{ art.title }}" loading="lazy">
+            {% else %}
+            <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=800&q=80" alt="{{ art.title }}" loading="lazy">
+            {% endif %}
+            <span class="art-cat-badge">{{ art.category_label | default: art.category }}</span>
+          </div>
+          <div class="art-body">
+            <div class="art-meta">
+              <span>🗓️ {{ art.date }}</span>
+              <span>✍️ {{ art.author | default: "Vistara Build" }}</span>
+            </div>
+            <h2 class="art-title">{{ art.title }}</h2>
+            <p class="art-sum">{{ art.summary }}</p>
+            <div class="art-read-more">Baca Selengkapnya <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+          </div>
+        </article>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </main>
+
+  <!-- MODAL READER WITH BOTTOM CALL-TO-ACTION BUTTON -->
+  <div class="modal-ov" id="artModal">
+    <div class="modal-card">
+      <button type="button" class="btn-close-modal" onclick="closeArticleModal()" aria-label="Tutup artikel">✕</button>
+
+      <span class="reader-cat" id="rCat">Kategori</span>
+      <h1 class="reader-title" id="rTitle">Judul Artikel</h1>
+      <div class="reader-meta">
+        <span id="rDate">🗓️ Tanggal</span>
+        <span id="rAuthor">✍️ Penulis</span>
+      </div>
+
+      <div class="reader-img">
+        <img id="rImg" src="" alt="Gambar Artikel">
+      </div>
+
+      <div class="reader-body" id="rBody">
+        Isi artikel...
+      </div>
+
+      <!-- BOTOM CALL-TO-ACTION BOX TO VISTARA BUILD SERVICES -->
+      <div class="article-cta-box">
+        <span class="cta-badge">Solusi Spesialis Vistara Build</span>
+        <h3 class="cta-title">Butuh Penanganan Tembok Lembap atau Renovasi Rumah?</h3>
+        <p class="cta-desc">Jangan biarkan masalah rembesan merusak hunian Anda. Tim Vistara Build siap melakukan survei lokasi dan konsultasi gratis di Yogyakarta &amp; sekitarnya.</p>
+        <a id="rCtaBtn" href="#" target="_blank" rel="noopener" class="btn-wa-cta">
+          💬 Konsultasi Layanan Vistara Build via WhatsApp
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container ft-inner">
+      <div>{{ d.copyright | default: "© 2025 Vistara Build. Semua hak cipta dilindungi." }}</div>
+      <div>{{ d.footer_tagline | default: "Mitra Terpercaya Renovasi Rumah Anda di Yogyakarta." }}</div>
+    </div>
+  </footer>
+
+  <script>
+    // Embedded Raw JSON of Articles for Fast Modal Reader
+    const articlesData = {{ site.data.articles.items | jsonify }};
+
+    let activeCategory = 'all';
+
+    function filterCat(cat, evt) {
+      activeCategory = cat;
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      if (evt && evt.target) evt.target.classList.add('active');
+      filterArticles();
+    }
+
+    function filterArticles() {
+      const q = (document.getElementById('searchInput').value || '').toLowerCase();
+      document.querySelectorAll('.art-card').forEach(card => {
+        const cat = card.getAttribute('data-cat');
+        const title = card.getAttribute('data-title');
+        const matchesCat = (activeCategory === 'all' || cat === activeCategory);
+        const matchesSearch = (!q || title.includes(q));
+        if (matchesCat && matchesSearch) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function openArticleModal(artId) {
+      const art = articlesData.find(a => a.id === artId);
+      if (!art) return;
+
+      document.getElementById('rCat').textContent = art.category_label || art.category;
+      document.getElementById('rTitle').textContent = art.title;
+      document.getElementById('rDate').textContent = '🗓️ ' + (art.date || '');
+      document.getElementById('rAuthor').textContent = '✍️ ' + (art.author || 'Tim Vistara Build');
+      document.getElementById('rImg').src = art.image ? (art.image.startsWith('http') ? art.image : '../' + art.image) : 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=800&q=80';
+      document.getElementById('rBody').textContent = art.content || art.summary;
+
+      // Update Bottom Call-To-Action WhatsApp Link with Article Context
+      const waNum = '{{ wa }}';
+      const encodedMsg = encodeURIComponent(`Halo Vistara Build, saya baru saja membaca artikel "${art.title}" dan ingin konsultasi mengenai layanan ini.`);
+      document.getElementById('rCtaBtn').href = `https://wa.me/${waNum}?text=${encodedMsg}`;
+
+      const modal = document.getElementById('artModal');
+      modal.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeArticleModal() {
+      const modal = document.getElementById('artModal');
+      modal.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+
+    // Close modal on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeArticleModal();
+    });
+  </script>
+
+</body>
+</html>

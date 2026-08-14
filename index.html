@@ -384,6 +384,7 @@ layout: null
   <a href="#proses"    class="drawer-lnk">Cara Kerja</a>
   <a href="#proyek"    class="drawer-lnk">Portofolio</a>
   <a href="#testimoni" class="drawer-lnk">Testimoni</a>
+  <a href="artikel/"   class="drawer-lnk">Artikel &amp; Tips</a>
   <a href="#faq"       class="drawer-lnk">FAQ</a>
   <a href="#kontak"    class="drawer-lnk">Kontak</a>
   <div style="margin-top:28px;">
@@ -417,6 +418,7 @@ layout: null
         <li><a href="#proses">Cara Kerja</a></li>
         <li><a href="#proyek">Portofolio</a></li>
         <li><a href="#testimoni">Testimoni</a></li>
+        <li><a href="artikel/">Artikel</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
       <div class="nav-right">
@@ -640,6 +642,42 @@ layout: null
             <div class="testi-nm">{{ t.name }}</div>
             <div class="testi-lo">📍 {{ t.location }}{% if t.role %} · {{ t.role }}{% endif %}</div>
           </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ARTICLES SHOWCASE -->
+{% if site.data.articles.items and site.data.articles.items.size > 0 %}
+<section class="section sec-alt" id="artikel" aria-labelledby="h2-art">
+  <div class="container">
+    <div class="sec-hd rev" style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+      <div>
+        <div class="eyebrow">Artikel &amp; Edukasi</div>
+        <h2 class="sec-title" id="h2-art">Tips &amp; Panduan Renovasi Rumah</h2>
+        <p class="sec-sub" style="margin-bottom:0;">Edukasi praktis seputar perawatan tembok lembap, pengecatan, dan solusi rembesan air di Yogyakarta.</p>
+      </div>
+      <a href="artikel/" class="btn btn-g" style="white-space:nowrap;">Lihat Semua Artikel <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></a>
+    </div>
+    <div class="svc-grid" style="grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));">
+      {% for art in site.data.articles.items limit:3 %}
+      <article class="svc-card rev" style="display:flex;flex-direction:column;padding:0;overflow:hidden;border-radius:20px;">
+        <div style="aspect-ratio:16/9;position:relative;background:var(--pd);overflow:hidden;">
+          {% if art.image and art.image != "" %}
+          <img src="{{ art.image | relative_url }}" alt="{{ art.title }}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+          {% else %}
+          <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=800&q=80" alt="{{ art.title }}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+          {% endif %}
+          <span style="position:absolute;top:12px;left:12px;background:rgba(12,41,34,.9);color:var(--a);padding:4px 10px;border-radius:999px;font-size:.72rem;font-weight:800;text-transform:uppercase;">{{ art.category_label | default: art.category }}</span>
+        </div>
+        <div style="padding:22px;display:flex;flex-direction:column;flex:1;">
+          <div style="font-size:.78rem;color:var(--mu);margin-bottom:6px;font-weight:600;">🗓️ {{ art.date }}</div>
+          <h3 style="font-size:1.05rem;font-weight:800;color:var(--t);margin-bottom:8px;line-height:1.4;">{{ art.title }}</h3>
+          <p style="font-size:.86rem;color:var(--t2);line-height:1.6;margin-bottom:16px;flex:1;">{{ art.summary }}</p>
+          <a href="artikel/" style="font-size:.83rem;font-weight:800;color:var(--p);display:inline-flex;align-items:center;gap:6px;">Baca Artikel Lengkap <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
       </article>
       {% endfor %}
