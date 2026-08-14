@@ -174,22 +174,47 @@
       setTimeout(() => t.classList.remove('show'), 3000);
     }
 
+    function base64ToUtf8(str) {
+      try {
+        const cleanStr = (str || '').replace(/\s/g, '');
+        const bytes = Uint8Array.from(atob(cleanStr), c => c.charCodeAt(0));
+        return new TextDecoder('utf-8').decode(bytes);
+      } catch(e) {
+        console.error('Base64 decode error:', e);
+        return '';
+      }
+    }
+
+    function utf8ToBase64(str) {
+      const bytes = new TextEncoder().encode(str || '');
+      let binary = '';
+      for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return btoa(binary);
+    }
+
     async function fetchFile(path) {
-      const tok = getToken();
-      const headers = tok ? { 'Authorization': `token ${tok}` } : {};
-      const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`, { headers });
-      if (!res.ok) throw new Error(`Gagal memuat ${path}`);
-      const json = await res.json();
-      shaMap[path] = json.sha;
-      const decoded = decodeURIComponent(escape(atob(json.content.replace(/\n/g, ''))));
-      return jsyaml.load(decoded) || {};
+      try {
+        const tok = getToken();
+        const headers = tok ? { 'Authorization': `token ${tok}` } : {};
+        const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`, { headers });
+        if (!res.ok) return {};
+        const json = await res.json();
+        shaMap[path] = json.sha;
+        const decoded = base64ToUtf8(json.content);
+        return jsyaml.load(decoded) || {};
+      } catch(err) {
+        console.warn(`Gagal memuat ${path}:`, err);
+        return {};
+      }
     }
 
     async function saveFile(path, yamlObj) {
       const tok = getToken();
       if (!tok) { openTokenModal(); return; }
       const yamlStr = jsyaml.dump(yamlObj);
-      const contentBase64 = btoa(unescape(encodeURIComponent(yamlStr)));
+      const contentBase64 = utf8ToBase64(yamlStr);
       
       const payload = {
         message: `Update ${path} via Admin Panel`,
@@ -254,16 +279,25 @@
 
     async function loadAllData() {
       try {
-        siteData = await fetchFile('_data/site.yml');
-        servicesData = await fetchFile('_data/services.yml');
-        projectsData = await fetchFile('_data/projects.yml');
-        testimonialsData = await fetchFile('_data/testimonials.yml');
-        faqData = await fetchFile('_data/faq.yml');
-        articlesData = await fetchFile('_data/articles.yml');
+        const [site, services, projects, testimonials, faq, articles] = await Promise.all([
+          fetchFile('_data/site.yml'),
+          fetchFile('_data/services.yml'),
+          fetchFile('_data/projects.yml'),
+          fetchFile('_data/testimonials.yml'),
+          fetchFile('_data/faq.yml'),
+          fetchFile('_data/articles.yml')
+        ]);
+        siteData = site || {};
+        servicesData = services || {};
+        projectsData = projects || {};
+        testimonialsData = testimonials || {};
+        faqData = faq || {};
+        articlesData = articles || {};
         renderTab(activeTab);
       } catch(err) {
         console.error(err);
         if (!getToken()) openTokenModal();
+        else renderTab(activeTab);
       }
     }
 
