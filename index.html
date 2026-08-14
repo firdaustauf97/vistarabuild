@@ -666,7 +666,7 @@ layout: null
     </div>
     <div class="svc-grid" style="grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));">
       {% for art in site.data.articles.items limit:3 %}
-      <article class="svc-card rev" style="display:flex;flex-direction:column;padding:0;overflow:hidden;border-radius:20px;">
+      <a href="artikel/{{ art.id }}/" class="svc-card rev" style="display:flex;flex-direction:column;padding:0;overflow:hidden;border-radius:20px;text-decoration:none;">
         <div style="aspect-ratio:16/9;position:relative;background:var(--pd);overflow:hidden;">
           {% if art.image and art.image != "" %}
           <img src="{{ art.image | relative_url }}" alt="{{ art.title }}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
@@ -679,9 +679,9 @@ layout: null
           <div style="font-size:.78rem;color:var(--mu);margin-bottom:6px;font-weight:600;">🗓️ {{ art.date }}</div>
           <h3 style="font-size:1.05rem;font-weight:800;color:var(--t);margin-bottom:8px;line-height:1.4;">{{ art.title }}</h3>
           <p style="font-size:.86rem;color:var(--t2);line-height:1.6;margin-bottom:16px;flex:1;">{{ art.summary }}</p>
-          <a href="artikel/" style="font-size:.83rem;font-weight:800;color:var(--p);display:inline-flex;align-items:center;gap:6px;">Baca Artikel Lengkap <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <span style="font-size:.83rem;font-weight:800;color:var(--p);display:inline-flex;align-items:center;gap:6px;">Baca Artikel Lengkap <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
         </div>
-      </article>
+      </a>
       {% endfor %}
     </div>
   </div>

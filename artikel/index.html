@@ -215,7 +215,7 @@ layout: null
     <div class="art-grid" id="articlesGrid">
       {% if site.data.articles and site.data.articles.items %}
         {% for art in site.data.articles.items %}
-        <article class="art-card" data-cat="{{ art.category }}" data-title="{{ art.title | downcase }}" onclick="openArticleModal('{{ art.id }}')">
+        <a href="./{{ art.id }}/" class="art-card" data-cat="{{ art.category }}" data-title="{{ art.title | downcase }}">
           <div class="art-img-wrap">
             {% if art.image and art.image != "" %}
             <img src="{{ art.image | relative_url }}" alt="{{ art.title }}" loading="lazy">
@@ -231,9 +231,9 @@ layout: null
             </div>
             <h2 class="art-title">{{ art.title }}</h2>
             <p class="art-sum">{{ art.summary }}</p>
-            <div class="art-read-more">Baca Selengkapnya <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+            <div class="art-read-more">Baca Artikel Lengkap <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
           </div>
-        </article>
+        </a>
         {% endfor %}
       {% endif %}
     </div>
