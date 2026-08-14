@@ -348,14 +348,16 @@ layout: null
       .steps::before{display:none}
       .ft-grid{grid-template-columns:1fr 1fr}
     }
+    @media(max-width:960px){
+      .nav-links,.nav-right .btn{display:none}
+      .hamburger{display:flex}
+      .drawer{display:flex}
+    }
     @media(max-width:768px){
       .section{padding:62px 0}
       .sec-hd{margin-bottom:38px}
       .hero-ct{grid-template-columns:1fr;gap:0;padding-block:108px 62px}
       .hero-vis{display:none}
-      .nav-links,.nav-right .btn{display:none}
-      .hamburger{display:flex}
-      .drawer{display:flex}
       .svc-grid,.proj-grid,.testi-grid{grid-template-columns:1fr}
       .steps{grid-template-columns:1fr 1fr}
       .contact-wrap{grid-template-columns:1fr}
