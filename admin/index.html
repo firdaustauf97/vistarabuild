@@ -741,6 +741,14 @@ ${item.content || item.summary || ''}
               <label class="label">Judul Artikel</label>
               <input class="input-txt" id="art_title_${idx}" value="${item.title || ''}">
             </div>
+            <div class="form-grp">
+              <label class="label">🔗 URL Slug Artikel (Alamat Permalinks Web)</label>
+              <div style="display:flex;align-items:center;gap:6px;background:var(--s2);padding:6px 12px;border-radius:10px;border:1px solid var(--bd);">
+                <span style="font-size:.82rem;color:var(--mu);font-weight:700;white-space:nowrap;">https://vistarabuild.web.id/artikel/</span>
+                <input class="input-txt" id="art_id_${idx}" value="${item.id || ''}" placeholder="contoh: treatment-tembok-lembap" style="font-weight:700;color:var(--p);margin:0;">
+              </div>
+              <small style="font-size:.75rem;color:var(--mu);margin-top:4px;display:block;">Bebas diubah (gunakan huruf kecil &amp; tanda hubung -). Ini adalah alamat URL artikel Anda di browser.</small>
+            </div>
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
               <div class="form-grp">
                 <label class="label">Kategori Artikel</label>
@@ -1002,9 +1010,12 @@ ${item.content || item.summary || ''}
           if (img) item.image = img.value;
           if (s) item.summary = s.value;
           if (cnt) item.content = cnt.value;
-          if (!item.id) {
-            item.id = (t ? t.value : 'artikel').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+          const idInput = document.getElementById(`art_id_${idx}`);
+          let customSlug = idInput ? idInput.value.trim().toLowerCase().replace(/[^a-z0-9-]+/g, '-') : '';
+          if (!customSlug) {
+            customSlug = (t ? t.value : 'artikel').toLowerCase().replace(/[^a-z0-9]+/g, '-');
           }
+          item.id = customSlug;
           // Automatically generate & save standalone HTML permalink page for this article
           const htmlCode = generateArticleHtml(item);
           await saveRawFile(`artikel/${item.id}.html`, htmlCode);
