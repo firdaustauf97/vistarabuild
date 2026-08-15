@@ -1,22 +1,53 @@
 {% assign d = site.data.site %}
+{% assign page_slug = page.slug | default: page.id %}
+{% assign art_data = nil %}
+{% for item in site.data.articles.items %}
+  {% if item.id == page_slug or item.id == page.id %}
+    {% assign art_data = item %}
+  {% endif %}
+{% endfor %}
+
+{% if art_data %}
+  {% assign art_title = art_data.title | default: page.title %}
+  {% assign art_summary = art_data.summary | default: page.summary %}
+  {% assign art_image = art_data.image | default: page.image %}
+  {% assign art_category = art_data.category_label | default: art_data.category | default: page.category_label | default: page.category %}
+  {% assign art_date = art_data.date | default: page.date %}
+  {% assign art_author = art_data.author | default: page.author %}
+  {% assign art_body = art_data.content | default: content %}
+{% else %}
+  {% assign art_title = page.title %}
+  {% assign art_summary = page.summary %}
+  {% assign art_image = page.image %}
+  {% assign art_category = page.category_label | default: page.category %}
+  {% assign art_date = page.date %}
+  {% assign art_author = page.author %}
+  {% assign art_body = content %}
+{% endif %}
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ page.title }} — {{ d.brand | default: "Vistara Build" }}</title>
+  <title>{{ art_title }} — {{ d.brand | default: "Vistara Build" }}</title>
 
-  <meta name="description" content="{{ page.summary | default: page.title | strip_html | escape }}">
+  <meta name="description" content="{{ art_summary | strip_html | escape }}">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#143f37">
-  <link rel="canonical" href="https://vistarabuild.web.id/artikel/{{ page.slug | default: page.id }}/">
+  <link rel="canonical" href="https://vistarabuild.web.id/artikel/{{ page_slug }}/">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://vistarabuild.web.id/artikel/{{ page.slug | default: page.id }}/">
-  <meta property="og:title" content="{{ page.title | escape }} — {{ d.brand | default: 'Vistara Build' }}">
-  <meta property="og:description" content="{{ page.summary | default: page.title | strip_html | escape }}">
-  <meta property="og:image" content="{{ page.image | default: 'assets/uploads/hero-pengecatan-dinding.jpg' | relative_url }}">
+  <meta property="og:url" content="https://vistarabuild.web.id/artikel/{{ page_slug }}/">
+  <meta property="og:title" content="{{ art_title | escape }} — {{ d.brand | default: 'Vistara Build' }}">
+  <meta property="og:description" content="{{ art_summary | strip_html | escape }}">
+
+  {% if art_image contains 'http' %}
+    <meta property="og:image" content="{{ art_image }}">
+  {% else %}
+    <meta property="og:image" content="{{ art_image | default: 'assets/uploads/hero-pengecatan-dinding.jpg' | relative_url }}">
+  {% endif %}
 
   <link rel="icon" type="image/png" sizes="32x32" href="{{ d.favicon_32 | default: '/assets/uploads/favicon-32.png' | relative_url }}">
 
@@ -171,30 +202,34 @@
       <div class="art-breadcrumb">
         <a href="https://vistarabuild.web.id/">Beranda</a> <span>/</span>
         <a href="https://vistarabuild.web.id/artikel/">Artikel</a> <span>/</span>
-        <span>{{ page.title }}</span>
+        <span>{{ art_title }}</span>
       </div>
 
-      <span class="art-badge">{{ page.category_label | default: page.category | default: "Artikel" }}</span>
-      <h1 class="art-h1">{{ page.title }}</h1>
+      <span class="art-badge">{{ art_category | default: "Artikel" }}</span>
+      <h1 class="art-h1">{{ art_title }}</h1>
       
       <div class="art-meta">
-        <span>🗓️ {{ page.date | default: "14 Agustus 2026" }}</span>
-        <span>✍️ {{ page.author | default: "Tim Vistara Build" }}</span>
+        <span>🗓️ {{ art_date | default: "14 Agustus 2026" }}</span>
+        <span>✍️ {{ art_author | default: "Tim Vistara Build" }}</span>
         <span>📍 Yogyakarta</span>
       </div>
 
-      {% if page.image and page.image != "" %}
+      {% if art_image and art_image != "" %}
       <div class="art-cover">
-        <img src="{{ page.image | relative_url }}" alt="{{ page.title }}">
+        {% if art_image contains 'http' %}
+          <img src="{{ art_image }}" alt="{{ art_title }}">
+        {% else %}
+          <img src="{{ art_image | relative_url }}" alt="{{ art_title }}">
+        {% endif %}
       </div>
       {% endif %}
 
       <div class="art-body">
-{{ content }}
+{{ art_body }}
       </div>
 
-      <!-- BOTOM CALL-TO-ACTION BOX TO VISTARA BUILD SERVICES -->
-      {% assign art_wa_msg = "Halo Vistara Build, saya baru saja membaca artikel '" | append: page.title | append: "' dan ingin konsultasi mengenai layanan ini." | url_encode %}
+      <!-- BOTTOM CALL-TO-ACTION BOX TO VISTARA BUILD SERVICES -->
+      {% assign art_wa_msg = "Halo Vistara Build, saya baru saja membaca artikel '" | append: art_title | append: "' dan ingin konsultasi mengenai layanan ini." | url_encode %}
       <div class="article-cta-box">
         <span class="cta-badge">Solusi Spesialis Vistara Build</span>
         <h2 class="cta-title">Butuh Layanan atau Renovasi Rumah di Yogyakarta?</h2>

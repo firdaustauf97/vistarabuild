@@ -1,5 +1,5 @@
 items:
-  - id: solusi-tembok-lembap-musim-hujan
+  - id: treatment-tembok-lembap
     title: 5 Solusi Ampuh Mengatasi Tembok Lembap & Cat Mengelupas
     category: lembap
     category_label: Tembok Lembap
@@ -66,13 +66,52 @@ items:
       lokasi profesional di Yogyakarta, tim Vistara Build siap membantu
       mendiagnosis dan memberikan solusi bergaransi untuk rumah Anda.
     featured: true
-  - id: pentingnya-waterproofing-sebelum-renovasi
+  - id: panduan-memilih-warna-cat
+    title: Panduan Memilih Warna Cat Interior Agar Rumah Terlihat Luas & Mewah
+    category: interior
+    category_label: Desain & Warna
+    date: 12 Agustus 2026
+    author: Tim Vistara Build
+    image: assets/uploads/hero-pengecatan-dinding.jpg
+    summary: >-
+      Ingin hunian minimalis terlihat lebih lapang dan elegan? Pelajari trik
+      kombinasi warna cat interior modern pilihan desainer profesional di sini.
+    content: >
+      Warna cat dinding interior memainkan peran sangat krusial dalam menciptakan
+      suasana hati, persepsi pencahayaan, serta ilusi luas ruangan pada rumah Anda.
+
+
+      Pilihan warna yang tepat dapat membuat ruangan sempit terasa jauh lebih lapang,
+      hangat, dan memberikan kesan hunian mewah berkelas tanpa memerlukan anggaran renovasi yang besar.
+
+
+      1. Aturan Emas 60-30-10 Pilihan Desainer
+
+      Dalam dunia dekorasi interior, desainer profesional mengadopsi aturan porsi warna 60-30-10:
+
+      - 60% Warna Dominan: Diterapkan pada tembok utama (misal: Off-White, Warm Beige, atau Warm Gray).
+
+      - 30% Warna Sekunder: Diterapkan pada perabotan besar, gorden, atau accent wall (misal: Sage Green atau Soft Olive).
+
+      - 10% Warna Aksen: Diterapkan pada dekorasi kecil, bantal sofa, atau bingkai (misal: Warm Brass, Mustard, atau Terrakotta).
+
+
+      2. Manfaatkan Warna Netral Hangat (Warm Neutrals)
+
+      Hindari warna putih polos (stark white) yang memberikan kesan dingin dan kaku seperti rumah sakit. Pilihlah opsi warna netral hangat seperti Warm Cream, Greige (Gray-Beige), atau Alabaster White untuk efek ruangan yang lembut dan menenangkan.
+
+
+      3. Efek Illusi Cat Plafon Berwarna Cerah
+
+      Untuk membuat langit-langit atau plafon terasa tinggi dan lega, cat plafon dengan warna putih yang 1-2 tingkat lebih terang dibanding warna dinding utama.
+    featured: false
+  - id: pentingnya-waterproofing
     title: Mengapa Waterproofing Penting Sebelum Memulai Pengecatan Rumah?
     category: waterproof
     category_label: Waterproofing
     date: 10 Agustus 2026
     author: Tim Vistara Build
-    image: assets/uploads/hero-pengecatan-dinding.jpg
+    image: assets/uploads/img_1786680258028_Peningkatan_Kualitas_Foto_Video.png
     summary: >-
       Banyak pemilik rumah mengabaikan tahap waterproofing sebelum mengecat,
       sehingga cat mudah terkelupas. Pelajari alasan mengapa waterproofing
