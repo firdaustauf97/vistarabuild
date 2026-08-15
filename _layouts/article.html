@@ -1,8 +1,8 @@
 {% assign d = site.data.site %}
-{% assign page_slug = page.slug | default: page.id %}
+{% assign clean_id = page.id | replace: "/artikel/", "" | replace: "/", "" %}
 {% assign art_data = nil %}
 {% for item in site.data.articles.items %}
-  {% if item.id == page_slug or item.id == page.id %}
+  {% if item.id == page.id or item.id == clean_id or page.permalink contains item.id %}
     {% assign art_data = item %}
   {% endif %}
 {% endfor %}
@@ -10,7 +10,7 @@
 {% if art_data %}
   {% assign art_title = art_data.title | default: page.title %}
   {% assign art_summary = art_data.summary | default: page.summary %}
-  {% assign art_image = art_data.image | default: page.image %}
+  {% assign art_image = art_data.image | default: page.image | default: 'assets/uploads/hero-pengecatan-dinding.jpg' %}
   {% assign art_category = art_data.category_label | default: art_data.category | default: page.category_label | default: page.category %}
   {% assign art_date = art_data.date | default: page.date %}
   {% assign art_author = art_data.author | default: page.author %}
@@ -18,7 +18,7 @@
 {% else %}
   {% assign art_title = page.title %}
   {% assign art_summary = page.summary %}
-  {% assign art_image = page.image %}
+  {% assign art_image = page.image | default: 'assets/uploads/hero-pengecatan-dinding.jpg' %}
   {% assign art_category = page.category_label | default: page.category %}
   {% assign art_date = page.date %}
   {% assign art_author = page.author %}
@@ -35,18 +35,18 @@
   <meta name="description" content="{{ art_summary | strip_html | escape }}">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#143f37">
-  <link rel="canonical" href="https://vistarabuild.web.id/artikel/{{ page_slug }}/">
+  <link rel="canonical" href="https://vistarabuild.web.id/artikel/{{ clean_id }}/">
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://vistarabuild.web.id/artikel/{{ page_slug }}/">
+  <meta property="og:url" content="https://vistarabuild.web.id/artikel/{{ clean_id }}/">
   <meta property="og:title" content="{{ art_title | escape }} — {{ d.brand | default: 'Vistara Build' }}">
   <meta property="og:description" content="{{ art_summary | strip_html | escape }}">
 
   {% if art_image contains 'http' %}
     <meta property="og:image" content="{{ art_image }}">
   {% else %}
-    <meta property="og:image" content="{{ art_image | default: 'assets/uploads/hero-pengecatan-dinding.jpg' | relative_url }}">
+    <meta property="og:image" content="{{ art_image | relative_url }}">
   {% endif %}
 
   <link rel="icon" type="image/png" sizes="32x32" href="{{ d.favicon_32 | default: '/assets/uploads/favicon-32.png' | relative_url }}">
@@ -209,7 +209,7 @@
       <h1 class="art-h1">{{ art_title }}</h1>
       
       <div class="art-meta">
-        <span>🗓️ {{ art_date | default: "14 Agustus 2026" }}</span>
+        <span>🗓️ {{ art_date | default: "15 Agustus 2026" }}</span>
         <span>✍️ {{ art_author | default: "Tim Vistara Build" }}</span>
         <span>📍 Yogyakarta</span>
       </div>
