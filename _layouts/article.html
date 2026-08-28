@@ -120,14 +120,13 @@
     .art-cover { border-radius: 20px; overflow: hidden; margin-bottom: 36px; aspect-ratio: 16/9; box-shadow: var(--sh2); background: var(--pd); }
     .art-cover img { width: 100%; height: 100%; object-fit: cover; }
 
-    .art-body { font-size: 1.05rem; color: var(--t2); line-height: 1.85; margin-bottom: 48px; }
-    .art-body p { margin-bottom: 1.25rem; }
-    .art-body h2 { font-size: 1.5rem; font-weight: 800; color: var(--pd); margin: 1.8rem 0 .8rem; }
-    .art-body h3 { font-size: 1.25rem; font-weight: 800; color: var(--pd); margin: 1.5rem 0 .6rem; }
-    .art-body h4 { font-size: 1.1rem; font-weight: 800; color: var(--pd); margin: 1.2rem 0 .5rem; }
-    .art-body ul, .art-body ol { margin: 1rem 0 1.25rem 1.5rem; }
-    .art-body li { margin-bottom: .4rem; }
-    .art-body blockquote { border-left: 4px solid var(--a); padding: 12px 20px; background: var(--ap); color: #694900; font-style: italic; border-radius: 0 12px 12px 0; margin: 1.5rem 0; }
+    .art-body { font-size: 1.05rem; color: var(--t2); line-height: 1.85; margin-bottom: 48px; word-break: break-word; }
+    .art-body p { margin-bottom: 1.4rem; }
+    .art-body h2, .art-body h3 { font-size: 1.35rem; font-weight: 800; color: var(--pd); margin: 2.2rem 0 .9rem; border-left: 4px solid var(--a); padding-left: 12px; line-height: 1.35; }
+    .art-body h4 { font-size: 1.15rem; font-weight: 800; color: var(--pd); margin: 1.6rem 0 .6rem; }
+    .art-body ul, .art-body ol { margin: 1rem 0 1.5rem 1.2rem; padding-left: 0.5rem; }
+    .art-body li { margin-bottom: .6rem; line-height: 1.7; }
+    .art-body blockquote { border-left: 4px solid var(--a); padding: 14px 20px; background: var(--ap); color: #694900; font-style: italic; border-radius: 0 12px 12px 0; margin: 1.6rem 0; }
     .art-body a { color: var(--p); text-decoration: underline; font-weight: 700; }
     .art-body a:hover { color: var(--a); }
 
@@ -148,6 +147,20 @@
       .nav-links, .nav-wrap .btn-a { display: none !important; }
       .hamburger { display: flex !important; }
       .drawer { display: flex !important; }
+    }
+
+    @media(max-width: 768px) {
+      .art-page { padding: 20px 0 48px; }
+      .container { width: min(100% - 28px, 860px); }
+      .btn-back-art { font-size: .8rem; padding: 7px 15px; margin-bottom: 16px; }
+      .art-h1 { font-size: 1.55rem; line-height: 1.35; margin-bottom: 12px; }
+      .art-meta { font-size: .8rem; gap: 12px; margin-bottom: 20px; padding-bottom: 12px; }
+      .art-cover { border-radius: 14px; margin-bottom: 24px; }
+      .art-body { font-size: 1rem; line-height: 1.75; margin-bottom: 36px; }
+      .art-body p { margin-bottom: 1.2rem; }
+      .art-body h2, .art-body h3 { font-size: 1.2rem; margin: 1.8rem 0 .7rem; padding-left: 10px; }
+      .article-cta-box { padding: 28px 20px; border-radius: 18px; margin-top: 36px; }
+      .btn-wa-cta { width: 100%; justify-content: center; font-size: .92rem; padding: 13px 20px; }
     }
   </style>
 </head>
