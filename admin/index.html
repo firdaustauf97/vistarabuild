@@ -285,11 +285,19 @@
       const title = (item.title || '').replace(/"/g, '\\"');
       const cat = item.category || 'lembap';
       const catLabel = (item.category_label || cat).replace(/"/g, '\\"');
-      const date = (item.date || '14 Agustus 2026').replace(/"/g, '\\"');
+      const date = (item.date || '28 Agustus 2026').replace(/"/g, '\\"');
       const author = (item.author || 'Tim Vistara Build').replace(/"/g, '\\"');
       const img = item.image || 'assets/uploads/hero-pengecatan-dinding.jpg';
       const summary = (item.summary || '').replace(/"/g, '\\"');
-      const content = item.content || summary || '';
+      let rawContent = item.content || summary || '';
+
+      // Smart Auto-Formatter: Convert plain text with line breaks into clean HTML <p> tags
+      if (rawContent && !rawContent.trim().startsWith('<')) {
+        rawContent = rawContent
+          .split(/\n\s*\n/)
+          .map(p => `<p>${p.trim().replace(/\n/g, '<br>')}</p>`)
+          .join('\n\n');
+      }
 
       return '---\n' +
         'layout: article\n' +
@@ -828,7 +836,22 @@
     function addProject() { projectsData.items = projectsData.items || []; projectsData.items.push({ title: 'Proyek Baru', location: 'Yogyakarta', category: 'lembap', description: '', image_before: '', image: '', featured: false, year: 2024 }); renderProjectsTab(document.getElementById('mainContent')); }
     function deleteProject(i) { projectsData.items.splice(i, 1); renderProjectsTab(document.getElementById('mainContent')); }
 
-    function addArticle() { articlesData.items = articlesData.items || []; articlesData.items.push({ id: 'artikel-' + Date.now(), title: 'Judul Artikel Baru', category: 'lembap', category_label: 'Tembok Lembap', date: '14 Agustus 2026', author: 'Tim Vistara Build', image: 'assets/uploads/hero-pengecatan-dinding.jpg', summary: '', content: '' }); renderArticlesTab(document.getElementById('mainContent')); }
+    function addArticle() {
+      articlesData.items = articlesData.items || [];
+      const dStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+      articlesData.items.push({
+        id: 'artikel-' + Date.now(),
+        title: 'Judul Artikel Baru',
+        category: 'lembap',
+        category_label: 'Tembok Lembap',
+        date: dStr,
+        author: 'Tim Vistara Build',
+        image: 'assets/uploads/hero-pengecatan-dinding.jpg',
+        summary: 'Ringkasan singkat artikel baru...',
+        content: '<p>Tulis paragraf pembuka artikel Anda di sini...</p><h3>1. Sub-Judul Poin Pertama</h3><p>Tulis penjelasan poin pertama di sini secara rinci dan jelas...</p><h3>2. Sub-Judul Poin Kedua</h3><p>Tulis penjelasan poin kedua di sini...</p>'
+      });
+      renderArticlesTab(document.getElementById('mainContent'));
+    }
     function deleteArticle(i) { articlesData.items.splice(i, 1); renderArticlesTab(document.getElementById('mainContent')); }
 
     function addTestimonial() { testimonialsData.items = testimonialsData.items || []; testimonialsData.items.push({ name: 'Pelanggan Baru', location: 'Yogyakarta', text: '', rating: 5 }); renderTestimonialsTab(document.getElementById('mainContent')); }
