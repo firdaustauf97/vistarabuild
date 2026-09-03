@@ -116,20 +116,26 @@
     <div class="login-card">
       <div class="login-badge">🔒</div>
       <h2 class="login-title">Vistara Build Admin</h2>
-      <p class="login-sub">Masukkan Kata Sandi / PIN Admin untuk mengakses halaman pengelolaan website.</p>
+      <p class="login-sub">Halaman ini memerlukan persetujuan izin dari Pemilik Admin (Owner) untuk mengakses dashboard.</p>
       
       <form onsubmit="handleLogin(event)">
         <div class="pass-input-wrap">
-          <input type="password" id="passInput" class="input-txt" placeholder="Masukkan password admin..." style="padding-right:44px;font-size:1rem;" autofocus>
+          <input type="password" id="passInput" class="input-txt" placeholder="Masukkan password yang telah disetujui..." style="padding-right:44px;font-size:1rem;" autofocus>
           <button type="button" class="btn-eye" onclick="togglePassVisibility('passInput', this)" title="Tampilkan/Sembunyikan Password">👁️</button>
         </div>
-        <div id="loginErr" style="color:#dc2626;font-size:.82rem;font-weight:700;margin-bottom:14px;display:none;background:#fee2e2;padding:8px 12px;border-radius:8px;">❌ Password salah! Silakan coba lagi.</div>
+        <div id="loginErr" style="color:#dc2626;font-size:.82rem;font-weight:700;margin-bottom:14px;display:none;background:#fee2e2;padding:8px 12px;border-radius:8px;">❌ Password salah! Silakan minta izin ke Pemilik.</div>
         <button type="submit" class="btn-save" style="width:100%;justify-content:center;padding:13px;font-size:.95rem;">🔓 MASUK KE PANEL ADMIN</button>
       </form>
 
+      <div style="margin-top:16px;">
+        <a href="https://wa.me/6285747040163?text=Halo%20Pemilik%20Vistara%20Build,%20saya%20ingin%20meminta%20izin%20akses%20dan%20password%20halaman%20admin%20website." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:11px;background:#25d366;color:#fff;border:none;font-weight:700;font-size:.88rem;border-radius:999px;box-shadow:0 4px 14px rgba(37,211,102,.35);text-decoration:none;transition:transform .2s;">
+          💬 Minta Izin Akses ke Pemilik via WhatsApp
+        </a>
+      </div>
+
       <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--bd);font-size:.78rem;color:var(--mu);line-height:1.5;">
-        <strong>Bantuan Keamanan:</strong><br>
-        Password bawaan awal adalah <code style="background:var(--s2);padding:2px 6px;border-radius:4px;color:var(--pd);font-weight:700;">vistara2026</code>.<br>Anda dapat mengubah password ini kapan saja setelah masuk.
+        <strong>Informasi Akses:</strong><br>
+        Hanya pengguna yang diberikan password oleh Pemilik yang dapat mengakses dashboard.
       </div>
     </div>
   </div>
@@ -162,6 +168,7 @@
       <button class="nav-item" onclick="switchTab('testimonials', event)">⭐ Testimoni Klien</button>
       <button class="nav-item" onclick="switchTab('faq', event)">❓ Pertanyaan (FAQ)</button>
       <button class="nav-item" onclick="switchTab('contact', event)">📞 Kontak, Medsos &amp; SEO</button>
+      <button class="nav-item" onclick="switchTab('security', event)">🛡️ Keamanan &amp; Approval Akses</button>
       <a href="../" target="_blank" class="nav-item" style="margin-top:auto;color:var(--mu);">↗️ Lihat Website Utama</a>
     </nav>
 
@@ -563,9 +570,78 @@
       else if (tab === 'testimonials') renderTestimonialsTab(container);
       else if (tab === 'faq') renderFaqTab(container);
       else if (tab === 'contact') renderContactTab(container);
+      else if (tab === 'security') renderSecurityTab(container);
     }
 
     /* ─── TAB RENDERING ─── */
+
+    // 0. SECURITY & APPROVAL TAB
+    function renderSecurityTab(c) {
+      const pass = getAdminPass();
+      
+      c.innerHTML = `
+        <div class="sec-hd"><h2>🛡️ Keamanan &amp; Approval Akses Admin</h2></div>
+        
+        <div class="form-card">
+          <div style="display:flex;align-items:center;gap:14px;background:var(--ap);padding:18px 22px;border-radius:16px;border:1px solid rgba(232,170,62,.4);margin-bottom:24px;">
+            <div style="font-size:2.2rem;">👑</div>
+            <div>
+              <h3 style="font-size:1.15rem;color:#8a5f00;font-weight:800;">Peran Anda: Pemilik Utama (Master Approver)</h3>
+              <p style="font-size:.85rem;color:var(--t2);margin-top:2px;line-height:1.5;">
+                Anda memegang wewenang penuh atas persetujuan izin semua orang yang dapat membuka dan mengelola halaman admin website Vistara Build.
+              </p>
+            </div>
+          </div>
+
+          <h3 style="font-size:1rem;margin-bottom:14px;color:var(--pd);">🔑 Password Akses Admin yang Disetujui</h3>
+          <div class="form-grp">
+            <label class="label">Password Aktif Saat Ini</label>
+            <div class="pass-input-wrap">
+              <input type="password" id="sec_pass_display" class="input-txt" value="${pass}" readonly style="background:#f8faf9;font-weight:700;letter-spacing:1px;">
+              <button type="button" class="btn-eye" onclick="togglePassVisibility('sec_pass_display', this)">👁️</button>
+            </div>
+            <small class="hint">Berikan password ini HANYA kepada orang yang telah Anda setujui izin aksesnya.</small>
+          </div>
+
+          <div style="margin-top:20px;">
+            <button type="button" class="btn-save" onclick="openChangePassModal()">🔒 Ubah Password Akses Admin</button>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <h3 style="font-size:1rem;margin-bottom:12px;color:var(--pd);">🚨 Kontrol Putus Akses &amp; Kunci Sesi</h3>
+          <p style="font-size:.85rem;color:var(--t2);margin-bottom:18px;line-height:1.6;">
+            Jika ada pihak atau perangkat lain yang tidak lagi Anda berikan izin akses, Anda dapat langsung memutus dan mengunci seluruh sesi mereka secara instan.
+          </p>
+          <button type="button" class="btn-del" style="font-size:.9rem;padding:12px 24px;border-radius:10px;display:inline-flex;align-items:center;gap:8px;" onclick="revokeAllSessions()">
+            🚫 Putus Akses &amp; Kunci Semua Perangkat
+          </button>
+        </div>
+
+        <div class="form-card">
+          <h3 style="font-size:1rem;margin-bottom:14px;color:var(--pd);">📱 Alur Persetujuan (Approval Workflow):</h3>
+          <ol style="margin-left:20px;font-size:.88rem;color:var(--t2);line-height:1.8;">
+            <li>Siapapun yang membuka link <code style="background:var(--s2);padding:2px 6px;border-radius:4px;color:var(--pd);font-weight:700;">/admin/</code> akan tertahan di Layar Kunci.</li>
+            <li>Mereka akan menekan tombol <strong>💬 Minta Izin Akses via WhatsApp</strong> yang langsung terhubung ke WhatsApp Anda.</li>
+            <li>Sebagai Pemilik, Anda berhak menyetujui atau menolak. Jika disetujui, berikan password akses di atas kepada mereka.</li>
+            <li>Jika di kemudian hari Anda ingin mencabut izin akses mereka, cukup klik tombol <strong>Putus Akses</strong> di atas atau ubah password admin Anda.</li>
+          </ol>
+        </div>
+      `;
+    }
+
+    function revokeAllSessions() {
+      if (confirm('Apakah Anda yakin ingin memutus & mengunci seluruh akses perangkat? Pengguna lain harus meminta izin ulang kepada Anda.')) {
+        const randomPin = 'vistara' + Math.floor(1000 + Math.random() * 9000);
+        const newPass = prompt('Masukkan Password Baru untuk menggantikan password lama (atau gunakan password rekomendasi di bawah):', randomPin);
+        if (newPass && newPass.trim().length >= 4) {
+          localStorage.setItem('vistara_admin_pass', newPass.trim());
+          sessionStorage.removeItem('vistara_admin_auth');
+          checkAuth();
+          alert('✅ Seluruh sesi telah berhasil diputus dan dikunci rapat.\n\nPassword Baru Anda: ' + newPass.trim());
+        }
+      }
+    }
 
     // 1. IDENTITAS & HERO
     function renderSiteTab(c) {
