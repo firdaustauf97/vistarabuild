@@ -269,11 +269,11 @@
       <div class="admin-icon">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="#0c2922" stroke-width="1.8" stroke-linecap="round"/></svg>
       </div>
-      Vistara Build — Kelola Website
+      <span>Vistara Build — Kelola Website</span>
+      <span id="roleBadge" style="font-size:.78rem;background:rgba(255,255,255,.12);padding:4px 10px;border-radius:999px;font-weight:700;margin-left:6px;">👑 Pemilik Utama</span>
     </div>
     <div class="hdr-acts">
-      <button type="button" class="btn-token" onclick="openTokenModal()" title="Pengaturan Token GitHub">🔑 Token</button>
-      <button type="button" class="btn-token" onclick="openChangePassModal()" title="Ubah Password Admin">🔒 Password</button>
+      <button type="button" class="btn-token" id="passHdrBtn" onclick="openChangePassModal()" title="Ubah Password Admin">🔒 Password</button>
       <button type="button" class="btn-token" style="background:rgba(220,38,38,.2);color:#fca5a5;" onclick="handleLogout()" title="Keluar &amp; Kunci Dashboard">🚪 Keluar</button>
       <button type="button" class="btn-save" onclick="saveActiveTab()">💾 SIMPAN PERUBAHAN</button>
     </div>
@@ -291,7 +291,7 @@
       <button class="nav-item" onclick="switchTab('testimonials', event)">⭐ Testimoni Klien</button>
       <button class="nav-item" onclick="switchTab('faq', event)">❓ Pertanyaan (FAQ)</button>
       <button class="nav-item" onclick="switchTab('contact', event)">📞 Kontak, Medsos &amp; SEO</button>
-      <button class="nav-item" onclick="switchTab('security', event)">🛡️ Keamanan &amp; Approval Akses</button>
+      <button class="nav-item" id="secNavBtn" onclick="switchTab('security', event)">🛡️ Keamanan &amp; Approval Akses</button>
       <a href="../" target="_blank" class="nav-item" style="margin-top:auto;color:var(--mu);">↗️ Lihat Website Utama</a>
     </nav>
 
@@ -358,15 +358,24 @@
     'use strict';
     const REPO = 'firdaustauf97/vistarabuild';
     const BRANCH = 'main';
-    const DEFAULT_PASS = 'vistara2026';
+    const DEFAULT_OWNER_PASS = 'owner2026';
+    const DEFAULT_STAFF_PASS = 'vistara2026';
 
     let activeTab = 'site';
     let siteData = {}, servicesData = {}, projectsData = {}, articlesData = {}, testimonialsData = {}, faqData = {};
     let shaMap = {};
 
-    /* ─── SECURITY & AUTHENTICATION ─── */
-    function getAdminPass() {
-      return localStorage.getItem('vistara_admin_pass') || DEFAULT_PASS;
+    /* ─── SECURITY & AUTHENTICATION (2-TIER ROLES: OWNER vs ADMIN BIASA) ─── */
+    function getOwnerPass() {
+      return localStorage.getItem('vistara_owner_pass') || DEFAULT_OWNER_PASS;
+    }
+
+    function getStaffPass() {
+      return localStorage.getItem('vistara_staff_pass') || DEFAULT_STAFF_PASS;
+    }
+
+    function getUserRole() {
+      return sessionStorage.getItem('vistara_user_role') || 'admin';
     }
 
     function isAuth() {
@@ -377,11 +386,28 @@
       const loginScreen = document.getElementById('loginScreen');
       const adminHdr = document.getElementById('adminHdr');
       const adminBody = document.getElementById('adminBody');
+      const roleBadge = document.getElementById('roleBadge');
+      const secNavBtn = document.getElementById('secNavBtn');
+      const passHdrBtn = document.getElementById('passHdrBtn');
+      const role = getUserRole();
 
       if (isAuth()) {
         if (loginScreen) loginScreen.style.display = 'none';
         if (adminHdr) adminHdr.style.display = 'flex';
         if (adminBody) adminBody.style.display = 'flex';
+
+        if (role === 'owner') {
+          if (roleBadge) roleBadge.innerHTML = '👑 <span style="color:#e8aa3e;font-weight:800;">Pemilik Utama (Owner)</span>';
+          if (secNavBtn) secNavBtn.style.display = 'flex';
+          if (passHdrBtn) passHdrBtn.style.display = 'inline-flex';
+        } else {
+          if (roleBadge) roleBadge.innerHTML = '👤 <span style="color:#ffffff;font-weight:700;">Admin Biasa (Editor)</span>';
+          if (secNavBtn) secNavBtn.style.display = 'none';
+          if (passHdrBtn) passHdrBtn.style.display = 'none';
+          if (activeTab === 'security') {
+            activeTab = 'site';
+          }
+        }
         if (getToken()) {
           loadAllData();
         } else {
@@ -398,15 +424,23 @@
       if (e) e.preventDefault();
       const input = (document.getElementById('passInput').value || '').trim();
       const errEl = document.getElementById('loginErr');
-      if (input === getAdminPass()) {
+      
+      if (input === getOwnerPass()) {
         sessionStorage.setItem('vistara_admin_auth', 'true');
+        sessionStorage.setItem('vistara_user_role', 'owner');
         if (errEl) errEl.style.display = 'none';
         checkAuth();
-        showToast('🔓 Selamat datang di Admin Panel!');
+        showToast('👑 Selamat datang, Pemilik Utama (Owner)!');
+      } else if (input === getStaffPass()) {
+        sessionStorage.setItem('vistara_admin_auth', 'true');
+        sessionStorage.setItem('vistara_user_role', 'admin');
+        if (errEl) errEl.style.display = 'none';
+        checkAuth();
+        showToast('👤 Selamat datang, Admin Biasa!');
       } else {
         if (errEl) {
           errEl.style.display = 'block';
-          errEl.textContent = '❌ Password salah! Silakan periksa kembali.';
+          errEl.textContent = '❌ Password salah! Silakan periksa kembali atau minta izin ke Pemilik.';
         }
       }
     }
@@ -414,6 +448,7 @@
     function handleLogout() {
       if (confirm('Apakah Anda yakin ingin keluar dan mengunci Admin Panel?')) {
         sessionStorage.removeItem('vistara_admin_auth');
+        sessionStorage.removeItem('vistara_user_role');
         checkAuth();
         showToast('🔒 Halaman admin berhasil dikunci.');
       }
@@ -704,12 +739,13 @@
 
     /* ─── TAB RENDERING ─── */
 
-    // 0. SECURITY & APPROVAL TAB
+    // 0. SECURITY & APPROVAL TAB (OWNER ONLY)
     function renderSecurityTab(c) {
-      const pass = getAdminPass();
+      const ownerPass = getOwnerPass();
+      const staffPass = getStaffPass();
       
       c.innerHTML = `
-        <div class="sec-hd"><h2>🛡️ Keamanan &amp; Approval Akses Admin</h2></div>
+        <div class="sec-hd"><h2>🛡️ Keamanan &amp; Approval Akses Admin (Khusus Pemilik)</h2></div>
         
         <div class="form-card">
           <div style="display:flex;align-items:center;gap:14px;background:var(--ap);padding:18px 22px;border-radius:16px;border:1px solid rgba(232,170,62,.4);margin-bottom:24px;">
@@ -717,39 +753,51 @@
             <div>
               <h3 style="font-size:1.15rem;color:#8a5f00;font-weight:800;">Peran Anda: Pemilik Utama (Master Approver)</h3>
               <p style="font-size:.85rem;color:var(--t2);margin-top:2px;line-height:1.5;">
-                Anda memiliki wewenang penuh untuk mengatur password dan menentukan siapa saja yang boleh mengakses halaman admin ini.
+                Hanya Anda (Owner) yang bisa membuka menu ini. Admin Biasa tidak memiliki akses ke halaman keamanan atau pengaturan password.
               </p>
             </div>
           </div>
 
-          <h3 style="font-size:1rem;margin-bottom:14px;color:var(--pd);">🔑 Pengaturan Password Akses Admin</h3>
+          <!-- CARD 1: PASSWORD PEMILIK UTAMA -->
+          <h3 style="font-size:1.05rem;margin-bottom:14px;color:var(--pd);">👑 1. Password Pemilik Utama (Owner)</h3>
+          <p style="font-size:.85rem;color:var(--t2);margin-bottom:14px;">Password ini khusus untuk Anda sendiri agar bisa masuk sebagai Pemilik Utama dengan hak kontrol penuh.</p>
           <div class="form-grp">
-            <label class="label">Password Aktif Saat Ini</label>
+            <label class="label">Password Owner Aktif Saat Ini</label>
             <div class="pass-input-wrap">
-              <input type="password" id="sec_pass_display" class="input-txt" value="${pass}" readonly style="background:#f8faf9;font-weight:700;letter-spacing:1px;">
-              <button type="button" class="btn-eye" onclick="togglePassVisibility('sec_pass_display', this)">👁️</button>
+              <input type="password" id="owner_pass_display" class="input-txt" value="${ownerPass}" readonly style="background:#f8faf9;font-weight:700;letter-spacing:1px;color:var(--p);">
+              <button type="button" class="btn-eye" onclick="togglePassVisibility('owner_pass_display', this)">👁️</button>
             </div>
-            <small class="hint">Berikan password ini HANYA kepada orang yang telah Anda setujui izin aksesnya.</small>
           </div>
 
-          <div style="background:var(--bg);padding:20px;border-radius:14px;border:1.5px solid var(--bd);margin-top:20px;">
-            <h4 style="font-size:.95rem;font-weight:800;color:var(--pd);margin-bottom:14px;">✏️ Buat / Ganti Password Baru:</h4>
+          <div style="background:var(--bg);padding:18px;border-radius:14px;border:1.5px solid var(--bd);margin-top:14px;">
+            <h4 style="font-size:.9rem;font-weight:800;color:var(--pd);margin-bottom:12px;">✏️ Ubah Password Owner Anda:</h4>
             <div class="form-grp">
-              <label class="label">Password Baru</label>
-              <div class="pass-input-wrap">
-                <input type="password" id="sec_new_pass" class="input-txt" placeholder="Ketik password baru pilihan Anda (misal: rahasia2026, vistara88, dll)...">
-                <button type="button" class="btn-eye" onclick="togglePassVisibility('sec_new_pass', this)">👁️</button>
-              </div>
+              <input type="password" id="owner_new_pass" class="input-txt" placeholder="Ketik password Owner baru (misal: owner2026, rahasia88)...">
             </div>
+            <div id="ownerPassErr" style="color:#dc2626;font-size:.82rem;font-weight:700;margin-bottom:10px;display:none;background:#fee2e2;padding:8px 12px;border-radius:8px;"></div>
+            <button type="button" class="btn-save" style="padding:10px 20px;" onclick="saveOwnerPassword()">💾 Simpan Password Owner</button>
+          </div>
+
+          <hr style="border:none;border-top:1px dashed var(--bd);margin:32px 0;">
+
+          <!-- CARD 2: PASSWORD ADMIN BIASA -->
+          <h3 style="font-size:1.05rem;margin-bottom:14px;color:var(--pd);">👤 2. Password Admin Biasa (Editor / Staff)</h3>
+          <p style="font-size:.85rem;color:var(--t2);margin-bottom:14px;">Berikan password ini kepada anggota tim/staff yang ingin Anda izinkan untuk mengedit isi website. Mereka <strong>TIDAK BISA</strong> melihat menu keamanan ini.</p>
+          <div class="form-grp">
+            <label class="label">Password Admin Biasa Aktif Saat Ini</label>
+            <div class="pass-input-wrap">
+              <input type="password" id="staff_pass_display" class="input-txt" value="${staffPass}" readonly style="background:#f8faf9;font-weight:700;letter-spacing:1px;color:#8a5f00;">
+              <button type="button" class="btn-eye" onclick="togglePassVisibility('staff_pass_display', this)">👁️</button>
+            </div>
+          </div>
+
+          <div style="background:var(--bg);padding:18px;border-radius:14px;border:1.5px solid var(--bd);margin-top:14px;">
+            <h4 style="font-size:.9rem;font-weight:800;color:var(--pd);margin-bottom:12px;">✏️ Ubah Password Admin Biasa:</h4>
             <div class="form-grp">
-              <label class="label">Ulangi Konfirmasi Password Baru</label>
-              <div class="pass-input-wrap">
-                <input type="password" id="sec_confirm_pass" class="input-txt" placeholder="Ketik ulang password baru...">
-                <button type="button" class="btn-eye" onclick="togglePassVisibility('sec_confirm_pass', this)">👁️</button>
-              </div>
+              <input type="password" id="staff_new_pass" class="input-txt" placeholder="Ketik password Admin Biasa baru (misal: vistara2026, staf2026)...">
             </div>
-            <div id="secPassErr" style="color:#dc2626;font-size:.82rem;font-weight:700;margin-bottom:12px;display:none;background:#fee2e2;padding:8px 12px;border-radius:8px;"></div>
-            <button type="button" class="btn-save" style="padding:11px 24px;" onclick="saveDirectPassword()">💾 SIMPAN PASSWORD BARU</button>
+            <div id="staffPassErr" style="color:#dc2626;font-size:.82rem;font-weight:700;margin-bottom:10px;display:none;background:#fee2e2;padding:8px 12px;border-radius:8px;"></div>
+            <button type="button" class="btn-save" style="padding:10px 20px;" onclick="saveStaffPassword()">💾 Simpan Password Admin Biasa</button>
           </div>
         </div>
 
@@ -762,51 +810,49 @@
             🚫 Putus Akses &amp; Kunci Semua Perangkat
           </button>
         </div>
-
-        <div class="form-card">
-          <h3 style="font-size:1rem;margin-bottom:14px;color:var(--pd);">📱 Alur Persetujuan (Approval Workflow):</h3>
-          <ol style="margin-left:20px;font-size:.88rem;color:var(--t2);line-height:1.8;">
-            <li>Siapapun yang membuka link <code style="background:var(--s2);padding:2px 6px;border-radius:4px;color:var(--pd);font-weight:700;">/admin/</code> akan tertahan di Layar Kunci.</li>
-            <li>Mereka akan menekan tombol <strong>💬 Minta Izin Akses via WhatsApp</strong> yang langsung terhubung ke WhatsApp Anda.</li>
-            <li>Sebagai Pemilik, Anda berhak menyetujui atau menolak. Jika disetujui, berikan password akses di atas kepada mereka.</li>
-            <li>Jika di kemudian hari Anda ingin mencabut izin akses mereka, cukup ubah password di atas atau tekan tombol <strong>Putus Akses</strong>.</li>
-          </ol>
-        </div>
       `;
     }
 
-    function saveDirectPassword() {
-      const newP = (document.getElementById('sec_new_pass').value || '').trim();
-      const confirmP = (document.getElementById('sec_confirm_pass').value || '').trim();
-      const errEl = document.getElementById('secPassErr');
+    function saveOwnerPassword() {
+      const newP = (document.getElementById('owner_new_pass').value || '').trim();
+      const errEl = document.getElementById('ownerPassErr');
 
       if (!newP || newP.length < 4) {
-        errEl.textContent = '❌ Password baru minimal 4 karakter!';
-        errEl.style.display = 'block';
-        return;
-      }
-      if (newP !== confirmP) {
-        errEl.textContent = '❌ Konfirmasi password baru tidak cocok!';
+        errEl.textContent = '❌ Password Owner minimal 4 karakter!';
         errEl.style.display = 'block';
         return;
       }
 
-      localStorage.setItem('vistara_admin_pass', newP);
+      localStorage.setItem('vistara_owner_pass', newP);
       errEl.style.display = 'none';
-      showToast('🔐 Password Admin berhasil diperbarui!');
+      showToast('👑 Password Owner berhasil diperbarui!');
+      renderSecurityTab(document.getElementById('mainContent'));
+    }
+
+    function saveStaffPassword() {
+      const newP = (document.getElementById('staff_new_pass').value || '').trim();
+      const errEl = document.getElementById('staffPassErr');
+
+      if (!newP || newP.length < 4) {
+        errEl.textContent = '❌ Password Admin Biasa minimal 4 karakter!';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      localStorage.setItem('vistara_staff_pass', newP);
+      errEl.style.display = 'none';
+      showToast('👤 Password Admin Biasa berhasil diperbarui!');
       renderSecurityTab(document.getElementById('mainContent'));
     }
 
     function revokeAllSessions() {
       if (confirm('Apakah Anda yakin ingin memutus & mengunci seluruh akses perangkat? Pengguna lain harus meminta izin ulang kepada Anda.')) {
         const randomPin = 'vistara' + Math.floor(1000 + Math.random() * 9000);
-        const newPass = prompt('Masukkan Password Baru untuk menggantikan password lama (atau gunakan password rekomendasi di bawah):', randomPin);
-        if (newPass && newPass.trim().length >= 4) {
-          localStorage.setItem('vistara_admin_pass', newPass.trim());
-          sessionStorage.removeItem('vistara_admin_auth');
-          checkAuth();
-          alert('✅ Seluruh sesi telah berhasil diputus dan dikunci rapat.\n\nPassword Baru Anda: ' + newPass.trim());
-        }
+        localStorage.setItem('vistara_staff_pass', randomPin);
+        sessionStorage.removeItem('vistara_admin_auth');
+        sessionStorage.removeItem('vistara_user_role');
+        checkAuth();
+        alert('✅ Seluruh sesi Admin Biasa telah diputus dan dikunci.\n\nPassword Admin Biasa Baru: ' + randomPin);
       }
     }
 
