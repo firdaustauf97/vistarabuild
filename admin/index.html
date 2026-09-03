@@ -96,17 +96,140 @@
     .toast { position: fixed; bottom: 24px; right: 24px; background: var(--pd); color: #fff; padding: 12px 24px; border-radius: 999px; font-weight: 700; font-size: .9rem; box-shadow: 0 10px 30px rgba(0,0,0,.3); z-index: 1000; transform: translateY(100px); opacity: 0; transition: all .3s cubic-bezier(0.4,0,0.2,1); }
     .toast.show { transform: translateY(0); opacity: 1; }
 
+    /* LOGIN LOCK SCREEN - ULTRA LUXURY DESIGN */
+    .login-overlay {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(145deg, #071a16 0%, #0c2922 50%, #143f37 100%);
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .login-overlay::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 65% 60% at 50% 35%, rgba(232,170,62,.18), transparent 75%);
+      pointer-events: none;
+    }
+    .login-card {
+      background: #ffffff;
+      border-radius: 28px;
+      width: min(100%, 440px);
+      padding: 40px 32px;
+      text-align: center;
+      box-shadow: 0 32px 100px rgba(0,0,0,.55), 0 0 40px rgba(232,170,62,.15);
+      border: 1.5px solid rgba(232,170,62,.4);
+      position: relative;
+      overflow: hidden;
+      margin: auto;
+    }
+    .login-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #143f37, #e8aa3e, #143f37);
+    }
+    .login-badge {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #fdf3dc 0%, #fce8b8 100%);
+      color: #8a5f00;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      border: 1.5px solid rgba(232,170,62,.5);
+      box-shadow: 0 8px 24px rgba(232,170,62,.25);
+    }
+    .login-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #0c2922;
+      margin-bottom: 8px;
+      letter-spacing: -.02em;
+    }
+    .login-sub {
+      font-size: .88rem;
+      color: #3a5049;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+    .pass-input-wrap {
+      position: relative;
+      margin-bottom: 18px;
+    }
+    .pass-input-wrap .input-txt {
+      height: 52px;
+      border-radius: 14px;
+      border: 1.5px solid #d3e3de;
+      padding: 0 48px 0 18px;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all .2s ease;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,.02);
+    }
+    .pass-input-wrap .input-txt:focus {
+      border-color: #143f37;
+      box-shadow: 0 0 0 4px rgba(20,63,55,.12);
+    }
+    .btn-eye {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #6e8881;
+      padding: 6px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+    }
+    .btn-eye:hover {
+      background: #ebf2ef;
+      color: #0c2922;
+    }
+    .btn-login-main {
+      width: 100%;
+      height: 50px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #e8aa3e 0%, #d49528 100%);
+      color: #0c2922;
+      font-weight: 800;
+      font-size: .95rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(232,170,62,.35);
+      transition: all .2s ease;
+      letter-spacing: .02em;
+    }
+    .btn-login-main:hover {
+      background: linear-gradient(135deg, #f2bd5d 0%, #e8aa3e 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(232,170,62,.45);
+    }
+
     @media(max-width: 768px) {
-    /* LOGIN LOCK SCREEN */
-    .login-overlay { position: fixed; inset: 0; background: linear-gradient(135deg, #0c2922 0%, #143f37 60%, #1a5447 100%); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
-    .login-card { background: #ffffff; border-radius: 24px; width: min(100%, 420px); padding: 36px 30px; text-align: center; box-shadow: 0 24px 80px rgba(0,0,0,.4); border: 1px solid rgba(232,170,62,.3); position: relative; overflow: hidden; }
-    .login-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(232,170,62,.15), transparent); pointer-events: none; }
-    .login-badge { width: 56px; height: 56px; border-radius: 16px; background: var(--ap); color: #8a5f00; display: inline-flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 16px; border: 1px solid rgba(232,170,62,.3); box-shadow: 0 4px 16px rgba(232,170,62,.2); }
-    .login-title { font-size: 1.4rem; font-weight: 800; color: var(--pd); margin-bottom: 6px; }
-    .login-sub { font-size: .85rem; color: var(--t2); margin-bottom: 24px; line-height: 1.5; }
-    .pass-input-wrap { position: relative; margin-bottom: 16px; }
-    .btn-eye { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.1rem; cursor: pointer; color: var(--mu); padding: 4px; opacity: .7; transition: opacity .2s; }
-    .btn-eye:hover { opacity: 1; }
+      .admin-body { flex-direction: column; }
+      .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--bd); padding: 10px; flex-direction: row; overflow-x: auto; }
+      .nav-item { padding: 8px 12px; font-size: .8rem; white-space: nowrap; }
+      .content { padding: 20px 16px; }
+      .login-card { padding: 32px 22px; }
+    }
   </style>
 </head>
 <body>
@@ -114,28 +237,28 @@
   <!-- LOGIN LOCK SCREEN -->
   <div class="login-overlay" id="loginScreen">
     <div class="login-card">
-      <div class="login-badge">🔒</div>
-      <h2 class="login-title">Vistara Build Admin</h2>
-      <p class="login-sub">Halaman ini memerlukan persetujuan izin dari Pemilik Admin (Owner) untuk mengakses dashboard.</p>
+      <div class="login-badge">🛡️</div>
+      <h1 class="login-title">Vistara Build Admin</h1>
+      <p class="login-sub">Halaman ini dilindungi oleh Sistem Keamanan Akses. Masukkan password yang telah disetujui Pemilik (Owner) untuk masuk ke dashboard.</p>
       
       <form onsubmit="handleLogin(event)">
         <div class="pass-input-wrap">
-          <input type="password" id="passInput" class="input-txt" placeholder="Masukkan password yang telah disetujui..." style="padding-right:44px;font-size:1rem;" autofocus>
+          <input type="password" id="passInput" class="input-txt" placeholder="Masukkan password admin..." autofocus>
           <button type="button" class="btn-eye" onclick="togglePassVisibility('passInput', this)" title="Tampilkan/Sembunyikan Password">👁️</button>
         </div>
-        <div id="loginErr" style="color:#dc2626;font-size:.82rem;font-weight:700;margin-bottom:14px;display:none;background:#fee2e2;padding:8px 12px;border-radius:8px;">❌ Password salah! Silakan minta izin ke Pemilik.</div>
-        <button type="submit" class="btn-save" style="width:100%;justify-content:center;padding:13px;font-size:.95rem;">🔓 MASUK KE PANEL ADMIN</button>
+        <div id="loginErr" style="color:#dc2626;font-size:.84rem;font-weight:700;margin-bottom:16px;display:none;background:#fee2e2;padding:10px 14px;border-radius:10px;border:1px solid #fca5a5;">❌ Password salah! Silakan periksa kembali atau minta izin ke Pemilik.</div>
+        <button type="submit" class="btn-login-main">🔓 MASUK KE PANEL ADMIN</button>
       </form>
 
-      <div style="margin-top:16px;">
-        <a href="https://wa.me/6285747040163?text=Halo%20Pemilik%20Vistara%20Build,%20saya%20ingin%20meminta%20izin%20akses%20dan%20password%20halaman%20admin%20website." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:11px;background:#25d366;color:#fff;border:none;font-weight:700;font-size:.88rem;border-radius:999px;box-shadow:0 4px 14px rgba(37,211,102,.35);text-decoration:none;transition:transform .2s;">
+      <div style="margin-top:20px;">
+        <a href="https://wa.me/6285747040163?text=Halo%20Pemilik%20Vistara%20Build,%20saya%20ingin%20meminta%20izin%20akses%20dan%20password%20halaman%20admin%20website." target="_blank" rel="noopener" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;height:46px;background:#25d366;color:#fff;border:none;font-weight:800;font-size:.88rem;border-radius:999px;box-shadow:0 6px 20px rgba(37,211,102,.35);text-decoration:none;transition:all .2s ease;">
           💬 Minta Izin Akses ke Pemilik via WhatsApp
         </a>
       </div>
 
-      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--bd);font-size:.78rem;color:var(--mu);line-height:1.5;">
-        <strong>Informasi Akses:</strong><br>
-        Hanya pengguna yang diberikan password oleh Pemilik yang dapat mengakses dashboard.
+      <div style="margin-top:24px;padding-top:18px;border-top:1px solid #ebf2ef;font-size:.78rem;color:#6e8881;line-height:1.5;">
+        <strong>Informasi Keamanan Akses:</strong><br>
+        Hanya pengguna yang diberikan izin dan password oleh Pemilik Vistara Build yang dapat mengakses dashboard ini.
       </div>
     </div>
   </div>
