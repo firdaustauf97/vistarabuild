@@ -97,17 +97,45 @@
     .toast.show { transform: translateY(0); opacity: 1; }
 
     @media(max-width: 768px) {
-      .admin-body { flex-direction: column; }
-      .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--bd); padding: 10px; flex-direction: row; overflow-x: auto; }
-      .nav-item { padding: 8px 12px; font-size: .8rem; white-space: nowrap; }
-      .content { padding: 20px 16px; }
-    }
+    /* LOGIN LOCK SCREEN */
+    .login-overlay { position: fixed; inset: 0; background: linear-gradient(135deg, #0c2922 0%, #143f37 60%, #1a5447 100%); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .login-card { background: #ffffff; border-radius: 24px; width: min(100%, 420px); padding: 36px 30px; text-align: center; box-shadow: 0 24px 80px rgba(0,0,0,.4); border: 1px solid rgba(232,170,62,.3); position: relative; overflow: hidden; }
+    .login-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(232,170,62,.15), transparent); pointer-events: none; }
+    .login-badge { width: 56px; height: 56px; border-radius: 16px; background: var(--ap); color: #8a5f00; display: inline-flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 16px; border: 1px solid rgba(232,170,62,.3); box-shadow: 0 4px 16px rgba(232,170,62,.2); }
+    .login-title { font-size: 1.4rem; font-weight: 800; color: var(--pd); margin-bottom: 6px; }
+    .login-sub { font-size: .85rem; color: var(--t2); margin-bottom: 24px; line-height: 1.5; }
+    .pass-input-wrap { position: relative; margin-bottom: 16px; }
+    .btn-eye { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.1rem; cursor: pointer; color: var(--mu); padding: 4px; opacity: .7; transition: opacity .2s; }
+    .btn-eye:hover { opacity: 1; }
   </style>
 </head>
 <body>
 
+  <!-- LOGIN LOCK SCREEN -->
+  <div class="login-overlay" id="loginScreen">
+    <div class="login-card">
+      <div class="login-badge">🔒</div>
+      <h2 class="login-title">Vistara Build Admin</h2>
+      <p class="login-sub">Masukkan Kata Sandi / PIN Admin untuk mengakses halaman pengelolaan website.</p>
+      
+      <form onsubmit="handleLogin(event)">
+        <div class="pass-input-wrap">
+          <input type="password" id="passInput" class="input-txt" placeholder="Masukkan password admin..." style="padding-right:44px;font-size:1rem;" autofocus>
+          <button type="button" class="btn-eye" onclick="togglePassVisibility('passInput', this)" title="Tampilkan/Sembunyikan Password">👁️</button>
+        </div>
+        <div id="loginErr" style="color:#dc2626;font-size:.82rem;font-weight:700;margin-bottom:14px;display:none;background:#fee2e2;padding:8px 12px;border-radius:8px;">❌ Password salah! Silakan coba lagi.</div>
+        <button type="submit" class="btn-save" style="width:100%;justify-content:center;padding:13px;font-size:.95rem;">🔓 MASUK KE PANEL ADMIN</button>
+      </form>
+
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--bd);font-size:.78rem;color:var(--mu);line-height:1.5;">
+        <strong>Bantuan Keamanan:</strong><br>
+        Password bawaan awal adalah <code style="background:var(--s2);padding:2px 6px;border-radius:4px;color:var(--pd);font-weight:700;">vistara2026</code>.<br>Anda dapat mengubah password ini kapan saja setelah masuk.
+      </div>
+    </div>
+  </div>
+
   <!-- HEADER -->
-  <header class="admin-hdr">
+  <header class="admin-hdr" id="adminHdr" style="display:none;">
     <div class="admin-brand">
       <div class="admin-icon">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="#0c2922" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -115,13 +143,15 @@
       Vistara Build — Kelola Website
     </div>
     <div class="hdr-acts">
-      <button type="button" class="btn-token" onclick="openTokenModal()">🔑 Kode Akses</button>
+      <button type="button" class="btn-token" onclick="openTokenModal()" title="Pengaturan Token GitHub">🔑 Token</button>
+      <button type="button" class="btn-token" onclick="openChangePassModal()" title="Ubah Password Admin">🔒 Password</button>
+      <button type="button" class="btn-token" style="background:rgba(220,38,38,.2);color:#fca5a5;" onclick="handleLogout()" title="Keluar &amp; Kunci Dashboard">🚪 Keluar</button>
       <button type="button" class="btn-save" onclick="saveActiveTab()">💾 SIMPAN PERUBAHAN</button>
     </div>
   </header>
 
   <!-- BODY -->
-  <div class="admin-body">
+  <div class="admin-body" id="adminBody" style="display:none;">
     <!-- SIDEBAR NAV -->
     <nav class="sidebar">
       <button class="nav-item active" onclick="switchTab('site', event)">⚙️ Identitas &amp; Hero</button>
@@ -154,6 +184,43 @@
     </div>
   </div>
 
+  <!-- CHANGE PASSWORD MODAL -->
+  <div class="modal-ov" id="changePassModal" style="display:none;">
+    <div class="modal-card">
+      <h3 class="modal-title">🔒 Ubah Password Admin</h3>
+      <p class="modal-sub">Ganti kata sandi akses halaman admin untuk menjaga keamanan akun Anda.</p>
+      
+      <div class="form-grp" style="text-align:left;">
+        <label class="label">Password Saat Ini</label>
+        <div class="pass-input-wrap">
+          <input type="password" id="oldPassInput" class="input-txt" placeholder="Masukkan password saat ini...">
+          <button type="button" class="btn-eye" onclick="togglePassVisibility('oldPassInput', this)">👁️</button>
+        </div>
+      </div>
+      <div class="form-grp" style="text-align:left;">
+        <label class="label">Password Baru</label>
+        <div class="pass-input-wrap">
+          <input type="password" id="newPassInput" class="input-txt" placeholder="Masukkan password baru (min. 4 karakter)...">
+          <button type="button" class="btn-eye" onclick="togglePassVisibility('newPassInput', this)">👁️</button>
+        </div>
+      </div>
+      <div class="form-grp" style="text-align:left;">
+        <label class="label">Konfirmasi Password Baru</label>
+        <div class="pass-input-wrap">
+          <input type="password" id="confirmPassInput" class="input-txt" placeholder="Ulangi password baru...">
+          <button type="button" class="btn-eye" onclick="togglePassVisibility('confirmPassInput', this)">👁️</button>
+        </div>
+      </div>
+
+      <div id="changePassErr" style="color:#dc2626;font-size:.82rem;font-weight:700;margin-bottom:14px;display:none;background:#fee2e2;padding:8px 12px;border-radius:8px;"></div>
+
+      <div style="display:flex;gap:10px;">
+        <button type="button" class="file-btn" style="flex:1;" onclick="closeChangePassModal()">Batal</button>
+        <button type="button" class="btn-save" style="flex:1;justify-content:center;" onclick="saveNewPassword()">💾 Simpan Password</button>
+      </div>
+    </div>
+  </div>
+
   <!-- TOAST NOTIFICATION -->
   <div class="toast" id="toast">✅ Perubahan berhasil disimpan ke website!</div>
 
@@ -161,9 +228,118 @@
     'use strict';
     const REPO = 'firdaustauf97/vistarabuild';
     const BRANCH = 'main';
+    const DEFAULT_PASS = 'vistara2026';
+
     let activeTab = 'site';
     let siteData = {}, servicesData = {}, projectsData = {}, articlesData = {}, testimonialsData = {}, faqData = {};
     let shaMap = {};
+
+    /* ─── SECURITY & AUTHENTICATION ─── */
+    function getAdminPass() {
+      return localStorage.getItem('vistara_admin_pass') || DEFAULT_PASS;
+    }
+
+    function isAuth() {
+      return sessionStorage.getItem('vistara_admin_auth') === 'true';
+    }
+
+    function checkAuth() {
+      const loginScreen = document.getElementById('loginScreen');
+      const adminHdr = document.getElementById('adminHdr');
+      const adminBody = document.getElementById('adminBody');
+
+      if (isAuth()) {
+        if (loginScreen) loginScreen.style.display = 'none';
+        if (adminHdr) adminHdr.style.display = 'flex';
+        if (adminBody) adminBody.style.display = 'flex';
+        if (getToken()) {
+          loadAllData();
+        } else {
+          openTokenModal();
+        }
+      } else {
+        if (loginScreen) loginScreen.style.display = 'flex';
+        if (adminHdr) adminHdr.style.display = 'none';
+        if (adminBody) adminBody.style.display = 'none';
+      }
+    }
+
+    function handleLogin(e) {
+      if (e) e.preventDefault();
+      const input = (document.getElementById('passInput').value || '').trim();
+      const errEl = document.getElementById('loginErr');
+      if (input === getAdminPass()) {
+        sessionStorage.setItem('vistara_admin_auth', 'true');
+        if (errEl) errEl.style.display = 'none';
+        checkAuth();
+        showToast('🔓 Selamat datang di Admin Panel!');
+      } else {
+        if (errEl) {
+          errEl.style.display = 'block';
+          errEl.textContent = '❌ Password salah! Silakan periksa kembali.';
+        }
+      }
+    }
+
+    function handleLogout() {
+      if (confirm('Apakah Anda yakin ingin keluar dan mengunci Admin Panel?')) {
+        sessionStorage.removeItem('vistara_admin_auth');
+        checkAuth();
+        showToast('🔒 Halaman admin berhasil dikunci.');
+      }
+    }
+
+    function togglePassVisibility(inputId, btnEl) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        btnEl.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        btnEl.textContent = '👁️';
+      }
+    }
+
+    function openChangePassModal() {
+      document.getElementById('oldPassInput').value = '';
+      document.getElementById('newPassInput').value = '';
+      document.getElementById('confirmPassInput').value = '';
+      document.getElementById('changePassErr').style.display = 'none';
+      document.getElementById('changePassModal').style.display = 'flex';
+    }
+
+    function closeChangePassModal() {
+      document.getElementById('changePassModal').style.display = 'none';
+    }
+
+    function saveNewPassword() {
+      const oldP = (document.getElementById('oldPassInput').value || '').trim();
+      const newP = (document.getElementById('newPassInput').value || '').trim();
+      const confirmP = (document.getElementById('confirmPassInput').value || '').trim();
+      const errEl = document.getElementById('changePassErr');
+
+      if (oldP !== getAdminPass()) {
+        errEl.textContent = '❌ Password saat ini salah!';
+        errEl.style.display = 'block';
+        return;
+      }
+      if (!newP || newP.length < 4) {
+        errEl.textContent = '❌ Password baru minimal 4 karakter!';
+        errEl.style.display = 'block';
+        return;
+      }
+      if (newP !== confirmP) {
+        errEl.textContent = '❌ Konfirmasi password baru tidak cocok!';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      localStorage.setItem('vistara_admin_pass', newP);
+      errEl.style.display = 'none';
+      closeChangePassModal();
+      showToast('🔐 Password Admin berhasil diperbarui!');
+    }
 
     function getToken() { return localStorage.getItem('vistara_admin_tok') || ''; }
     function openTokenModal() { document.getElementById('tokModal').style.display = 'flex'; }
@@ -985,12 +1161,8 @@
       }
     }
 
-    // Initialize on load
-    if (getToken()) {
-      loadAllData();
-    } else {
-      openTokenModal();
-    }
+    // Initialize security & authentication check on page load
+    checkAuth();
   </script>
 </body>
 </html>
