@@ -551,19 +551,40 @@
     }
 
     async function fetchFile(path) {
+      let data = {};
+      
+      // 1. Load directly from website static server (Fast & 100% reliable without token)
+      try {
+        const rawRes = await fetch(`../${path}?v=${Date.now()}`);
+        if (rawRes.ok) {
+          const rawText = await rawRes.text();
+          if (rawText && rawText.trim()) {
+            data = jsyaml.load(rawText) || {};
+          }
+        }
+      } catch(e) {}
+
+      // 2. Fetch SHA metadata from GitHub API for saving changes
       try {
         const tok = getToken();
-        const headers = tok ? { 'Authorization': `token ${tok}` } : {};
-        const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`, { headers });
-        if (!res.ok) return {};
-        const json = await res.json();
-        shaMap[path] = json.sha;
-        const decoded = base64ToUtf8(json.content);
-        return jsyaml.load(decoded) || {};
+        if (tok) {
+          const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}?ref=${BRANCH}`, {
+            headers: { 'Authorization': `token ${tok}` }
+          });
+          if (res.ok) {
+            const json = await res.json();
+            shaMap[path] = json.sha;
+            if (!Object.keys(data).length) {
+              const decoded = base64ToUtf8(json.content);
+              data = jsyaml.load(decoded) || {};
+            }
+          }
+        }
       } catch(err) {
-        console.warn(`Gagal memuat ${path}:`, err);
-        return {};
+        console.warn(`SHA fetch error for ${path}:`, err);
       }
+
+      return data;
     }
 
     async function saveFile(path, yamlObj) {
