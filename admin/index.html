@@ -588,12 +588,12 @@
             <div>
               <h3 style="font-size:1.15rem;color:#8a5f00;font-weight:800;">Peran Anda: Pemilik Utama (Master Approver)</h3>
               <p style="font-size:.85rem;color:var(--t2);margin-top:2px;line-height:1.5;">
-                Anda memegang wewenang penuh atas persetujuan izin semua orang yang dapat membuka dan mengelola halaman admin website Vistara Build.
+                Anda memiliki wewenang penuh untuk mengatur password dan menentukan siapa saja yang boleh mengakses halaman admin ini.
               </p>
             </div>
           </div>
 
-          <h3 style="font-size:1rem;margin-bottom:14px;color:var(--pd);">🔑 Password Akses Admin yang Disetujui</h3>
+          <h3 style="font-size:1rem;margin-bottom:14px;color:var(--pd);">🔑 Pengaturan Password Akses Admin</h3>
           <div class="form-grp">
             <label class="label">Password Aktif Saat Ini</label>
             <div class="pass-input-wrap">
@@ -603,8 +603,24 @@
             <small class="hint">Berikan password ini HANYA kepada orang yang telah Anda setujui izin aksesnya.</small>
           </div>
 
-          <div style="margin-top:20px;">
-            <button type="button" class="btn-save" onclick="openChangePassModal()">🔒 Ubah Password Akses Admin</button>
+          <div style="background:var(--bg);padding:20px;border-radius:14px;border:1.5px solid var(--bd);margin-top:20px;">
+            <h4 style="font-size:.95rem;font-weight:800;color:var(--pd);margin-bottom:14px;">✏️ Buat / Ganti Password Baru:</h4>
+            <div class="form-grp">
+              <label class="label">Password Baru</label>
+              <div class="pass-input-wrap">
+                <input type="password" id="sec_new_pass" class="input-txt" placeholder="Ketik password baru pilihan Anda (misal: rahasia2026, vistara88, dll)...">
+                <button type="button" class="btn-eye" onclick="togglePassVisibility('sec_new_pass', this)">👁️</button>
+              </div>
+            </div>
+            <div class="form-grp">
+              <label class="label">Ulangi Konfirmasi Password Baru</label>
+              <div class="pass-input-wrap">
+                <input type="password" id="sec_confirm_pass" class="input-txt" placeholder="Ketik ulang password baru...">
+                <button type="button" class="btn-eye" onclick="togglePassVisibility('sec_confirm_pass', this)">👁️</button>
+              </div>
+            </div>
+            <div id="secPassErr" style="color:#dc2626;font-size:.82rem;font-weight:700;margin-bottom:12px;display:none;background:#fee2e2;padding:8px 12px;border-radius:8px;"></div>
+            <button type="button" class="btn-save" style="padding:11px 24px;" onclick="saveDirectPassword()">💾 SIMPAN PASSWORD BARU</button>
           </div>
         </div>
 
@@ -624,10 +640,32 @@
             <li>Siapapun yang membuka link <code style="background:var(--s2);padding:2px 6px;border-radius:4px;color:var(--pd);font-weight:700;">/admin/</code> akan tertahan di Layar Kunci.</li>
             <li>Mereka akan menekan tombol <strong>💬 Minta Izin Akses via WhatsApp</strong> yang langsung terhubung ke WhatsApp Anda.</li>
             <li>Sebagai Pemilik, Anda berhak menyetujui atau menolak. Jika disetujui, berikan password akses di atas kepada mereka.</li>
-            <li>Jika di kemudian hari Anda ingin mencabut izin akses mereka, cukup klik tombol <strong>Putus Akses</strong> di atas atau ubah password admin Anda.</li>
+            <li>Jika di kemudian hari Anda ingin mencabut izin akses mereka, cukup ubah password di atas atau tekan tombol <strong>Putus Akses</strong>.</li>
           </ol>
         </div>
       `;
+    }
+
+    function saveDirectPassword() {
+      const newP = (document.getElementById('sec_new_pass').value || '').trim();
+      const confirmP = (document.getElementById('sec_confirm_pass').value || '').trim();
+      const errEl = document.getElementById('secPassErr');
+
+      if (!newP || newP.length < 4) {
+        errEl.textContent = '❌ Password baru minimal 4 karakter!';
+        errEl.style.display = 'block';
+        return;
+      }
+      if (newP !== confirmP) {
+        errEl.textContent = '❌ Konfirmasi password baru tidak cocok!';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      localStorage.setItem('vistara_admin_pass', newP);
+      errEl.style.display = 'none';
+      showToast('🔐 Password Admin berhasil diperbarui!');
+      renderSecurityTab(document.getElementById('mainContent'));
     }
 
     function revokeAllSessions() {
